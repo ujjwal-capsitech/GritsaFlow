@@ -1,0 +1,6 @@
+@GritsaFlow.Server_HostAddress = http://localhost:5070
+
+GET {{GritsaFlow.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

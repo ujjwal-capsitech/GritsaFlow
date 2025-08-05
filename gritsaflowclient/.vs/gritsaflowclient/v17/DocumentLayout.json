@@ -1,0 +1,501 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\TakCard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Components\\TakCard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Project.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Home\\Pages\\Project.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\ProjectCard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Components\\ProjectCard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Task.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Home\\Pages\\Task.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Home.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Home\\Home.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\ActivityLog.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Components\\ActivityLog.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\SessionTimeOut.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Components\\SessionTimeOut.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\PageRouting.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Components\\PageRouting.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Dashboard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Home\\Pages\\Dashboard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\api\\Role.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Role.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\ Employee.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Home\\Pages\\ Employee.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Unauthorized.tsx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Unauthorized.tsx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\store.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\redux\\store.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Employee\\EmployeeDashboard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Employee\\EmployeeDashboard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\slice\\LoginSlice.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\redux\\slice\\LoginSlice.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\slice\\HomeSlice.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\redux\\slice\\HomeSlice.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\pageNotFound.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\pageNotFound.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:package.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Teamlead\\TeamLeadDashboard.tsx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\Teamlead\\TeamLeadDashboard.tsx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\api\\api.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\api.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Assets\\SVGcomponent.tsx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Assets\\SVGcomponent.tsx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Assets\\LoginIcon.svg||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Assets\\LoginIcon.svg||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\vite-env.d.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\vite-env.d.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tsconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\tsconfig.app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tsconfig.app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 10,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "App.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\App.tsx",
+              "RelativeDocumentMoniker": "src\\App.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\App.tsx",
+              "RelativeToolTip": "src\\App.tsx",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-01T08:40:05.297Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "EmployeeDashboard.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Employee\\EmployeeDashboard.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Employee\\EmployeeDashboard.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Employee\\EmployeeDashboard.tsx",
+              "RelativeToolTip": "src\\Pages\\Employee\\EmployeeDashboard.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-01T08:25:56.963Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Home.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Home.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Home\\Home.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Home.tsx",
+              "RelativeToolTip": "src\\Pages\\Home\\Home.tsx",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAABwAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T05:33:43.64Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Login.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Login.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Login.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Login.tsx",
+              "RelativeToolTip": "src\\Pages\\Login.tsx",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAC0AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-30T13:47:50.164Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PageRouting.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\PageRouting.tsx",
+              "RelativeDocumentMoniker": "src\\Components\\PageRouting.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\PageRouting.tsx",
+              "RelativeToolTip": "src\\Components\\PageRouting.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-30T14:22:12.003Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProjectCard.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\ProjectCard.tsx",
+              "RelativeDocumentMoniker": "src\\Components\\ProjectCard.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\ProjectCard.tsx",
+              "RelativeToolTip": "src\\Components\\ProjectCard.tsx",
+              "ViewState": "AgIAADkAAAAAAAAAAAAowCQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-30T13:17:12.226Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "HomeSlice.ts",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\slice\\HomeSlice.ts",
+              "RelativeDocumentMoniker": "src\\redux\\slice\\HomeSlice.ts",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\slice\\HomeSlice.ts",
+              "RelativeToolTip": "src\\redux\\slice\\HomeSlice.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T06:07:50.546Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "LoginSlice.ts",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\slice\\LoginSlice.ts",
+              "RelativeDocumentMoniker": "src\\redux\\slice\\LoginSlice.ts",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\slice\\LoginSlice.ts",
+              "RelativeToolTip": "src\\redux\\slice\\LoginSlice.ts",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwAwAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-30T13:54:19.532Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "store.ts",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\store.ts",
+              "RelativeDocumentMoniker": "src\\redux\\store.ts",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\redux\\store.ts",
+              "RelativeToolTip": "src\\redux\\store.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-01T10:50:56.299Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TakCard.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\TakCard.tsx",
+              "RelativeDocumentMoniker": "src\\Components\\TakCard.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\TakCard.tsx",
+              "RelativeToolTip": "src\\Components\\TakCard.tsx",
+              "ViewState": "AgIAALQAAAAAAAAAAAAwwMAAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-30T13:17:28.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Dashboard.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Dashboard.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Home\\Pages\\Dashboard.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Dashboard.tsx",
+              "RelativeToolTip": "src\\Pages\\Home\\Pages\\Dashboard.tsx",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA8AAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T05:36:54.063Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": " Employee.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\ Employee.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Home\\Pages\\ Employee.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\ Employee.tsx",
+              "RelativeToolTip": "src\\Pages\\Home\\Pages\\ Employee.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T05:39:33.756Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ActivityLog.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\ActivityLog.tsx",
+              "RelativeDocumentMoniker": "src\\Components\\ActivityLog.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\ActivityLog.tsx",
+              "RelativeToolTip": "src\\Components\\ActivityLog.tsx",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAAAGkAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T11:58:13.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Task.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Task.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Home\\Pages\\Task.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Task.tsx",
+              "RelativeToolTip": "src\\Pages\\Home\\Pages\\Task.tsx",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAgwGQAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T05:39:47.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Project.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Project.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Home\\Pages\\Project.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Home\\Pages\\Project.tsx",
+              "RelativeToolTip": "src\\Pages\\Home\\Pages\\Project.tsx",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAowFoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T05:31:19.74Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SessionTimeOut.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\SessionTimeOut.tsx",
+              "RelativeDocumentMoniker": "src\\Components\\SessionTimeOut.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Components\\SessionTimeOut.tsx",
+              "RelativeToolTip": "src\\Components\\SessionTimeOut.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-04T06:58:13.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Role.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\api\\Role.tsx",
+              "RelativeDocumentMoniker": "src\\api\\Role.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\api\\Role.tsx",
+              "RelativeToolTip": "src\\api\\Role.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-01T12:39:14.145Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Unauthorized.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Unauthorized.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Unauthorized.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Unauthorized.tsx",
+              "RelativeToolTip": "src\\Pages\\Unauthorized.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-01T13:48:04.15Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "pageNotFound.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\pageNotFound.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\pageNotFound.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\pageNotFound.tsx",
+              "RelativeToolTip": "src\\Pages\\pageNotFound.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-04T05:54:59.897Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "package.json",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\package.json",
+              "RelativeDocumentMoniker": "package.json",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\package.json",
+              "RelativeToolTip": "package.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-31T06:07:58.786Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "package-lock.json",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\package-lock.json",
+              "RelativeDocumentMoniker": "package-lock.json",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\package-lock.json",
+              "RelativeToolTip": "package-lock.json",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-04T07:16:04.942Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "TeamLeadDashboard.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Teamlead\\TeamLeadDashboard.tsx",
+              "RelativeDocumentMoniker": "src\\Pages\\Teamlead\\TeamLeadDashboard.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Pages\\Teamlead\\TeamLeadDashboard.tsx",
+              "RelativeToolTip": "src\\Pages\\Teamlead\\TeamLeadDashboard.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-08-01T08:19:11.408Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "LoginIcon.svg",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Assets\\LoginIcon.svg",
+              "RelativeDocumentMoniker": "src\\Assets\\LoginIcon.svg",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Assets\\LoginIcon.svg",
+              "RelativeToolTip": "src\\Assets\\LoginIcon.svg",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAGAAAAAAAAAA==",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKMSURBVDhPjZNLSFRhFMd/3507M/dKPsacsYelWGZZFFJRkdSmNrUoatMiKggSN2YFEUX3MvQiiBYWtFAyggoXPSGyhQuhFrXQFr7GMFOowcZMUO9MM3pPi9Eao6gf/Bcfh3PO/5yPo8jAsqxI5vtvKKXuhMPhK4jInIBlWRH5Bw0NDYOWZUVs264B0DILKEUXCCIpZOIi7uetpHpCxN8GiffU4rrThEIhXzgcXiEidbZtH/5ZQKTV\u002B72oItjSYfG5vxwneoX2/iW80dvxb4ji9D4BIBAIeBsbG4fSOXJWzSR7qpt9D\u002BvWndpTlNXL2HCQ28PXaIuVEB2Dmsp8DiZqyN35FAFiw19IJpPcbmrq0wCq7\u002BvHd5Y\u002B2rMy5y3OcBXmqtccq9rB/uUFKI/GzfZRPhRdBhEQIRgKUlxSAoAm0uqtWNB5Yu\u002Bier5\u002BWOoWbnxAwAwQzDao3lLIobX5ePxemiImroCIzFm\u002BztT7/CPLzi8ej\u002BVxdeyu1nJjgMR3FwDl0fD4dJRHozuWACStjM/TGDlZ50tNqHuxejo\u002B\u002BZPL8wwqCvxUFPhZFfBSbIBMJti0wJjpDpJRQXfjzr6uj9u\u002BtYysCWijA4OPqzeXpVLJtE010zS9cZDM1DTa9ASLmoaOnh4cEYaySsoa30T5Mp5kPD7Ni\u002B5Rtt7qofzqO553jqQHmHExi5p8RcRNsb6y7VWtnm1ecjUdcdM7QClwhQPl8zi3o\u002BiXdREMMwvbtvv0KYfmRJSBtvlVY93O6ujLlc8WdsYcdE1RmutlV3kO20tzcXFRohBFerQ/ccE6c11EJB53xIk7EndmNSnObxIRsSwrMucWUvh2AxiGiWmYGOassjB/0yxzzPzvOWfyAyvlXYiiBFoWAAAAAElFTkSuQmCC",
+              "WhenOpened": "2025-07-30T14:13:57.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\index.html",
+              "RelativeDocumentMoniker": "index.html",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\index.html",
+              "RelativeToolTip": "index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-07-30T14:14:50.175Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "api.ts",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\api\\api.ts",
+              "RelativeDocumentMoniker": "src\\api\\api.ts",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\api\\api.ts",
+              "RelativeToolTip": "src\\api\\api.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-30T13:43:29.797Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "tsconfig.json",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\tsconfig.json",
+              "RelativeDocumentMoniker": "tsconfig.json",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\tsconfig.json",
+              "RelativeToolTip": "tsconfig.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-31T07:37:42.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "vite-env.d.ts",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\vite-env.d.ts",
+              "RelativeDocumentMoniker": "src\\vite-env.d.ts",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\vite-env.d.ts",
+              "RelativeToolTip": "src\\vite-env.d.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T07:50:00.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "SVGcomponent.tsx",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Assets\\SVGcomponent.tsx",
+              "RelativeDocumentMoniker": "src\\Assets\\SVGcomponent.tsx",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\src\\Assets\\SVGcomponent.tsx",
+              "RelativeToolTip": "src\\Assets\\SVGcomponent.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-07-31T08:31:08.909Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "tsconfig.app.json",
+              "DocumentMoniker": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\tsconfig.app.json",
+              "RelativeDocumentMoniker": "tsconfig.app.json",
+              "ToolTip": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlowClient\\gritsaflowclient\\tsconfig.app.json",
+              "RelativeToolTip": "tsconfig.app.json",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAA8AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-31T07:40:08.168Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+﻿using GritsaFlow.DTOs;
+using GritsaFlow.Models;
+using GritsaFlow.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace GritsaFlow.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProjectControllers : ControllerBase
+    {
+        private readonly projectServices _projectservices;
+
+        public ProjectControllers(projectServices projectservices)
+        {
+            _projectservices = projectservices;
+        }
+
+        private (string Id, string Name) GetUserContext()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "system";
+            var userName = User.Identity?.Name ?? "system";
+            return (userId, userName);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ApiResponse<List<Project>>>> GetAll()
+        {
+            var projects = await _projectservices.GetAllAsync();
+            return Ok(ApiResponse<List<Project>>.Ok(projects));
+        }
+
+        [HttpPost]
+        
+        public async Task<IActionResult> Post(Project newproject)
+        {
+            var (id, name) = GetUserContext();
+            await _projectservices.CreateProjectAsync(newproject, id, name);
+            return Ok(ApiResponse<Project>.Ok(newproject));
+        }
+
+        [HttpGet("{ProjectId}")]
+        public async Task<ActionResult<ApiResponse<Project>>> Get(string ProjectId)
+        {
+            var project = await _projectservices.GetByidAsync(ProjectId);
+
+            if (project is null)
+                return NotFound(ApiResponse<Project>.Error("Project not found."));
+
+            return Ok(ApiResponse<Project>.Ok(project));
+        }
+
+        [HttpPatch("{ProjectId}/description")]
+        [Authorize(Roles = Roles.Admin + "," + Roles.TeamLead)]
+        public async Task<IActionResult> UpdateDescription(string ProjectId, [FromBody] string newDescription)
+        {
+            var (id, name) = GetUserContext();
+            var success = await _projectservices.UpdateDescriptionAsync(ProjectId, newDescription, id, name);
+
+            if (!success)
+                return NotFound(ApiResponse.Error("Project not found"));
+
+            return Ok(ApiResponse.Ok("Description updated successfully"));
+        }
+
+        [HttpPut("{ProjectId}")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Put(string ProjectId, Project updatedProject)
+        {
+            var (id, name) = GetUserContext();
+            var existing = await _projectservices.EditByidAsync(ProjectId, updatedProject, id, name);
+            if (existing is null)
+                return NotFound("Project not found.");
+
+            return Ok(ApiResponse<Project>.Ok(existing));
+        }
+
+        [HttpGet("{projectId}/report")]
+        public async Task<IActionResult> GetProjectReport(string projectId)
+        {
+            var report = await _projectservices.GetProjectReportAsync(projectId);
+
+            if (!report.StatusReport.Any() && !report.PriorityReport.Any())
+                return Ok(new { status = false, message = "No tasks found for this project." });
+
+            return Ok(new { status = true, data = report });
+        }
+
+
+        [HttpDelete("{ProjectId}")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Delete(string ProjectId)
+        {
+            var (id, name) = GetUserContext();
+            var success = await _projectservices.DeleteProjectAsync(ProjectId, id, name);
+
+            if (!success)
+                return NotFound(ApiResponse.Error("Project not found"));
+
+            return Ok(ApiResponse.Ok("Project deleted successfully"));
+        }
+    }
+}

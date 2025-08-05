@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\api",
+    "\\src\\Components",
+    "\\src\\Pages",
+    "\\src\\Pages\\Home",
+    "\\src\\Pages\\Home\\Pages",
+    "\\src\\redux",
+    "\\src\\redux\\slice"
+  ],
+  "SelectedNode": "\\src\\Components\\PageRouting.tsx",
+  "PreviewInSolutionExplorer": false
+}
