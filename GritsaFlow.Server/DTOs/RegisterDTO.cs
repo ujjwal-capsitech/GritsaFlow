@@ -18,5 +18,7 @@ namespace GritsaFlow.DTOs
         [Required]
         [EmailAddress(ErrorMessage = "Write Email Properly")]
         public string Email { get; set; } = null!;
+
+        public string AvatarUrl { get; set; }
     }
 }

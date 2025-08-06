@@ -1,26 +1,45 @@
-﻿using GritsaFlow.Models;
-using GritsaFlow.Server.Models;
+﻿using GritsaFlow.Server.Models;
 using GritsaFlow.Server.Services;
-using GritsaFlow.Services;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace GritsaFlow.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProjectTimeLineContollers : ControllerBase
+    public class ProjectTimeLineControllers : ControllerBase
     {
         private readonly ProjectTimelineServices _projectTimelineServices;
-        public ProjectTimeLineContollers(ProjectTimelineServices projectTimelineServices )
+
+        public ProjectTimeLineControllers(ProjectTimelineServices projectTimelineServices)
         {
             _projectTimelineServices = projectTimelineServices;
         }
+
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<ProjectTimeLine>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<List<TimelineItemDTO>>>> GetAll()
         {
-            var ProjectTimeLine = await _projectTimelineServices.GetAllAsync();
-            return Ok(ApiResponse<List<ProjectTimeLine>>.Ok(ProjectTimeLine));
+            var projectTimeline = await _projectTimelineServices.GetAllAsync();
+
+            var timelineItems = projectTimeline.Select(item => new TimelineItemDTO
+            {
+                Id = item.TaskID ?? Guid.NewGuid().ToString(), // fallback if TaskID is null
+                UserName = item.UserName ?? "Unknown",
+                AvatarUrl = item.avatarurl ?? "",
+                DateTime = item.updatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                Description = item.ActivityDescription ?? "",
+                TaskLink = string.IsNullOrEmpty(item.TaskID) ? "" : $"/tasks/{item.TaskID}",
+                FromLabel = item.statefrom,
+                ToLabel = item.stateTo
+            }).ToList();
+
+            return Ok(ApiResponse<List<TimelineItemDTO>>.Ok(timelineItems));
         }
-    }   
+        [HttpGet("{projectId}")]
+        public async Task<ActionResult<ApiResponse<List<ProjectTimeLine>>>> GetByProjectId(string projectId)
+        {
+            var projectTimeLine = await _projectTimelineServices.GetByProjectIdAsync(projectId);
+
+            return Ok(ApiResponse<List<ProjectTimeLine>>.Ok(projectTimeLine));
+        }
+    }
 }

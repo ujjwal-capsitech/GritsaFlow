@@ -23,7 +23,7 @@ namespace GritsaFlow.Services
                 Name = creatorName,
                 CreatedAt = DateTime.UtcNow
             };
-            newProject.ProjectId = Guid.NewGuid().ToString(); // auto generate ProjectId
+            //newProject.ProjectId = Guid.NewGuid().ToString()
             newProject.IsDeleted = false;
 
             await _projects.InsertOneAsync(newProject);

@@ -38,7 +38,7 @@ const EmployeeDashboard: React.FC = () => {
     email: "ujjwal.raj@capsitech.com",
     role: "Employee",
     avatarUrl:
-      "https://app.capsitask.com/v1/api/user/profilepicture?id=68652838045c6576ca1e63c3&isThumb=0?t=nThpZ6vcTKS+PXWk6qkbnw==", // ? use your actual image or fallback
+      "https://cdn.pixabay.com/photo/2018/09/26/21/26/biker-3705689_1280.jpg", // ? use your actual image or fallback
   };
 
   const profileMenu = (

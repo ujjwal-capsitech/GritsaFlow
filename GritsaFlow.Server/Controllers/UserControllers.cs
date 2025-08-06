@@ -26,8 +26,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    [Authorize(Roles = Roles.Admin)]
-    public async Task<IActionResult> Register(RegisterDTO dto)
+    //[Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> Register(RegisterDTO dto )
     {
         var result = await _service.RegisterAsync(dto);
         return Ok(ApiResponse<UserDTO>.Ok(result));
@@ -46,16 +46,18 @@ public class UserController : ControllerBase
         SetAuthCookies(accessToken, refreshToken, refreshExpiry);
         var employee = new UserDTO
         {
+            UserId = user.UserId,
             Name = user.Name,
             Role = user.Role,
             Email = user.Email,
             UserName = user.UserName,
-        };
+            AvatarUrl = user.AvatarUrl,
+        };  
 
         var response = new
         {
             message = "Login SuccessFul",
-            user = employee,
+            newUser = employee,
             TokenExpiry = refreshExpiry,
         };
 
@@ -149,6 +151,28 @@ public class UserController : ControllerBase
             Secure = true,
             SameSite = SameSiteMode.None,
             Expires = refreshExpiry
+        });
+    }
+    // UserController.cs
+    [HttpGet("current")]
+    [Authorize]
+    public async Task<ActionResult<UserDTO>> GetCurrentUser()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        var user = await _service.GetByidAsync(userId);
+        if (user == null) return NotFound();
+
+        return Ok(new UserDTO
+        {
+            UserId = user.UserId,
+            Name = user.Name,
+            UserName = user.UserName,
+            Role = user.Role,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
         });
     }
 }

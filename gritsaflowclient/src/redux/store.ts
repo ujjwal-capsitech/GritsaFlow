@@ -10,7 +10,7 @@ export const store = configureStore({
         home: homeReducer,
   },
 });
-export type Rootstate = ReturnType<typeof store.getState>; //store.getstate returns the current state
+export type RootState = ReturnType<typeof store.getState>; //store.getstate returns the current state
 export type AppDispatch = typeof store.dispatch; //sends action to redux store
 
 

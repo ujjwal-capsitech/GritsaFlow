@@ -11,6 +11,6 @@ namespace GritsaFlow.DTOs
         public string Token { get; set; } = null!;
         public DateTime ExpiryDate { get; set; }
     }
-    // TokenDTO
+    
 
 }

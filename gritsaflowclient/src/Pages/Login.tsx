@@ -36,15 +36,16 @@ const Login: React.FC = () => {
         },
         // Login.tsx (onSuccess callback)
         onSuccess: (data) => {
-            message.success("Logged in Successfully");
+            message.success(data.message);
 
             dispatch(setIsLogin(true));
-            dispatch(setRole(data.user.role as RoleEnum));
+            dispatch(setRole(data.newUser.role as RoleEnum));
             dispatch(setTokenExpiry(data.tokenExpiry));
 
             localStorage.setItem("isLogin", "true");
-            localStorage.setItem("Role", data.user.role);
+            localStorage.setItem("Role", data.newUser.role);
             localStorage.setItem("tokenExpiry", data.tokenExpiry);
+          
 
             navigate("/Home");
         },
@@ -144,3 +145,5 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+

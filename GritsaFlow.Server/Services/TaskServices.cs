@@ -10,14 +10,17 @@ namespace GritsaFlow.Services
     {
         private readonly IMongoCollection<Tasks> _tasks;
         private readonly ProjectTimelineServices _timelineService;
+       
+        private readonly UserServices _user;
 
-        public TasksServices(IMongoDatabase db, ProjectTimelineServices timelineService)
+        public TasksServices(IMongoDatabase db, ProjectTimelineServices timelineService,UserServices user)
         {
             _tasks = db.GetCollection<Tasks>("tasks");
             _timelineService = timelineService;
+            _user = user;
         }
 
-        // Create Task
+   
         public async Task CreateTaskAsync(Tasks newTask, string userId, string userName)
         {
             if (newTask.Project == null || string.IsNullOrWhiteSpace(newTask.Project.ProjectId))
@@ -33,6 +36,7 @@ namespace GritsaFlow.Services
             newTask.IsDeleted = false;
 
             await _tasks.InsertOneAsync(newTask);
+            var user = await _user.GetByidAsync(userId);
 
             // Log activity
             await _timelineService.LogActivityAsync(new ProjectTimeLine
@@ -41,6 +45,7 @@ namespace GritsaFlow.Services
                 TaskID = newTask.TaskId,
                 UserName = userName,
                 ActivityDescription = $"Task '{newTask.Title}' created",
+                avatarurl = user?.AvatarUrl ?? string.Empty,     
                 statefrom = "None",
                 stateTo = newTask.TaskStatus.ToString(),
                 updator = new Updator { Id = userId, Name = userName, UpdatedAt = DateTime.UtcNow },

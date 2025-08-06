@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Typography, Select, Row, Col, Spin, message, Empty } from "antd";
+import { Card, Typography, Select, Row, Col, Spin, message, Empty, Progress } from "antd";
 import ReactECharts from "echarts-for-react";
 import api from "../api/api";
 
@@ -16,32 +16,36 @@ interface Project {
     projectTitle: string;
 }
 
+interface ProjectReport {
+    statusReport: TaskReport[];
+    priorityReport: TaskReport[];
+}
+
 interface ApiResponse<T> {
-  data: T;
-  status: boolean;
-  message?: string;
+    data: T;
+    status: boolean;
+    message?: string;
 }
 
 const Projectcard: React.FC = () => {
     const [scale, setScale] = useState(1);
-    const [data, setData] = useState<TaskReport[]>([]);
+    const [statusReport, setStatusReport] = useState<TaskReport[]>([]);
+    const [priorityReport, setPriorityReport] = useState<TaskReport[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
     const fetchProjects = async () => {
         try {
-            setLoading(true); //  start loading here too
+            setLoading(true);
             const response = await api.get<ApiResponse<Project[]>>("/ProjectControllers");
-
-            console.log("Projects Response:", response.data); // debug log
 
             if (response.data.status) {
                 setProjects(response.data.data);
                 if (response.data.data.length > 0) {
-                    setSelectedProject(response.data.data[0].projectId); // default select first project
+                    setSelectedProject(response.data.data[0].projectId);
                 } else {
-                    message.info("No projects found"); // nicer than error
+                    message.info("No projects found");
                 }
             } else {
                 message.error(response.data.message || "Failed to load projects");
@@ -49,23 +53,22 @@ const Projectcard: React.FC = () => {
         } catch (err) {
             message.error("Error fetching project list");
         } finally {
-            setLoading(false); // end loading
+            setLoading(false);
         }
     };
 
-    // Fetch project report
     const fetchReport = async (projectId: string) => {
         try {
             setLoading(true);
-            const response = await api.get<ApiResponse<TaskReport[]>>(
+            const response = await api.get<ApiResponse<ProjectReport>>(
                 `/ProjectControllers/${projectId}/report`
             );
 
-            console.log("Report Response:", response.data); // debug log
-
             if (response.data.status) {
-                setData(response.data.data);
-                if (response.data.data.length === 0) {
+                setStatusReport(response.data.data.statusReport || []);
+                setPriorityReport(response.data.data.priorityReport || []);
+
+                if (response.data.data.statusReport.length === 0) {
                     message.info("No report data available");
                 }
             } else {
@@ -74,129 +77,137 @@ const Projectcard: React.FC = () => {
         } catch {
             message.error("Error fetching report");
         } finally {
-            setLoading(false); //  always stop loading
+            setLoading(false);
         }
     };
-    useEffect(() => {
-            const handleResize = () => {
-                // Example: scale card based on window width, min 0.5 max 1
-                const width = window.innerWidth;
-                let newScale = 1;
-                if (width < 600) newScale = 0.7;
-                else if (width < 400) newScale = 0.5;
-                setScale(newScale);
-            };
-    
-            window.addEventListener("resize", handleResize);
-            handleResize(); // initialize
-    
-            return () => window.removeEventListener("resize", handleResize);
-        }, []);
 
-    // Load projects on mount
     useEffect(() => {
         fetchProjects();
     }, []);
 
-    // Load report whenever selected project changes
     useEffect(() => {
         if (selectedProject) {
             fetchReport(selectedProject);
         }
     }, [selectedProject]);
 
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            let newScale = 1;
+            if (width < 600) newScale = 0.7;
+            else if (width < 400) newScale = 0.5;
+            setScale(newScale);
+        };
+        window.addEventListener("resize", handleResize);
+        handleResize();
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const pieChartOptions = {
-      tooltip: { trigger: "item" },
-      legend: {
-        orient: "vertical",
-        left: "right",
-        top: "ce",
-        icon: "circle",
-        itemGap: 12,
-        textStyle: {
-          fontSize: 12,
+        tooltip: { trigger: "item" },
+        legend: {
+            orient: "vertical",
+            left: "right",
+            itemGap: 12,
         },
-      },
-      series: [
-        {
-          name: "Tasks",
-          type: "pie",
-          radius: ["40%", "70%"],
-          avoidLabelOverlap: true,
-          label: { show: false, position: "center" },
-          emphasis: { label: { show: true, fontSize: 12 } },
-          labelLine: { show: false },
-          data: data.map((item, index) => ({
-            value: item.value,
-            name: item.name,
-            itemStyle: {
-              color: [
-                "#4C9AFF",
-                "#A5B4FC",
-                "#60A5FA",
-                "#22D3EE",
-                "#F472B6",
-                "#E879F9",
-                "#FBBF24",
-                "#34D399",
-              ][index % 8],
+        series: [
+            {
+                name: "Tasks",
+                type: "pie",
+                radius: ["40%", "70%"],
+                label: { show: false },
+                emphasis: { label: { show: true, fontSize: 12 } },
+                labelLine: { show: false },
+                data: statusReport.map((item, index) => ({
+                    value: item.value,
+                    name: item.name,
+                    itemStyle: {
+                        color: [
+                            "#4C9AFF",
+                            "#A5B4FC",
+                            "#60A5FA",
+                            "#22D3EE",
+                            "#F472B6",
+                            "#E879F9",
+                            "#FBBF24",
+                            "#34D399",
+                        ][index % 8],
+                    },
+                })),
             },
-          })),
-        },
-      ],
+        ],
     };
 
     return (
         <div
             style={{
-                
                 transform: `scale(${scale})`,
                 transformOrigin: "top left",
-                width: `${100 / scale}%`, // Prevent container shrinking in layout
+                width: `${100 / scale}%`,
                 transition: "transform 0.3s ease",
             }}
         >
-        <Card style={{borderRadius: "14px", padding: "10px" }}>
-            <Row justify="space-between" align="middle" style={{ marginBottom: "10px" }}>
-                <Title level={5} style={{ margin: 0 }}>
-                    Project Report
-                </Title>
-                
-            </Row>
+            <Card style={{ borderRadius: "14px", padding: "10px" }}>
+                <Row justify="space-between" align="middle" style={{ marginBottom: "10px" }}>
+                    <Title level={5} style={{ margin: 0 }}>
+                        Project Report
+                    </Title>
+                </Row>
 
-            <Row gutter={16}>
-                {/* Left: Pie Chart */}
-                <Col xs={24} md={ 12} style={{ textAlign: "center" }}>
-                    {loading ? (
-                        <Spin />
-                    ) : data.length === 0 ? (
-                        <Empty description="No Data" image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                    ) : (
-                        <ReactECharts
-                            option={pieChartOptions}
-                            style={{ height: "220px", width: "100%" }}
-                        />
-                    )}
-                </Col>
+                <Row gutter={16}>
+                    {/* Left: Pie Chart */}
+                    <Col xs={24} md={12} style={{ textAlign: "center" }}>
+                        {loading ? (
+                            <Spin />
+                        ) : statusReport.length === 0 ? (
+                            <Empty description="No Data" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                        ) : (
+                            <ReactECharts option={pieChartOptions} style={{ height: "220px", width: "100%" }} />
+                        )}
+                    </Col>
 
+                    {/* Right: Dropdown + Priorities */}
+                    <Col span={12}>
+                        <Select
+                            value={selectedProject || undefined}
+                            onChange={(value) => setSelectedProject(value)}
+                            style={{ width: "100%", marginBottom: "15px" }}
+                            placeholder="Select Project"
+                        >
+                            {projects.map((p) => (
+                                <Option key={p.projectId} value={p.projectId}>
+                                    {p.projectTitle}
+                                </Option>
+                            ))}
+                        </Select>
 
-                {/* Right: Project Dropdown */}
-                <Col span={12}>
-                    <Select
-                        value={selectedProject || undefined}
-                        onChange={(value) => setSelectedProject(value)}
-                        style={{ width: "100%", marginBottom: "15px" }}
-                        placeholder="Select Project"
-                    >
-                        {projects.map((p) => (
-                            <Option key={p.projectId} value={p.projectId}>
-                                {p.projectTitle}
-                            </Option>
+                        {priorityReport.map((p, idx) => (
+                            <Row key={idx} align="middle" style={{ marginBottom: "12px" }}>
+                                <Col span={6}>{p.name}</Col>
+                                <Col span={12}>
+                                    <Progress
+                                        percent={Math.min((p.value / 10) * 100, 100)} // adjust denominator as needed
+                                        showInfo={false}
+                                        strokeColor={
+                                            p.name.toLowerCase() === "high"
+                                                ? "#ef4444"
+                                                : p.name.toLowerCase() === "medium"
+                                                    ? "#3b82f6"
+                                                    : "#22c55e"
+                                        }
+                                        trailColor="#f3f4f6"
+                                        status="active"
+                                    />
+                                </Col>
+                                <Col span={6} style={{ textAlign: "right" }}>
+                                    {p.value}
+                                </Col>
+                            </Row>
                         ))}
-                    </Select>
-                </Col>
-            </Row>
-        </Card>
+                    </Col>
+                </Row>
+            </Card>
         </div>
     );
 };

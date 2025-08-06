@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using GritsaFlow.Models;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,6 +19,7 @@ namespace GritsaFlow.DTOs
         public string Role { get; set; } = null!;
         [Required]
         public string Email { get; set; } = null!;
+        public string AvatarUrl { get; set; }
        
     }
 }

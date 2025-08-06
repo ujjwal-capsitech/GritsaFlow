@@ -18,7 +18,7 @@ namespace GritsaFlow.Services
             _refreshTokens = db.GetCollection<RefreshToken>("RefreshTokens");
             _config = config;
 
-            // Ensure TTL index is created (only runs once)
+            // Ensure TTL(Time to live) index is created (only runs once)
             var indexKeys = Builders<RefreshToken>.IndexKeys.Ascending(t => t.ExpiryDate);
             var indexOptions = new CreateIndexOptions { ExpireAfter = TimeSpan.Zero };
             var indexModel = new CreateIndexModel<RefreshToken>(indexKeys, indexOptions);
@@ -38,11 +38,12 @@ namespace GritsaFlow.Services
                 Role = user.Role,
                 UserName = user.UserName,
                 Email = user.Email,
-                Password = user.Password
+                Password = user.Password,
+                AvatarUrl = user.AvatarUrl
             };
         }
         public async Task<User?> GetByidAsync(string UserId)=>
-            await _users.Find(u => u.Id == UserId).FirstOrDefaultAsync();
+            await _users.Find(u => u.UserId == UserId).FirstOrDefaultAsync();
         
 
 
@@ -59,15 +60,15 @@ namespace GritsaFlow.Services
             }
             var user = new User
             {
-                UserId = userId,
                 Name = dto.Name,
                 UserName = dto.UserName,
                 Password = Bc.EnhancedHashPassword(dto.Password),
                 Email = dto.Email,
                 Role = dto.Role,
+                AvatarUrl = dto.AvatarUrl,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
-
+                
             };
             await _users.InsertOneAsync(user);
 
@@ -78,9 +79,11 @@ namespace GritsaFlow.Services
                 Role = user.Role,
                 UserName = user.UserName,
                 Email = user.Email,
-                Password = user.Password
+                Password = user.Password,
+                AvatarUrl = user.AvatarUrl,
             };
         }
+       
         public async Task<bool> IsDeletedAsync(string UserId)
         {
             var user = await _users.Find(u => u.Id == UserId).FirstOrDefaultAsync();
@@ -117,7 +120,9 @@ namespace GritsaFlow.Services
                 Role = user.Role,
                 UserName = user.UserName,
                 Email = user.Email,
-                Password = user.Password
+                Password = user.Password,
+                AvatarUrl = user.AvatarUrl,
+
             };
         }
 
@@ -132,5 +137,6 @@ namespace GritsaFlow.Services
         {
             await _refreshTokens.DeleteManyAsync(r => r.UserId == userId);
         }
+
     }
 }

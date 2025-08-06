@@ -72,6 +72,45 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = async context =>
+        {
+            var accessToken = context.Request.Cookies["accessToken"];
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                context.Token = accessToken;
+            }
+            else
+            {
+                // fallback: try refresh token
+                var refreshToken = context.Request.Cookies["refreshToken"];
+                if (!string.IsNullOrEmpty(refreshToken))
+                {
+                    var userService = context.HttpContext.RequestServices.GetRequiredService<UserServices>();
+                    var user = await userService.GetUserByRefreshTokenAsync(refreshToken);
+                    if (user != null)
+                    {
+                        var tokenService = context.HttpContext.RequestServices.GetRequiredService<TokenService>();
+                        var (newAccessToken, _, _) = tokenService.GenerateTokens(user, false);
+
+                        // set context.Token to new access token
+                        context.Token = newAccessToken;
+
+                        // also re-issue cookie
+                        context.HttpContext.Response.Cookies.Append("accessToken", newAccessToken, new CookieOptions
+                        {
+                            HttpOnly = true,
+                            Secure = true,
+                            SameSite = SameSiteMode.None,
+                            Expires = DateTime.UtcNow.AddMinutes(10)
+                        });
+                    }
+                }
+            }
+        }
+    };
+
 });
 
 //CORS configuration

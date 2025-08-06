@@ -5,6 +5,7 @@ import api from "../api/api";
 
 const { Title } = Typography;
 const { Option } = Select;
+
 interface TaskReport {
     name: string;
     value: number;
@@ -15,42 +16,36 @@ interface Project {
     projectTitle: string;
 }
 
+interface ProjectReport {
+    statusReport: TaskReport[];
+    priorityReport: TaskReport[];
+}
+
 interface ApiResponse<T> {
     data: T;
     status: boolean;
     message?: string;
 }
 
-
-
-const priorities = [
-    { label: "High", value: 107, color: "#22c55e" },
-    { label: "Medium", value: 395, color: "#3b82f6" },
-    { label: "Low", value: 186, color: "#ef4444" },
-];
-
 const TaskReportCard: React.FC = () => {
     const [scale, setScale] = useState(1);
-    const [data, setData] = useState<TaskReport[]>([]);
+    const [statusReport, setStatusReport] = useState<TaskReport[]>([]);
+    const [priorityReport, setPriorityReport] = useState<TaskReport[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
     const fetchProjects = async () => {
         try {
-            setLoading(true); //  start loading here too
-            const response = await api.get<ApiResponse<Project[]>>(
-                "/ProjectControllers"
-            );
-
-            console.log("Projects Response:", response.data); // debug log
+            setLoading(true);
+            const response = await api.get<ApiResponse<Project[]>>("/ProjectControllers");
 
             if (response.data.status) {
                 setProjects(response.data.data);
                 if (response.data.data.length > 0) {
-                    setSelectedProject(response.data.data[0].projectId); // default select first project
+                    setSelectedProject(response.data.data[0].projectId);
                 } else {
-                    message.info("No projects found"); // nicer than error
+                    message.info("No projects found");
                 }
             } else {
                 message.error(response.data.message || "Failed to load projects");
@@ -58,21 +53,22 @@ const TaskReportCard: React.FC = () => {
         } catch (err) {
             message.error("Error fetching project list");
         } finally {
-            setLoading(false); // end loading
+            setLoading(false);
         }
     };
+
     const fetchReport = async (projectId: string) => {
         try {
             setLoading(true);
-            const response = await api.get<ApiResponse<TaskReport[]>>(
+            const response = await api.get<ApiResponse<ProjectReport>>(
                 `/ProjectControllers/${projectId}/report`
             );
 
-            console.log("Report Response:", response.data); // debug log
-
             if (response.data.status) {
-                setData(response.data.data);
-                if (response.data.data.length === 0) {
+                setStatusReport(response.data.data.statusReport || []);
+                setPriorityReport(response.data.data.priorityReport || []);
+
+                if ((response.data.data.statusReport || []).length === 0) {
                     message.info("No report data available");
                 }
             } else {
@@ -81,24 +77,9 @@ const TaskReportCard: React.FC = () => {
         } catch {
             message.error("Error fetching report");
         } finally {
-            setLoading(false); //  always stop loading
+            setLoading(false);
         }
     };
-    useEffect(() => {
-        const handleResize = () => {
-            // Example: scale card based on window width, min 0.5 max 1
-            const width = window.innerWidth;
-            let newScale = 1;
-            if (width < 600) newScale = 0.7;
-            else if (width < 400) newScale = 0.5;
-            setScale(newScale);
-        };
-
-        window.addEventListener("resize", handleResize);
-        handleResize(); // initialize
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
 
     useEffect(() => {
         fetchProjects();
@@ -110,44 +91,36 @@ const TaskReportCard: React.FC = () => {
         }
     }, [selectedProject]);
 
-    // Optional: dynamically adjust scale on window resize
+    // scale card on resize
     useEffect(() => {
         const handleResize = () => {
-            // Example: scale card based on window width, min 0.5 max 1
             const width = window.innerWidth;
             let newScale = 1;
             if (width < 600) newScale = 0.7;
             else if (width < 400) newScale = 0.5;
             setScale(newScale);
         };
-
         window.addEventListener("resize", handleResize);
-        handleResize(); // initialize
-
+        handleResize();
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
     const pieChartOptions = {
         tooltip: { trigger: "item" },
         legend: {
             orient: "vertical",
             left: "right",
-            top: "ce",
-            icon: "circle",
             itemGap: 12,
-            textStyle: {
-                fontSize: 12,
-            },
         },
         series: [
             {
                 name: "Tasks",
                 type: "pie",
                 radius: ["40%", "70%"],
-                avoidLabelOverlap: true,
-                label: { show: false, position: "center" },
+                label: { show: false },
                 emphasis: { label: { show: true, fontSize: 12 } },
                 labelLine: { show: false },
-                data: data.map((item, index) => ({
+                data: statusReport.map((item, index) => ({
                     value: item.value,
                     name: item.name,
                     itemStyle: {
@@ -170,30 +143,26 @@ const TaskReportCard: React.FC = () => {
     return (
         <div
             style={{
-
                 transform: `scale(${scale})`,
                 transformOrigin: "top left",
-                width: `${100 / scale}%`, // Prevent container shrinking in layout
+                width: `${100 / scale}%`,
                 transition: "transform 0.3s ease",
             }}
         >
             <Card style={{ borderRadius: "14px", padding: "10px" }}>
-
                 <Row justify="space-between" align="middle" style={{ marginBottom: "10px" }}>
                     <Title level={5} style={{ margin: 0 }}>
                         Task Report
                     </Title>
-
                 </Row>
 
                 <Row gutter={16}>
+                    {/* Pie Chart */}
                     <Col xs={24} md={12} style={{ textAlign: "center" }}>
-                        <ReactECharts
-                            option={pieChartOptions}
-                            style={{ height: "260px", width: "100%" }}
-                        />
+                        <ReactECharts option={pieChartOptions} style={{ height: "260px", width: "100%" }} />
                     </Col>
 
+                    {/* Project selector + priorities */}
                     <Col span={12}>
                         <Select
                             value={selectedProject || undefined}
@@ -208,14 +177,20 @@ const TaskReportCard: React.FC = () => {
                             ))}
                         </Select>
 
-                        {priorities.map((p, idx) => (
+                        {priorityReport.map((p, idx) => (
                             <Row key={idx} align="middle" style={{ marginBottom: "12px" }}>
-                                <Col span={6}>{p.label}</Col>
+                                <Col span={6}>{p.name}</Col>
                                 <Col span={12}>
                                     <Progress
-                                        percent={Math.min((p.value / 400) * 100, 100)}
+                                        percent={Math.min((p.value / 10) * 100, 100)} // adjust denominator if needed
                                         showInfo={false}
-                                        strokeColor={p.color}
+                                        strokeColor={
+                                            p.name.toLowerCase() === "high"
+                                                ? "#ef4444"
+                                                : p.name.toLowerCase() === "medium"
+                                                    ? "#3b82f6"
+                                                    : "#22c55e"
+                                        }
                                         trailColor="#f3f4f6"
                                         status="active"
                                     />

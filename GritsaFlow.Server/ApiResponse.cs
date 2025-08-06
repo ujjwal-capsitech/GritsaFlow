@@ -1,4 +1,5 @@
-﻿using GritsaFlow.Models;
+﻿using GritsaFlow.DTOs;
+using GritsaFlow.Models;
 using GritsaFlow.Server.Models;
 
 namespace GritsaFlow
@@ -40,6 +41,11 @@ namespace GritsaFlow
             new ApiResponse<T>(false, message, data);
 
         internal static object? Ok(List<ProjectTimeLine> projectTimeLine)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static object? Ok(UserDTO employee)
         {
             throw new NotImplementedException();
         }

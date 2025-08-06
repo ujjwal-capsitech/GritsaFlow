@@ -1,11 +1,14 @@
 ﻿using GritsaFlow.Models;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GritsaFlow.Server.Models
 {
     public class ProjectTimeLine
     {
-
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? id { get; set; }
         public string? TaskID { get; set; }
         public string? ProjectID { get; set; }
         public string UserName { get; set; }
@@ -18,3 +21,4 @@ namespace GritsaFlow.Server.Models
         public DateTime updatedAt { get; set; }
     }
 }
+
