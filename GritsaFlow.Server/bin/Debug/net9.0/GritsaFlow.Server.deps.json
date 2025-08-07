@@ -11,7 +11,7 @@
           "BCrypt.Net-Next": "4.0.3",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.7",
           "Microsoft.AspNetCore.OpenApi": "9.0.7",
-          "Microsoft.AspNetCore.SpaProxy": "9.0.7",
+          "Microsoft.AspNetCore.SpaProxy": "9.0.8",
           "MongoDB.Driver": "3.4.2",
           "ScottBrady91.AspNetCore.Identity.BCryptPasswordHasher": "1.3.0",
           "Swashbuckle.AspNetCore": "9.0.3",
@@ -71,11 +71,11 @@
           }
         }
       },
-      "Microsoft.AspNetCore.SpaProxy/9.0.7": {
+      "Microsoft.AspNetCore.SpaProxy/9.0.8": {
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.SpaProxy.dll": {
-            "assemblyVersion": "9.0.7.0",
-            "fileVersion": "9.0.725.31702"
+            "assemblyVersion": "9.0.8.0",
+            "fileVersion": "9.0.825.36808"
           }
         }
       },
@@ -385,12 +385,12 @@
       "path": "microsoft.aspnetcore.openapi/9.0.7",
       "hashPath": "microsoft.aspnetcore.openapi.9.0.7.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.SpaProxy/9.0.7": {
+    "Microsoft.AspNetCore.SpaProxy/9.0.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7i7BVz8xNZKReqKAuHYi9a5LC5RJgztQ1mnrpz1930/y+Xlx/rm59zNYnp9OhMNbDWOcBSRTtGsdaLogImpBqQ==",
-      "path": "microsoft.aspnetcore.spaproxy/9.0.7",
-      "hashPath": "microsoft.aspnetcore.spaproxy.9.0.7.nupkg.sha512"
+      "sha512": "sha512-wtoqtaMMWQGxYXqNwGm9aCZ/Ks3ehKc1lGvH5EtJ0QTLN1eg3nCW1Do6QbQHWQ9ST9aaCoTMCQy2yF/Dbmau+g==",
+      "path": "microsoft.aspnetcore.spaproxy/9.0.8",
+      "hashPath": "microsoft.aspnetcore.spaproxy.9.0.8.nupkg.sha512"
     },
     "Microsoft.Extensions.ApiDescription.Server/9.0.0": {
       "type": "package",

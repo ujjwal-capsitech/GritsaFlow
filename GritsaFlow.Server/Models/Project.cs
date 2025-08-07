@@ -53,14 +53,15 @@ namespace GritsaFlow.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-        public DateTime CreatedAt { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc,DateOnly = true)]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
     public class Updator
     {
-        public string Id { get; set; }
+        public string Id { get; set; }     
+
         public string Name { get; set; }
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc, DateOnly = true)]
         public DateTime UpdatedAt { get; set; }
     }
 }

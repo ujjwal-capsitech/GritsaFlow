@@ -38,8 +38,19 @@ namespace GritsaFlow.Server.Controllers
         public async Task<ActionResult<ApiResponse<List<ProjectTimeLine>>>> GetByProjectId(string projectId)
         {
             var projectTimeLine = await _projectTimelineServices.GetByProjectIdAsync(projectId);
+            var timelineItems = projectTimeLine.Select(item => new TimelineItemDTO
+            {
+                Id = item.TaskID ?? Guid.NewGuid().ToString(), // fallback if TaskID is null
+                UserName = item.UserName ?? "Unknown",
+                AvatarUrl = item.avatarurl ?? "",
+                DateTime = item.updatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                Description = item.ActivityDescription ?? "",
+                TaskLink = string.IsNullOrEmpty(item.TaskID) ? "" : $"/tasks/{item.TaskID}",
+                FromLabel = item.statefrom,
+                ToLabel = item.stateTo
+            }).ToList();
 
-            return Ok(ApiResponse<List<ProjectTimeLine>>.Ok(projectTimeLine));
+            return Ok(ApiResponse<List<TimelineItemDTO>>.Ok(timelineItems));
         }
     }
 }

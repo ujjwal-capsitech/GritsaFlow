@@ -49,7 +49,7 @@ namespace GritsaFlow.Services
                 statefrom = "None",
                 stateTo = newTask.TaskStatus.ToString(),
                 updator = new Updator { Id = userId, Name = userName, UpdatedAt = DateTime.UtcNow },
-                updatedAt = DateTime.UtcNow
+                //updatedAt = DateTime.UtcNow
             });
         }
 
