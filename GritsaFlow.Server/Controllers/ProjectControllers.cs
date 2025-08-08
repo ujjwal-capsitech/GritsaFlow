@@ -4,6 +4,8 @@ using GritsaFlow.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using GritsaFlow.Server.DTOs;
+using System.Linq;
 
 namespace GritsaFlow.Controllers
 {
@@ -12,6 +14,7 @@ namespace GritsaFlow.Controllers
     public class ProjectControllers : ControllerBase
     {
         private readonly projectServices _projectservices;
+
 
         public ProjectControllers(projectServices projectservices)
         {
@@ -26,14 +29,31 @@ namespace GritsaFlow.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<Project>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<List<ProjectDTO>>>> GetAll()
         {
             var projects = await _projectservices.GetAllAsync();
-            return Ok(ApiResponse<List<Project>>.Ok(projects));
+
+            var result = projects.Select(p => new ProjectDTO
+            {
+                Id = p.Id,
+                ProjectId = p.ProjectId.ToUpper(),
+                ProjectTitle = p.ProjectTitle,
+                ProjectDescription = p.ProjectDescription,
+                Employees = p.Employees,
+                ProjectStatus = p.ProjectStatus.ToString(), 
+                DueDate = p.DueDate,
+                Creator = p.Creator,
+                Updator = p.Updator,
+                IsDeleted = p.IsDeleted
+            }).ToList();
+
+            return Ok(ApiResponse<List<ProjectDTO>>.Ok(result));
         }
 
+
+
         [HttpPost]
-        
+
         public async Task<IActionResult> Post(Project newproject)
         {
             var (id, name) = GetUserContext();

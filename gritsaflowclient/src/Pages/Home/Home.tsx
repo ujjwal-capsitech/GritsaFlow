@@ -1,6 +1,7 @@
 
 import {
     Avatar,
+    Card,
     Dropdown,
     Layout,
     Menu,
@@ -13,11 +14,11 @@ import Sider from "antd/es/layout/Sider";
 import {
     ProjectOutlined,
     DashboardOutlined,
-    ReconciliationOutlined,
     UserOutlined,
     LogoutOutlined,
     DownOutlined,
-    UserAddOutlined
+    UserAddOutlined,
+    ArrowRightOutlined
 } from '@ant-design/icons';
 import { Content, Header } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
@@ -26,12 +27,12 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../redux/store";
 import AdminDashboard from "../../Pages/Home/Pages/Dashboard";
 import Project from "../../Pages/Home/Pages/Project";
-import Task from "../../Pages/Home/Pages/Task";
 import LoginIcon from "../../Assets/LoginIcon.svg";
 import { logout } from "../../redux/slice/LoginSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom"; // Add Outlet
 import { RoleEnum } from '../../api/Role';
 import api from "../../api/api";
+import UserRegistrationForm from "../../Components/UserRegistrationForm";
 
 const { Title } = Typography;
 
@@ -51,7 +52,8 @@ const Home: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    //const [force, setForce] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     // Fetch user from backend using axios
     useEffect(() => {
         const fetchUser = async () => {
@@ -60,7 +62,7 @@ const Home: React.FC = () => {
                 const response = await api.get<User>("User/current");
                 setUser(response.data);
             } catch (err) {
-                setError("Error loading user data");
+                setError("E rror loading user data");
             } finally {
                 setLoading(false);
             }
@@ -71,35 +73,41 @@ const Home: React.FC = () => {
 
     const handleMenuClick = (e: { key: string }) => {
         dispatch(setSelectedKey(e.key));
+        //setForce(true);
     };
 
     const handleLogout = () => {
         dispatch(logout());
         navigate("/");
     };
+    //useEffect(() => {
+    //    setForce(false);
+    //}, [window.location.pathname]);
 
     if (loading) return <Spin fullscreen />;
-    if (error) return <div>{error}</div>;
+    if (error) return <Card>{error}</Card>;
 
-    // Profile menu with user management option for admins
+    // Profile menu
     const profileMenu = (
         <Menu style={{ width: 220 }}>
             <Menu.Item
                 key="profile"
                 icon={<UserOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
             >
+               
                 <div>
                     <div style={{ fontWeight: 'bold' }}>{user?.name}</div>
                     <div>{user?.email}</div>
                 </div>
             </Menu.Item>
-
-            {user?.role === RoleEnum.Admin && (
-                <Menu.Item key="user-management" icon={<UserAddOutlined />}>
-                    <Link to="/admin/users">User Management</Link>
-                </Menu.Item>
-            )}
-
+            
+            <Menu.Item
+                key="createUser"
+                icon={<UserAddOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
+                onClick={() => setIsModalVisible(true)}
+            >
+                Create User
+            </Menu.Item>
             <Menu.Item
                 key="logout"
                 danger
@@ -115,8 +123,7 @@ const Home: React.FC = () => {
         switch (selectedKey) {
             case '1': return <AdminDashboard />;
             case '2': return <Project />;
-            case '3': return <Task />;
-            default: return <div>Select an option</div>;
+            default: return "Select an option";
         }
     };
 
@@ -141,6 +148,7 @@ const Home: React.FC = () => {
                         <img
                             src={LoginIcon}
                             alt="login-Illustration"
+                            onClick={()=> navigate("/Home") }
                             style={{ width: "80%", maxWidth: "50px", marginBottom: 8 }}
                         />
                     </Row>
@@ -153,21 +161,12 @@ const Home: React.FC = () => {
                         onClick={handleMenuClick}
                         style={{ background: "#c3cfe2" }}
                     >
-                        <Menu.Item key="1" icon={<DashboardOutlined />}>
+                        <Menu.Item  key="1" icon={<DashboardOutlined /> }>
                             Dashboard
                         </Menu.Item>
                         <Menu.Item key="2" icon={<ProjectOutlined />}>
                             Project
                         </Menu.Item>
-                        <Menu.Item key="3" icon={<ReconciliationOutlined />}>
-                            Task
-                        </Menu.Item>
-
-                        {user?.role === RoleEnum.Admin && (
-                            <Menu.Item key="4" icon={<UserAddOutlined />}>
-                                <Link to="/admin/users">Create Users</Link>
-                            </Menu.Item>
-                        )}
                     </Menu>
                 </Sider>
 
@@ -180,15 +179,12 @@ const Home: React.FC = () => {
                         padding: "0 24px",
                     }}>
                         <Title level={4} style={{ margin: 0 }}>
-                            Welcome, {user?.name} ➜{" "}
-                            <span style={{ fontWeight: "normal", color: "#444" }}>
-                                {user?.role}
-                            </span>
+                            Welcome, {user?.name} <ArrowRightOutlined /> {<span style={{ fontWeight: "normal", color: "#444" }}> {user?.role} </span>}  
                         </Title>
 
                         <Dropdown overlay={profileMenu} trigger={["click"]}>
                             <Space style={{ cursor: "pointer" }}>
-                                <Avatar
+                                <Avatar 
                                     src={user?.avatarUrl}
                                     icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
                                     style={{ backgroundColor: user?.avatarUrl ? 'transparent' : '#1890ff' }}
@@ -205,10 +201,21 @@ const Home: React.FC = () => {
                         height: "calc(100vh - 64px)",
                         background: "#EDF6FF",
                     }}>
-                        {renderContent()}
+                        {/* Add Outlet for nested routes */}
+
+                        <Outlet />
+                         {/*Render regular content only if no nested route is active */}
+                        {!window.location.pathname.includes('/Home/tasks/') && renderContent()}
+                        
+                        {/*{!force && <Outlet />}*/}
+                        {/*{(force || !window.location.pathname.includes('/Home/tasks/')) && renderContent()}*/}
                     </Content>
                 </Layout>
             </Layout>
+            <UserRegistrationForm
+                visible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+            />
         </Row>
     );
 };

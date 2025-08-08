@@ -2,31 +2,30 @@ import React, { useState, useEffect } from "react";
 import { Card, Typography, Select, Row, Col, Progress, message } from "antd";
 import ReactECharts from "echarts-for-react";
 import api from "../api/api";
-
+import type { TaskReport, Project, ProjectReport,ApiResponse} from "../Components/interface";
 const { Title } = Typography;
 const { Option } = Select;
 
-interface TaskReport {
-    name: string;
-    value: number;
-}
+//interface TaskReport {
+//    name: string;
+//    value: number;
+//}
 
-interface Project {
-    projectId: string;
-    projectTitle: string;
-}
+//interface Project {
+//    projectId: string;
+//    projectTitle: string;
+//}
 
-interface ProjectReport {
-    statusReport: TaskReport[];
-    priorityReport: TaskReport[];
-}
+//interface ProjectReport {
+//    statusReport: TaskReport[];
+//    priorityReport: TaskReport[];
+//}
 
-interface ApiResponse<T> {
-    data: T;
-    status: boolean;
-    message?: string;
-}
-
+//interface ApiResponse<T> {
+//    data: T;
+//    status: boolean;
+//    message?: string;
+//}
 const TaskReportCard: React.FC = () => {
     const [scale, setScale] = useState(1);
     const [statusReport, setStatusReport] = useState<TaskReport[]>([]);
@@ -141,7 +140,7 @@ const TaskReportCard: React.FC = () => {
     };
 
     return (
-        <div
+        <div 
             style={{
                 transform: `scale(${scale})`,
                 transformOrigin: "top left",

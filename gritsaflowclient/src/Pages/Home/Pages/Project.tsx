@@ -12,10 +12,10 @@ import {
     Table,
     Tag,
     message,
+    Space
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import dayjs from 'dayjs';
 import api from "../../../api/api";
 
 const { Title, Text } = Typography;
@@ -26,7 +26,14 @@ interface EmployeeRef {
     empName: string;
 }
 
+interface UserBasicDto {
+    userId: string;
+    name: string;
+    userName: string;
+}
+
 interface Project {
+    id?: string;
     projectId: string;
     projectTitle: string;
     projectDescription: string;
@@ -51,8 +58,10 @@ const statusColors: Record<string, string> = {
 const Project: React.FC = () => {
     const [form] = Form.useForm();
     const [projects, setProjects] = useState<Project[]>([]);
+    const [users, setUsers] = useState<UserBasicDto[]>([]);
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+    const [editingId, setEditingId] = useState<string | null>(null);
+    
 
     const fetchProjects = async () => {
         try {
@@ -65,43 +74,80 @@ const Project: React.FC = () => {
         }
     };
 
+    const fetchUsers = async () => {
+        try {
+            const res = await api.get<ApiResponse<UserBasicDto[]>>("/User/basic");
+            if (res.data.status) {
+                setUsers(res.data.data);
+            }
+        } catch {
+            message.error("Failed to fetch users");
+        }
+    };
+
     useEffect(() => {
         fetchProjects();
+        fetchUsers();
     }, []);
 
-    const handleCreateProject = async (values: any) => {
+    const handleSubmit = async (values: any) => {
         setLoading(true);
         try {
             const payload: Project = {
                 projectId: values.projectId,
-                projectTitle: values.title,
-                projectDescription: values.description,
-                projectStatus: values.status,
-                dueDate: values.dueDate.format("YYYY-MM-DD"),
-                employees: values.employees?.map((name: string, idx: number) => ({
-                    empId: `${idx + 1}`,
-                    empName: name,
-                })),
+                projectTitle: values.projectTitle,
+                projectDescription: values.projectDescription,
+                projectStatus: values.projectStatus,
+                dueDate: dayjs(values.dueDate).toISOString(),
+                employees: values.employees?.map((userId: string) => {
+                    const user = users.find(u => u.userId === userId);
+                    return {
+                        empId: userId,
+                        empName: user?.name || ''
+                    };
+                }),
             };
 
-            const res = await api.post<ApiResponse<Project>>(
-                "/ProjectControllers",
-                payload
-            );
-            if (res.data.status) {
-                message.success("Project created successfully!");
-                fetchProjects();
-                form.resetFields();
+            if (editingId) {
+                await api.put(`/ProjectControllers/${editingId}`, payload);
+                message.success("Project updated successfully!");
             } else {
-                message.error(res.data.message || "Failed to create project");
+                await api.post("/ProjectControllers", payload);
+                message.success("Project created successfully!");
             }
+
+            fetchProjects();
+            resetForm();
         } catch {
-            message.error("Error creating project");
+            message.error(editingId ? "Error updating project" : "Error creating project");
         } finally {
             setLoading(false);
         }
     };
-    
+
+    const handleEdit = (project: Project) => {
+        setEditingId(project.id || null);
+        form.setFieldsValue({
+            projectId: project.projectId,
+            projectTitle: project.projectTitle,
+            projectDescription: project.projectDescription,
+            projectStatus: project.projectStatus,
+            dueDate: dayjs(project.dueDate),
+            employees: project.employees?.map(emp => emp.empId),
+        });
+    };
+
+    const handleView = (project: Project) => {
+        form.setFieldsValue({
+            projectId: project.projectId,
+            projectTitle: project.projectTitle,
+            projectDescription: project.projectDescription,
+            projectStatus: project.projectStatus,
+            dueDate: dayjs(project.dueDate),
+            employees: project.employees?.map(emp => emp.empId),
+        });
+        form.getFieldInstance('projectId').focus();
+    };
 
     const handleDelete = async (id: string) => {
         try {
@@ -111,6 +157,15 @@ const Project: React.FC = () => {
         } catch {
             message.error("Error deleting project");
         }
+    };
+
+    const resetForm = () => {
+        form.resetFields();
+        setEditingId(null);
+    };
+
+    const formatDate = (dateString: string) => {
+        return dayjs(dateString).format('MMM D, YYYY h:mm A');
     };
 
     const columns: ColumnsType<Project> = [
@@ -136,18 +191,17 @@ const Project: React.FC = () => {
             title: "Due Date",
             dataIndex: "dueDate",
             key: "dueDate",
+            render: (date) => formatDate(date),
         },
         {
             title: "Action",
             key: "action",
             render: (_, record) => (
-                <>
-                    <Button
-                        type="link"
-                        onClick={() =>
-                            navigate("/Home/Pages/Task", { state: { task: record } })
-                        }
-                    >
+                <Space>
+                    <Button type="link" onClick={() => handleView(record)}>
+                        View
+                    </Button>
+                    <Button type="link" onClick={() => handleEdit(record)}>
                         Edit
                     </Button>
                     <Button
@@ -157,7 +211,7 @@ const Project: React.FC = () => {
                     >
                         Delete
                     </Button>
-                </>
+                </Space>
             ),
         },
     ];
@@ -166,35 +220,58 @@ const Project: React.FC = () => {
         <Row gutter={24} style={{ minHeight: "100vh", padding: 24 }}>
             <Col xs={24} md={12}>
                 <Card
-                    title={<Text style={{ color: "#985858ff" }}>Create New Project</Text>}
+                    title={<Text style={{ color: "#985858ff" }}>
+                        {editingId ? 'Edit Project' : 'Create New Project'}
+                    </Text>}
                     style={{ marginBottom: 24 }}
                     bordered={false}
+                    extra={editingId && (
+                        <Button onClick={resetForm}>Cancel</Button>
+                    )}
                 >
                     <Form
                         form={form}
                         layout="vertical"
-                        onFinish={handleCreateProject}
+                        onFinish={handleSubmit}
                         requiredMark={false}
                     >
                         <Form.Item
+                            label="Project ID"
+                            name="projectId"
+                            rules={[
+                                { required: true, message: "Please input the Project ID!" },
+                            ]}
+                        >
+                            <Input placeholder="Enter Project ID" />
+                        </Form.Item>
+
+                        <Form.Item
                             label="Project Title"
-                            name="title"
+                            name="projectTitle"
                             rules={[
                                 { required: true, message: "Please input the Project Title!" },
                             ]}
                         >
                             <Input placeholder="Enter Project Title" />
                         </Form.Item>
+
                         <Form.Item
                             label="Employees"
                             name="employees"
-                            rules={[{ required: false }]}
                         >
-                            <Select mode="multiple" placeholder="Add/Remove Employees" />
+                            <Select
+                                mode="multiple"
+                                placeholder="Select Employees"
+                                options={users.map(user => ({
+                                    value: user.userId,
+                                    label: `${user.name} (${user.userName})`
+                                }))}
+                            />
                         </Form.Item>
+
                         <Form.Item
                             label="Status"
-                            name="status"
+                            name="projectStatus"
                             rules={[{ required: true, message: "Please select status!" }]}
                         >
                             <Select placeholder="Select Status">
@@ -204,23 +281,35 @@ const Project: React.FC = () => {
                                 <Option value="UnderService">Under Service</Option>
                             </Select>
                         </Form.Item>
+
                         <Form.Item
                             label="Due Date"
                             name="dueDate"
                             rules={[{ required: true, message: "Please select due date!" }]}
                         >
-                            <DatePicker style={{ width: "100%" }} />
+                            <DatePicker
+                                style={{ width: "100%" }}
+                                showTime
+                                format="MMM D, YYYY h:mm A"
+                            />
                         </Form.Item>
+
                         <Form.Item
                             label="Description"
-                            name="description"
+                            name="projectDescription"
                             rules={[{ required: true, message: "Please input description!" }]}
                         >
                             <Input.TextArea rows={3} placeholder="Project Description" />
                         </Form.Item>
+
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" loading={loading} block>
-                                Create Project
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                loading={loading}
+                                block
+                            >
+                                {editingId ? 'Update Project' : 'Create Project'}
                             </Button>
                         </Form.Item>
                     </Form>
@@ -238,8 +327,8 @@ const Project: React.FC = () => {
                     <Table
                         columns={columns}
                         dataSource={projects}
-                        pagination={false}
                         rowKey="projectId"
+                        pagination={{ pageSize: 5 }}
                     />
                 </Card>
             </Col>

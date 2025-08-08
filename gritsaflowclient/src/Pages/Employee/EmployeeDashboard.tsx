@@ -12,7 +12,7 @@ import { Content, Header } from "antd/es/layout/layout";
 import React from "react";
 import { setSelectedKey } from "../../redux/slice/HomeSlice";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, Rootstate } from "../../redux/store";
+import type { AppDispatch, RootState} from "../../redux/store";
 import AdminDashboard from "../../Pages/Home/Pages/Dashboard";
 import Project from "../Home/Pages/Project";
 import Task from "../Home/Pages/Task";
@@ -24,7 +24,7 @@ const EmployeeDashboard: React.FC = () => {
   const { Title } = Typography;
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const selectedKey = useSelector((state: Rootstate) => state.home.selectedKey);
+  const selectedKey = useSelector((state: RootState) => state.home.selectedKey);
 
   const handleMenuClick = (e: { key: string }) => {
     dispatch(setSelectedKey(e.key));

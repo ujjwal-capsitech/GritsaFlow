@@ -101,6 +101,13 @@ public class UserController : ControllerBase
 
         return Ok(new { message = "Session valid" });
     }
+    [HttpGet("basic")]
+    public async Task<ActionResult<ApiResponse<List<UserBasicDto>>>> GetAllBasic()
+    {
+        var users = await _service.GetAllBasicAsync();
+        return Ok(ApiResponse<List<UserBasicDto>>.Ok(users));
+    }
+
 
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken(string? refreshTokenFromBody)

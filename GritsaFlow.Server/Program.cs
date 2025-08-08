@@ -1,4 +1,6 @@
-﻿using GritsaFlow.Models;
+﻿using GritsaFlow;
+using GritsaFlow.Models;
+using GritsaFlow.Server.Services;
 using GritsaFlow.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using System.Text;
-using GritsaFlow;
-using GritsaFlow.Server.Services;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +32,13 @@ builder.Services.AddSingleton<TasksServices>();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<ProjectTimelineServices>();
 
-builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+       
+    });
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>

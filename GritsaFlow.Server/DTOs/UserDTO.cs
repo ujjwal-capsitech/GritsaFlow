@@ -8,7 +8,7 @@ namespace GritsaFlow.DTOs
     public class UserDTO
     {
         
-        public string UserId { get; set; } = null!;
+        public string UserId { get; set; }
         [Required]
         public string Name { get; set; } = null!;
         [Required]
@@ -22,4 +22,17 @@ namespace GritsaFlow.DTOs
         public string AvatarUrl { get; set; }
        
     }
+    public class UserBasicDto
+
+    {
+        public string UserId { get; set; }
+        
+        public string Name { get; set; } = null!;
+        
+        public string UserName { get; set; } = null!;
+       
+
+    }
+
+
 }

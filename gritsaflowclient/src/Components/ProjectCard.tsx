@@ -27,7 +27,12 @@ interface ApiResponse<T> {
     message?: string;
 }
 
-const Projectcard: React.FC = () => {
+interface ProjectcardProps
+{
+    onProjectSelect?: (projectId: string) => void;
+}
+
+const Projectcard: React.FC<ProjectcardProps> = ({ onProjectSelect }) => {
     const [scale, setScale] = useState(1);
     const [statusReport, setStatusReport] = useState<TaskReport[]>([]);
     const [priorityReport, setPriorityReport] = useState<TaskReport[]>([]);
@@ -43,7 +48,9 @@ const Projectcard: React.FC = () => {
             if (response.data.status) {
                 setProjects(response.data.data);
                 if (response.data.data.length > 0) {
+                    const defaultProjectId = response.data.data[0].projectId;
                     setSelectedProject(response.data.data[0].projectId);
+                    if (onProjectSelect) onProjectSelect(defaultProjectId);
                 } else {
                     message.info("No projects found");
                 }
@@ -52,6 +59,7 @@ const Projectcard: React.FC = () => {
             }
         } catch (err) {
             message.error("Error fetching project list");
+            console.error("Error fetching project list", err);
         } finally {
             setLoading(false);
         }
@@ -74,8 +82,9 @@ const Projectcard: React.FC = () => {
             } else {
                 message.error(response.data.message || "Failed to load report");
             }
-        } catch {
+        } catch(err) {
             message.error("Error fetching report");
+            console.error("Error fetching report", err);
         } finally {
             setLoading(false);
         }
@@ -171,7 +180,12 @@ const Projectcard: React.FC = () => {
                     <Col span={12}>
                         <Select
                             value={selectedProject || undefined}
-                            onChange={(value) => setSelectedProject(value)}
+                            onChange={(value) => {
+                                console.log("Selected Project:", value);
+                                setSelectedProject(value);
+                                if (onProjectSelect) onProjectSelect(value);
+                            }}
+
                             style={{ width: "100%", marginBottom: "15px" }}
                             placeholder="Select Project"
                         >

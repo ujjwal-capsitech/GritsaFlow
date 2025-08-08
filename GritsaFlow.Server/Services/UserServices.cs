@@ -60,6 +60,7 @@ namespace GritsaFlow.Services
             }
             var user = new User
             {
+                UserId = userId,//if Set to dto.UserId(it is null/ Empty Rigth Now it should give null ) Thus maping to the created userID 
                 Name = dto.Name,
                 UserName = dto.UserName,
                 Password = Bc.EnhancedHashPassword(dto.Password),
@@ -83,7 +84,20 @@ namespace GritsaFlow.Services
                 AvatarUrl = user.AvatarUrl,
             };
         }
-       
+
+        public async Task<List<UserBasicDto>> GetAllBasicAsync()
+        {
+            return await _users.Find(_ => true)
+                .Project(u => new UserBasicDto
+                {
+                    UserId = u.UserId,
+                    UserName = u.UserName,
+                    Name = u.Name
+                })
+                .ToListAsync();
+        }
+
+
         public async Task<bool> IsDeletedAsync(string UserId)
         {
             var user = await _users.Find(u => u.Id == UserId).FirstOrDefaultAsync();

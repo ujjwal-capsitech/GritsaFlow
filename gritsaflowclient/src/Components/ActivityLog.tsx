@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Card, Typography, List, Avatar, Row, Col, Spin, Empty } from "antd";
+﻿import React, { useEffect, useState } from "react";
+import { Card, Typography, List, Avatar, Row, Col, Skeleton, Empty, message } from "antd";
 import { ArrowRightOutlined, UserOutlined } from "@ant-design/icons";
 import api from "../api/api";
+import { useNavigate } from "react-router-dom";
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 type TimelineItem = {
     id: string;
@@ -17,9 +18,9 @@ type TimelineItem = {
 };
 
 interface ApiResponse<T> {
-    data: T;
     status: boolean;
-    message?: string;
+    message: string;
+    data: T;
 }
 
 const labelStyleFrom = {
@@ -46,35 +47,53 @@ const labelStyleTo = {
     fontWeight: 500,
 };
 
-const ActivityLog: React.FC<{ projectId: string }> = ({ projectId }) => {
+const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
     const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-
-    const fetchTimeline = async () => {
-        try {
-            setLoading(true);
-            const response = await api.get<ApiResponse<TimelineItem[]>>(
-                `/ProjectTimeLineControllers/${projectId}`
-            );
-
-            if (response.data.status) {
-                setTimeline(response.data.data);
-            } else {
-                setTimeline([]);
-            }
-        } catch (err) {
-            console.error("Error fetching timeline:", err);
-            setTimeline([]);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (projectId) {
-            fetchTimeline();
-        }
+        if (!projectId) return;
+
+        const fetchTimeline = async () => {
+            setLoading(true);
+            try {
+                const response = await api.get<ApiResponse<any[]>>(
+                    `/ProjectTimeLineControllers/${projectId}`
+                );
+
+                const apiData = response.data;
+
+                if (apiData && apiData.status === true) {
+                    const mappedData: TimelineItem[] = apiData.data.map((item) => ({
+                        id: item.id || item.taskId || "", // fallback if needed
+                        userName: item.userName || "Unknown",
+                        avatarUrl: item.avatarUrl,
+                        dateTime: item.dateTime,
+                        description: item.description,
+                        taskLink: item.taskLink,
+                        fromLabel: item.fromLabel,
+                        toLabel: item.toLabel,
+                    }));
+
+                    setTimeline(mappedData);
+                } else {
+                    message.warning("No timeline data found.");
+                    setTimeline([]);
+                }
+            } catch (err) {
+                message.error("Error fetching timeline.");
+                console.error("Error fetching timeline:", err);
+                setTimeline([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTimeline();
     }, [projectId]);
+
+    if (!projectId) return null;
 
     return (
         <Card
@@ -84,9 +103,16 @@ const ActivityLog: React.FC<{ projectId: string }> = ({ projectId }) => {
             bodyStyle={{ maxHeight: 900, overflowY: "auto", padding: 12 }}
         >
             {loading ? (
-                <Spin />
+                <List
+                    dataSource={[1, 2, 3]}
+                    renderItem={(item) => (
+                        <List.Item key={item}>
+                            <Skeleton avatar paragraph={{ rows: 2 }} active />
+                        </List.Item>
+                    )}
+                />
             ) : timeline.length === 0 ? (
-                <Empty description="No timeline data" />
+                <Empty description="No timeline data available." />
             ) : (
                 <>
                     <List
@@ -115,13 +141,16 @@ const ActivityLog: React.FC<{ projectId: string }> = ({ projectId }) => {
                                                 </Text>
                                             </Col>
                                             <Col>
-                                                <Link
-                                                    href={item.taskLink}
-                                                    target="_blank"
-                                                    style={{ fontSize: 14, cursor: "pointer" }}
+                                                <span
+                                                    onClick={() => navigate(`/Home/tasks/${item.id}`)}
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: "#1890ff",
+                                                        cursor: "pointer",
+                                                    }}
                                                 >
                                                     {item.id}
-                                                </Link>
+                                                </span>
                                             </Col>
                                         </Row>
                                     }
@@ -131,7 +160,6 @@ const ActivityLog: React.FC<{ projectId: string }> = ({ projectId }) => {
                                         </Text>
                                     }
                                 />
-
                                 {item.fromLabel && item.toLabel && (
                                     <Row
                                         align="middle"
@@ -151,7 +179,6 @@ const ActivityLog: React.FC<{ projectId: string }> = ({ projectId }) => {
                         )}
                     />
                     <Row justify="space-between" style={{ marginTop: 8, fontSize: 12 }}>
-                        <Col style={{ color: "#999" }}>Nothing More</Col>
                         <Col style={{ color: "#999" }}>
                             Items: {timeline.length} of {timeline.length}
                         </Col>

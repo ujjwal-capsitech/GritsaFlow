@@ -42,10 +42,10 @@ namespace GritsaFlow.Models
         public string? Remarks { get; set; }
         public bool? IsDeleted { get; set; } = false;
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local, DateOnly =true)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? CreatedAt { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local, DateOnly = true)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? UpdatedAt { get; set; }
 
         public string AvatarUrl { get; set; }

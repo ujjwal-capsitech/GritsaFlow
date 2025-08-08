@@ -1,5 +1,6 @@
 ﻿using GritsaFlow.DTOs;
 using GritsaFlow.Models;
+using GritsaFlow.Server.Services;
 using MongoDB.Driver;
 
 namespace GritsaFlow.Services
@@ -8,11 +9,13 @@ namespace GritsaFlow.Services
     {
         private readonly IMongoCollection<Project> _projects;
         private readonly IMongoCollection<Tasks> _tasks;
+        private readonly UserServices _user;
 
-        public projectServices(IMongoDatabase db)
+        public projectServices(IMongoDatabase db,UserServices user)
         {
             _projects = db.GetCollection<Project>("projects");
             _tasks = db.GetCollection<Tasks>("tasks");
+            _user = user;
         }
 
         public async Task CreateProjectAsync(Project newProject, string creatorId, string creatorName)
@@ -25,8 +28,10 @@ namespace GritsaFlow.Services
             };
             //newProject.ProjectId = Guid.NewGuid().ToString()
             newProject.IsDeleted = false;
+            
 
             await _projects.InsertOneAsync(newProject);
+
         }
 
         public async Task<Project?> GetByidAsync(string ProjectId) =>
@@ -114,6 +119,7 @@ namespace GritsaFlow.Services
         }
 
         public async Task<List<Project>> GetAllAsync() =>
+
             await _projects.Find(p => !p.IsDeleted).ToListAsync();
 
         //public async Task<List<TaskReportDto>> GetProjectReportAsync(string projectId)

@@ -10,7 +10,7 @@ namespace GritsaFlow.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
-        public string ProjectId { get; set; } 
+        public string ProjectId { get; set; } = null!;
 
         [Required]
         public string ProjectTitle { get; set; } = null!;
@@ -53,7 +53,7 @@ namespace GritsaFlow.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc,DateOnly = true)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
     public class Updator
@@ -61,7 +61,7 @@ namespace GritsaFlow.Models
         public string Id { get; set; }     
 
         public string Name { get; set; }
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc, DateOnly = true)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime UpdatedAt { get; set; }
     }
 }
