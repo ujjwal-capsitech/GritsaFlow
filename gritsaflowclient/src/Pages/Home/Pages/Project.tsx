@@ -61,6 +61,7 @@ const Project: React.FC = () => {
     const [users, setUsers] = useState<UserBasicDto[]>([]);
     const [loading, setLoading] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [isVisible, setisVisible] = useState(false);
     
 
     const fetchProjects = async () => {
@@ -78,7 +79,7 @@ const Project: React.FC = () => {
         try {
             const res = await api.get<ApiResponse<UserBasicDto[]>>("/User/basic");
             if (res.data.status) {
-                setUsers(res.data.data);
+                setUsers(res.data.data.items);
             }
         } catch {
             message.error("Failed to fetch users");
@@ -135,6 +136,7 @@ const Project: React.FC = () => {
             dueDate: dayjs(project.dueDate),
             employees: project.employees?.map(emp => emp.empId),
         });
+        setisVisible(false);
     };
 
     const handleView = (project: Project) => {
@@ -147,6 +149,8 @@ const Project: React.FC = () => {
             employees: project.employees?.map(emp => emp.empId),
         });
         form.getFieldInstance('projectId').focus();
+        setisVisible(true);
+        
     };
 
     const handleDelete = async (id: string) => {
@@ -234,6 +238,7 @@ const Project: React.FC = () => {
                         layout="vertical"
                         onFinish={handleSubmit}
                         requiredMark={false}
+                        disabled={isVisible }
                     >
                         <Form.Item
                             label="Project ID"

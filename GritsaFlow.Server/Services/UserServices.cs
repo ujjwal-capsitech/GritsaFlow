@@ -1,6 +1,7 @@
 ﻿//Services/UserServices.cs
 using GritsaFlow.DTOs;
 using GritsaFlow.Models;
+using GritsaFlow.Server.Models;
 using MongoDB.Driver;
 using System.Security.Cryptography;
 
@@ -11,6 +12,7 @@ namespace GritsaFlow.Services
     {
         private readonly IMongoCollection<User> _users;
         private readonly IConfiguration _config;
+        
 
         public UserServices(IMongoDatabase db, IConfiguration config)
         {
@@ -85,17 +87,31 @@ namespace GritsaFlow.Services
             };
         }
 
-        public async Task<List<UserBasicDto>> GetAllBasicAsync()
+        public async Task<PagedResult<UserBasicDto>> GetAllBasicAsync(int pageNumber, int pageSize)
         {
-            return await _users.Find(_ => true)
+            pageNumber = pageNumber <= 0 ? 1 : pageNumber;
+            pageSize = pageSize <= 0 ? 10 : pageSize;
+            var filter = Builders<User>.Filter.Empty;
+            var totalItems = (int)await _users.CountDocumentsAsync(filter);
+            var user = await _users.Find(_ => true)
                 .Project(u => new UserBasicDto
                 {
                     UserId = u.UserId,
                     UserName = u.UserName,
                     Name = u.Name
                 })
+                .Skip((pageNumber - 1)*pageSize)
+                .Limit(pageSize)
                 .ToListAsync();
+            return new PagedResult<UserBasicDto>
+            {
+                Items = user,
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
+        
 
 
         public async Task<bool> IsDeletedAsync(string UserId)
@@ -152,5 +168,6 @@ namespace GritsaFlow.Services
             await _refreshTokens.DeleteManyAsync(r => r.UserId == userId);
         }
 
+        
     }
 }

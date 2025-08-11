@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TaskReportCard from "../../../Components/TakCard";
-import Projectcard from "../../../Components/ProjectCard";
+import ProjectCard from "../../../Components/ProjectCard";
 import { Row, Col } from "antd";
 import ActivityLog from "../../../Components/ActivityLog";
 
@@ -12,15 +12,15 @@ const AdminDashboard: React.FC = () => {
     return (
         <Row gutter={[16, 16]} style={{ height: "100%" }}>
             <Col span={13} style={{ display: "flex", flexDirection: "column", gap: 16, height: "100%" }}>
-                <TaskReportCard /> 
-                <Projectcard onProjectSelect={setSelectedProjectId} /> 
+                <TaskReportCard onProjectSelect={ setSelectedProjectId} /> 
+                <ProjectCard/>
             </Col>
 
             <Col span={11}>
                 {selectedProjectId ? (
                     <ActivityLog projectId={selectedProjectId} />
                 ) : (
-                    <div>Please select a project to view timeline</div>
+                    <Row>Please select a project to view timeline</Row>
                 )}
             </Col>
 

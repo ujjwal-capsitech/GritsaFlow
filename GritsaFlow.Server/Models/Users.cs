@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Diagnostics.Contracts;
 
+
 namespace GritsaFlow.Models
 
 {
@@ -35,8 +36,8 @@ namespace GritsaFlow.Models
         [EmailAddress(ErrorMessage = "Write a Valid EmailId")]
         [StringLength(150)]
         public string Email { get; set; } = null!;
-        public List<string>? ProjectId { get; set; }
-        public List<string>? TaskId { get; set; }
+        public List<string>? ProjectId { get; set; }// Later Set to empty array 
+        public List<string>? TaskId { get; set; }// Later Set to empty array 
         public string? TeamId { get; set; }
         public bool? IsActive { get; set; } = true;
         public string? Remarks { get; set; }
@@ -49,7 +50,11 @@ namespace GritsaFlow.Models
         public DateTime? UpdatedAt { get; set; }
 
         public string AvatarUrl { get; set; }
-
+    }
+    public class TaskDetails
+    {
+        public string TaskId { get; set; }
+        public string Title { get; set; }
 
     }
 

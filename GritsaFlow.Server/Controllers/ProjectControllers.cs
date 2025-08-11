@@ -101,12 +101,9 @@ namespace GritsaFlow.Controllers
         public async Task<IActionResult> GetProjectReport(string projectId)
         {
             var report = await _projectservices.GetProjectReportAsync(projectId);
-
-            if (!report.StatusReport.Any() && !report.PriorityReport.Any())
-                return Ok(new { status = false, message = "No tasks found for this project." });
-
-            return Ok(new { status = true, data = report });
+            return Ok(ApiResponse<ProjectReportResponse>.Ok(report));
         }
+
 
 
         [HttpDelete("{ProjectId}")]

@@ -91,8 +91,9 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
           rules={[{ required: true, message: "Please select a role" }]}
         >
           <Select placeholder="Select a role">
-            <Option value="Admin">Admin</Option>
-            <Option value="Employee">Employee</Option>
+            <Option value="Admin">admin</Option>
+            <Option value="Employee">teamlead</Option>
+            <Option value="Employee">employee</Option>
           </Select>
         </Form.Item>
 

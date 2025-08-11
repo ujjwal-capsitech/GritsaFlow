@@ -1,8 +1,9 @@
 ﻿import React, { useEffect, useState } from "react";
-import { Card, Typography, List, Avatar, Row, Col, Skeleton, Empty, message } from "antd";
+import { Card, Typography, List, Avatar, Row, Col, Skeleton, Empty, message, Select } from "antd";
 import { ArrowRightOutlined, UserOutlined } from "@ant-design/icons";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import type { Project } from "./interface";
 
 const { Text } = Typography;
 
@@ -51,9 +52,33 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
     const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
+    const [selectedProject, setSelectedProject] = useState<string | null>(null);
+    const [projects, setProjects] = useState<Project[]>([]);
 
-    useEffect(() => {
-        if (!projectId) return;
+        const fetchProjects = async () => {
+            try {
+                setLoading(true);
+                const response = await api.get<ApiResponse<Project[]>>("/ProjectControllers");
+
+                if (response.data.status) {
+                    setProjects(response.data.data);
+                    if (response.data.data.length > 0) {
+                        const defaultProjectId = response.data.data[0].projectId;
+                        setSelectedProject(response.data.data[0].projectId);
+                        if (onProjectSelect) onProjectSelect(defaultProjectId);
+                    } else {
+                        message.info("No projects found");
+                    }
+                } else {
+                    message.error(response.data.message || "Failed to load projects");
+                }
+            } catch {
+                message.error("Error fetching project list");
+
+            } finally {
+                setLoading(false);
+            }
+        };
 
         const fetchTimeline = async () => {
             setLoading(true);
@@ -90,9 +115,10 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
             }
         };
 
+    useEffect(() => {
+        fetchProjects();
         fetchTimeline();
-    }, [projectId]);
-
+    },[]);
     if (!projectId) return null;
 
     return (
@@ -114,7 +140,19 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
             ) : timeline.length === 0 ? (
                 <Empty description="No timeline data available." />
             ) : (
-                <>
+                        <>
+                            <Select
+                                value={selectedProject || undefined}
+                                onChange={(value) => setSelectedProject(value)}
+                                style={{ width: "100%", marginBottom: "15px" }}
+                                placeholder="Select Project"
+                            >
+                                {projects.map((p) => (
+                                    <Option key={p.projectId} value={p.projectId}>
+                                        {p.projectTitle}
+                                    </Option>
+                                ))}
+                            </Select>
                     <List
                         itemLayout="vertical"
                         dataSource={timeline}
@@ -190,3 +228,17 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
 };
 
 export default ActivityLog;
+/*<Col span={12}>
+                        <Select
+                            value={selectedProject || undefined}
+                            onChange={(value) => setSelectedProject(value)}
+                            style={{ width: "100%", marginBottom: "15px" }}
+                            placeholder="Select Project"
+                        >
+                            {projects.map((p) => (
+                                <Option key={p.projectId} value={p.projectId}>
+                                    {p.projectTitle}
+                                </Option>
+                            ))}
+                        </Select>
+ */

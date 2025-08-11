@@ -7,12 +7,13 @@ import Home from "./Pages/Home/Home";
 import Unauthorized from "./Pages/Unauthorized";
 import EmployeeDashboard from "./Pages/Employee/EmployeeDashboard";
 import TeamLeadDashboard from "./Pages/Teamlead/TeamLeadDashboard";
-import PageNotFound from "./Pages/pageNotFound";
+import PageNotFound from './Pages/PageNotFound.1';
 import { RoleEnum } from "./api/Role";
 import SessionTimeout from "./Components/SessionTimeOut";
 import Task from "./Pages/Home/Pages/Task";
 import AdminDashboard from "./Pages/Home/Pages/Dashboard";
 import Project from "./Pages/Home/Pages/Project";
+import ProjectCard from "./Components/ProjectCard";
 
 const App: React.FC = () => {
     return (
@@ -56,6 +57,9 @@ const App: React.FC = () => {
                         <TeamLeadDashboard />
                     </PageRoute>
                 } />
+                <Route path="/ProjectCard" element={
+                    <ProjectCard/>
+                }/>
             </Routes>
         </Router>
     );

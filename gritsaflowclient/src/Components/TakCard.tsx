@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Typography, Select, Row, Col, Progress, message } from "antd";
 import ReactECharts from "echarts-for-react";
 import api from "../api/api";
-import type { TaskReport, Project, ProjectReport,ApiResponse} from "../Components/interface";
+import type { TaskReport, Project, ProjectReport, ApiResponse } from "../Components/interface";
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -26,7 +26,11 @@ const { Option } = Select;
 //    status: boolean;
 //    message?: string;
 //}
-const TaskReportCard: React.FC = () => {
+interface ProjectSelectedProps {
+    onProjectSelect: (ProjectId: string) => void;
+
+}
+const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => {
     const [scale, setScale] = useState(1);
     const [statusReport, setStatusReport] = useState<TaskReport[]>([]);
     const [priorityReport, setPriorityReport] = useState<TaskReport[]>([]);
@@ -42,15 +46,18 @@ const TaskReportCard: React.FC = () => {
             if (response.data.status) {
                 setProjects(response.data.data);
                 if (response.data.data.length > 0) {
+                    const defaultProjectId = response.data.data[0].projectId;
                     setSelectedProject(response.data.data[0].projectId);
+                    if (onProjectSelect) onProjectSelect(defaultProjectId);
                 } else {
                     message.info("No projects found");
                 }
             } else {
                 message.error(response.data.message || "Failed to load projects");
             }
-        } catch (err) {
+        } catch {
             message.error("Error fetching project list");
+
         } finally {
             setLoading(false);
         }
@@ -140,7 +147,7 @@ const TaskReportCard: React.FC = () => {
     };
 
     return (
-        <div 
+        <div
             style={{
                 transform: `scale(${scale})`,
                 transformOrigin: "top left",
@@ -181,7 +188,7 @@ const TaskReportCard: React.FC = () => {
                                 <Col span={6}>{p.name}</Col>
                                 <Col span={12}>
                                     <Progress
-                                        percent={Math.min((p.value / 10) * 100, 100)} // adjust denominator if needed
+                                        percent={Math.min((p.value / 10) * 100, 100)} 
                                         showInfo={false}
                                         strokeColor={
                                             p.name.toLowerCase() === "high"

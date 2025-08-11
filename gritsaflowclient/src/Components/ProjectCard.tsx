@@ -1,229 +1,103 @@
-import React, { useEffect, useState } from "react";
-import { Card, Typography, Select, Row, Col, Spin, message, Empty, Progress } from "antd";
-import ReactECharts from "echarts-for-react";
+﻿import React, { useEffect, useState } from "react";
+import { Table, message, Card, Row, Typography, Skeleton } from "antd";
+import AppPagination from "./AppPagination";
 import api from "../api/api";
 
-const { Title } = Typography;
-const { Option } = Select;
 
-interface TaskReport {
+interface User {
+    userId: string;
     name: string;
-    value: number;
+    userName: string;
 }
+const { Title } = Typography;
+const ProjectCard: React.FC = () => {
+    const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(3);
+    const [totalItems, setTotalItems] = useState(0);
 
-interface Project {
-    projectId: string;
-    projectTitle: string;
-}
-
-interface ProjectReport {
-    statusReport: TaskReport[];
-    priorityReport: TaskReport[];
-}
-
-interface ApiResponse<T> {
-    data: T;
-    status: boolean;
-    message?: string;
-}
-
-interface ProjectcardProps
-{
-    onProjectSelect?: (projectId: string) => void;
-}
-
-const Projectcard: React.FC<ProjectcardProps> = ({ onProjectSelect }) => {
-    const [scale, setScale] = useState(1);
-    const [statusReport, setStatusReport] = useState<TaskReport[]>([]);
-    const [priorityReport, setPriorityReport] = useState<TaskReport[]>([]);
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [selectedProject, setSelectedProject] = useState<string | null>(null);
-
-    const fetchProjects = async () => {
+    const fetchUsers = async (page: number, size: number) => {
         try {
             setLoading(true);
-            const response = await api.get<ApiResponse<Project[]>>("/ProjectControllers");
+            const res = await api.get("User/basic", {
+                params: { pageNumber: page, pageSize: size },
+            });
 
-            if (response.data.status) {
-                setProjects(response.data.data);
-                if (response.data.data.length > 0) {
-                    const defaultProjectId = response.data.data[0].projectId;
-                    setSelectedProject(response.data.data[0].projectId);
-                    if (onProjectSelect) onProjectSelect(defaultProjectId);
-                } else {
-                    message.info("No projects found");
-                }
+            if (res.data && res.data.data) {
+                setUsers(res.data.data.items || []);
+                setTotalItems(res.data.data.totalItems || 0);
             } else {
-                message.error(response.data.message || "Failed to load projects");
+                message.error("Invalid data format from server");
             }
-        } catch (err) {
-            message.error("Error fetching project list");
-            console.error("Error fetching project list", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchReport = async (projectId: string) => {
-        try {
-            setLoading(true);
-            const response = await api.get<ApiResponse<ProjectReport>>(
-                `/ProjectControllers/${projectId}/report`
-            );
-
-            if (response.data.status) {
-                setStatusReport(response.data.data.statusReport || []);
-                setPriorityReport(response.data.data.priorityReport || []);
-
-                if (response.data.data.statusReport.length === 0) {
-                    message.info("No report data available");
-                }
-            } else {
-                message.error(response.data.message || "Failed to load report");
-            }
-        } catch(err) {
-            message.error("Error fetching report");
-            console.error("Error fetching report", err);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            message.error("Failed to load users");
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchProjects();
-    }, []);
+        fetchUsers(currentPage, pageSize);
+    }, [currentPage, pageSize]);
 
-    useEffect(() => {
-        if (selectedProject) {
-            fetchReport(selectedProject);
-        }
-    }, [selectedProject]);
-
-    useEffect(() => {
-        const handleResize = () => {
-            const width = window.innerWidth;
-            let newScale = 1;
-            if (width < 600) newScale = 0.7;
-            else if (width < 400) newScale = 0.5;
-            setScale(newScale);
-        };
-        window.addEventListener("resize", handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    const pieChartOptions = {
-        tooltip: { trigger: "item" },
-        legend: {
-            orient: "vertical",
-            left: "right",
-            itemGap: 12,
+    const columns = [
+        {
+            title: "User ID",
+            dataIndex: "userId",
+            key: "userId",
         },
-        series: [
-            {
-                name: "Tasks",
-                type: "pie",
-                radius: ["40%", "70%"],
-                label: { show: false },
-                emphasis: { label: { show: true, fontSize: 12 } },
-                labelLine: { show: false },
-                data: statusReport.map((item, index) => ({
-                    value: item.value,
-                    name: item.name,
-                    itemStyle: {
-                        color: [
-                            "#4C9AFF",
-                            "#A5B4FC",
-                            "#60A5FA",
-                            "#22D3EE",
-                            "#F472B6",
-                            "#E879F9",
-                            "#FBBF24",
-                            "#34D399",
-                        ][index % 8],
-                    },
-                })),
-            },
-        ],
-    };
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "Email",
+            dataIndex: "userName",
+            key: "userName",
+        },
+    ];
 
     return (
-        <div
-            style={{
-                transform: `scale(${scale})`,
-                transformOrigin: "top left",
-                width: `${100 / scale}%`,
-                transition: "transform 0.3s ease",
-            }}
-        >
-            <Card style={{ borderRadius: "14px", padding: "10px" }}>
-                <Row justify="space-between" align="middle" style={{ marginBottom: "10px" }}>
-                    <Title level={5} style={{ margin: 0 }}>
-                        Project Report
-                    </Title>
-                </Row>
+        <Card style={{
+            borderRadius: "14px", padding: "10px", overflow: "auto",height:"382px"
+        }} >
+            <Row justify="space-between" align="middle" style={{ marginBottom: "10px" }}>
+                <Title level={5} style={{ margin: 0 }}>
+                    Employee
+                </Title>
+            </Row>
 
-                <Row gutter={16}>
-                    {/* Left: Pie Chart */}
-                    <Col xs={24} md={12} style={{ textAlign: "center" }}>
-                        {loading ? (
-                            <Spin />
-                        ) : statusReport.length === 0 ? (
-                            <Empty description="No Data" image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                        ) : (
-                            <ReactECharts option={pieChartOptions} style={{ height: "220px", width: "100%" }} />
-                        )}
-                    </Col>
+            <Table
+                columns={columns}
+                dataSource={users}
+                rowKey="userId"
+                
+                bordered
+                pagination={false}
+                sticky={true }
+                locale={{
+                    emptyText: loading ? (
+                        <Skeleton active paragraph={{ rows: 3 }} />
+                    ) : (
+                        "No data"
+                    ),
+                }}
+            />
 
-                    {/* Right: Dropdown + Priorities */}
-                    <Col span={12}>
-                        <Select
-                            value={selectedProject || undefined}
-                            onChange={(value) => {
-                                console.log("Selected Project:", value);
-                                setSelectedProject(value);
-                                if (onProjectSelect) onProjectSelect(value);
-                            }}
-
-                            style={{ width: "100%", marginBottom: "15px" }}
-                            placeholder="Select Project"
-                        >
-                            {projects.map((p) => (
-                                <Option key={p.projectId} value={p.projectId}>
-                                    {p.projectTitle}
-                                </Option>
-                            ))}
-                        </Select>
-
-                        {priorityReport.map((p, idx) => (
-                            <Row key={idx} align="middle" style={{ marginBottom: "12px" }}>
-                                <Col span={6}>{p.name}</Col>
-                                <Col span={12}>
-                                    <Progress
-                                        percent={Math.min((p.value / 10) * 100, 100)} // adjust denominator as needed
-                                        showInfo={false}
-                                        strokeColor={
-                                            p.name.toLowerCase() === "high"
-                                                ? "#ef4444"
-                                                : p.name.toLowerCase() === "medium"
-                                                    ? "#3b82f6"
-                                                    : "#22c55e"
-                                        }
-                                        trailColor="#f3f4f6"
-                                        status="active"
-                                    />
-                                </Col>
-                                <Col span={6} style={{ textAlign: "right" }}>
-                                    {p.value}
-                                </Col>
-                            </Row>
-                        ))}
-                    </Col>
-                </Row>
-            </Card>
-        </div>
+            <AppPagination
+                currentPage={currentPage}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onChange={(page, size) => {
+                    setCurrentPage(page);
+                    setPageSize(size);
+                }}
+            />
+        </Card>
     );
 };
 
-export default Projectcard;
+export default ProjectCard;

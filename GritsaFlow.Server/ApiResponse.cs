@@ -21,6 +21,8 @@ namespace GritsaFlow
 
         public static ApiResponse Error(string message = "Something went wrong") =>
             new ApiResponse(false, message);
+
+        
     }
 
     // Generic for data cases

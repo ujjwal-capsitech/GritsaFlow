@@ -9,13 +9,13 @@ namespace GritsaFlow.Services
     {
         private readonly IMongoCollection<Project> _projects;
         private readonly IMongoCollection<Tasks> _tasks;
-        private readonly UserServices _user;
+        private readonly IMongoCollection<User> _user;
 
-        public projectServices(IMongoDatabase db,UserServices user)
+        public projectServices(IMongoDatabase db)
         {
             _projects = db.GetCollection<Project>("projects");
             _tasks = db.GetCollection<Tasks>("tasks");
-            _user = user;
+            _user = db.GetCollection<User>("user");
         }
 
         public async Task CreateProjectAsync(Project newProject, string creatorId, string creatorName)
@@ -26,11 +26,28 @@ namespace GritsaFlow.Services
                 Name = creatorName,
                 CreatedAt = DateTime.UtcNow
             };
-            //newProject.ProjectId = Guid.NewGuid().ToString()
-            newProject.IsDeleted = false;
-            
 
             await _projects.InsertOneAsync(newProject);
+
+            newProject.IsDeleted = false;
+
+            //if (newProject.Employees != null)
+            //{
+            //    foreach (var employee in newProject.Employees)
+            //    {
+            //        var filter = Builders<User>.Filter.Eq(u => u.UserId, employee.EmpId);
+
+            //        var update = Builders<User>.Update.Set(u => u.Project, new projects
+            //        {
+            //            ProjectId = newProject.ProjectId,
+            //            projectTitle = newProject.ProjectTitle
+            //        });
+
+            //        var result = await _user.UpdateOneAsync(filter, update);
+            //        Console.WriteLine($"Matched: {result.MatchedCount}, Modified: {result.ModifiedCount}");
+
+            //    }
+            //}
 
         }
 
@@ -124,17 +141,17 @@ namespace GritsaFlow.Services
 
         //public async Task<List<TaskReportDto>> GetProjectReportAsync(string projectId)
         //{
-     
+
         //    var project = await _projects
         //        .Find(p => p.ProjectId == projectId && !p.IsDeleted)
         //        .FirstOrDefaultAsync();
 
         //    if (project == null) return new List<TaskReportDto>();
 
-            
+
         //    var tasks = await _tasks.Find(t => t.Project.ProjectId == projectId).ToListAsync();
 
-          
+
         //    var report = tasks
         //        .GroupBy(t => t.TaskStatus.ToString())
         //        .Select(g => new TaskReportDto

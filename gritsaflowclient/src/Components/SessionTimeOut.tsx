@@ -1,14 +1,14 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { type Rootstate } from "../redux/store";
+import { type RootState } from "../redux/store";
 import { logout } from "../redux/slice/LoginSlice";
 import { useNavigate } from "react-router-dom";
 
 const SessionTimeout = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const tokenExpiry = useSelector((state: Rootstate) => state.auth.tokenExpiry);
+    const tokenExpiry = useSelector((state: RootState) => state.auth.tokenExpiry);
 
     useEffect(() => {
         if (!tokenExpiry) return;

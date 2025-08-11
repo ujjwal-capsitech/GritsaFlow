@@ -1,6 +1,7 @@
 ﻿using GritsaFlow;
 using GritsaFlow.DTOs;
 using GritsaFlow.Models;
+using GritsaFlow.Server.Models;
 using GritsaFlow.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -102,10 +103,10 @@ public class UserController : ControllerBase
         return Ok(new { message = "Session valid" });
     }
     [HttpGet("basic")]
-    public async Task<ActionResult<ApiResponse<List<UserBasicDto>>>> GetAllBasic()
+    public async Task<ActionResult<ApiResponse<PagedResult<UserBasicDto>>>> GetAllBasic(int pageNumber = 1, int pageSize = 10)
     {
-        var users = await _service.GetAllBasicAsync();
-        return Ok(ApiResponse<List<UserBasicDto>>.Ok(users));
+        var users = await _service.GetAllBasicAsync(pageNumber,pageSize);
+        return Ok(ApiResponse<PagedResult<UserBasicDto>>.Ok(users));
     }
 
 

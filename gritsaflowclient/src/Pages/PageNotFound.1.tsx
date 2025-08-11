@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
-const Unauthorized: React.FC = () => {
+const PageNotFound: React.FC = () => {
     const navigate = useNavigate();
 
     return (
@@ -47,7 +47,7 @@ const Unauthorized: React.FC = () => {
                                     margin: 0
                                 }}
                             >
-                                401
+                                404
                             </Title>
                         </Col>
 
@@ -60,11 +60,21 @@ const Unauthorized: React.FC = () => {
                                     margin: 0
                                 }}
                             >
-                                You are Not Authorized to Access This Page 
+                                Oops! Page Not Found
                             </Title>
                         </Col>
 
-                        
+                        <Col span={24}>
+                            <Text
+                                type="secondary"
+                                style={{
+                                    fontSize: "16px",
+                                    color: "#7f8c8d"
+                                }}
+                            >
+                                The page you're looking for doesn't exist or has been moved.
+                            </Text>
+                        </Col>
 
                         <Col span={24} style={{ marginTop: "24px" }}>
                             <Button
@@ -80,7 +90,7 @@ const Unauthorized: React.FC = () => {
                                     height: "40px"
                                 }}
                             >
-                                Go Back To Login Page 
+                                Go Back Home
                             </Button>
                         </Col>
                     </Row>
@@ -90,6 +100,20 @@ const Unauthorized: React.FC = () => {
     );
 };
 
+export default PageNotFound;
+//import React from 'react';
+//import { Button, Result } from 'antd';
+//import { useNavigate } from 'react-router-dom';
 
-
-export default Unauthorized;
+//export const PageNotFound: React.FC = () => {
+//    const navigate = useNavigate();
+//    return (
+//        <Result
+//            status="404"
+//            title="404"
+//            subTitle="Sorry, the page you visited does not exist."
+//            extra={<Button onClick={() => navigate("/Home")}
+//                type="primary"> Back Home</Button>} />
+//    );
+//};
+//export default PageNotFound;

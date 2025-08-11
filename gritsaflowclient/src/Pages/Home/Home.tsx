@@ -8,7 +8,8 @@ import {
     Row,
     Space,
     Spin,
-    Typography
+    Typography,
+    message
 } from "antd";
 import Sider from "antd/es/layout/Sider";
 import {
@@ -61,8 +62,10 @@ const Home: React.FC = () => {
                 setLoading(true);
                 const response = await api.get<User>("User/current");
                 setUser(response.data);
-            } catch (err) {
-                setError("E rror loading user data");
+            } catch  {
+                setError("Error loading user data");
+                message.error("Error loading user data");
+                //console.log("Error loading user data", err);
             } finally {
                 setLoading(false);
             }
