@@ -42,7 +42,12 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
     } finally {
       setLoading(false);
     }
-  };
+    };
+    const validateName = (_: any, value: any) => {
+        return value && value.trim() !== ""
+            ? Promise.resolve() :
+            Promise.reject("This Field  cannot contain empty spaces")
+    }
 
   return (
     <Modal
@@ -56,7 +61,7 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
         <Form.Item
           label="Name"
           name="name"
-          rules={[{ required: true, message: "Please enter name" }]}
+                  rules={[{ required: true, message: "Please enter name" }, {validator:validateName}]}
         >
           <Input />
         </Form.Item>
@@ -64,7 +69,7 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
         <Form.Item
           label="Username"
           name="userName"
-          rules={[{ required: true, message: "Please enter username" }]}
+                  rules={[{ required: true, message: "Please enter username" }, { validator: validateName }]}
         >
           <Input />
         </Form.Item>
@@ -72,7 +77,7 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: true, message: "Please enter password" }]}
+                  rules={[{ required: true, message: "Please enter password" }, { validator: validateName }]}
         >
           <Input.Password />
         </Form.Item>
@@ -80,7 +85,7 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, type: "email", message: "Enter valid email" }]}
+                  rules={[{ required: true, type: "email", message: "Enter valid email" }, { validator: validateName }]}
         >
           <Input />
         </Form.Item>
@@ -88,7 +93,7 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
         <Form.Item
           label="Role"
           name="role"
-          rules={[{ required: true, message: "Please select a role" }]}
+                  rules={[{ required: true, message: "Please select a role" }, { validator: validateName }]}
         >
           <Select placeholder="Select a role">
             <Option value="Admin">admin</Option>
@@ -97,7 +102,7 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
           </Select>
         </Form.Item>
 
-        <Form.Item label="Avatar URL" name="avatarUrl">
+              <Form.Item label="Avatar URL" name="avatarUrl" rules={[{ validator: validateName }] }>
           <Input placeholder="(Optional)" />
         </Form.Item>
 

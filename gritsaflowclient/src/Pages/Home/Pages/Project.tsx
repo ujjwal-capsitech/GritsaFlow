@@ -221,7 +221,7 @@ const Project: React.FC = () => {
     ];
 
     return (
-        <Row gutter={24} style={{ minHeight: "100vh", padding: 24 }}>
+        <Row gutter={24} style={{padding: 24 }}>
             <Col xs={24} md={12}>
                 <Card
                     title={<Text style={{ color: "#985858ff" }}>

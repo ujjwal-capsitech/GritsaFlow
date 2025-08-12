@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import type { Project } from "./interface";
 
 const { Text } = Typography;
+const { Option } = Select;
 
 type TimelineItem = {
     id: string;
@@ -51,75 +52,78 @@ const labelStyleTo = {
 const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
     const [timeline, setTimeline] = useState<TimelineItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const navigate = useNavigate();
-    const [selectedProject, setSelectedProject] = useState<string | null>(null);
     const [projects, setProjects] = useState<Project[]>([]);
+    const [selectedProject, setSelectedProject] = useState<string | null>(null);
+    const navigate = useNavigate();
 
-        const fetchProjects = async () => {
-            try {
-                setLoading(true);
-                const response = await api.get<ApiResponse<Project[]>>("/ProjectControllers");
-
-                if (response.data.status) {
-                    setProjects(response.data.data);
-                    if (response.data.data.length > 0) {
-                        const defaultProjectId = response.data.data[0].projectId;
-                        setSelectedProject(response.data.data[0].projectId);
-                        if (onProjectSelect) onProjectSelect(defaultProjectId);
-                    } else {
-                        message.info("No projects found");
-                    }
-                } else {
-                    message.error(response.data.message || "Failed to load projects");
-                }
-            } catch {
-                message.error("Error fetching project list");
-
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const fetchTimeline = async () => {
+    const fetchProjects = async () => {
+        try {
             setLoading(true);
-            try {
-                const response = await api.get<ApiResponse<any[]>>(
-                    `/ProjectTimeLineControllers/${projectId}`
-                );
+            const response = await api.get<ApiResponse<Project[]>>("/ProjectControllers");
 
-                const apiData = response.data;
-
-                if (apiData && apiData.status === true) {
-                    const mappedData: TimelineItem[] = apiData.data.map((item) => ({
-                        id: item.id || item.taskId || "", // fallback if needed
-                        userName: item.userName || "Unknown",
-                        avatarUrl: item.avatarUrl,
-                        dateTime: item.dateTime,
-                        description: item.description,
-                        taskLink: item.taskLink,
-                        fromLabel: item.fromLabel,
-                        toLabel: item.toLabel,
-                    }));
-
-                    setTimeline(mappedData);
+            if (response.data.status) {
+                setProjects(response.data.data);
+                if (response.data.data.length > 0) {
+                    const defaultProjectId = projectId || response.data.data[0].projectId;
+                    setSelectedProject(defaultProjectId);
                 } else {
-                    message.warning("No timeline data found.");
-                    setTimeline([]);
+                    message.info("No projects found for Activity Log");
                 }
-            } catch (err) {
-                message.error("Error fetching timeline.");
-                console.error("Error fetching timeline:", err);
-                setTimeline([]);
-            } finally {
-                setLoading(false);
+            } else {
+                message.error(response.data.message || "Failed to load projects");
             }
-        };
+        } catch {
+            message.error("Error fetching project list for Activity Log");
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    const fetchTimeline = async (projId: string) => {
+        if (!projId) return;
+        setLoading(true);
+        try {
+            const response = await api.get<ApiResponse<any[]>>(
+                `/ProjectTimeLineControllers/${projId}`
+            );
+
+            if (response.data.status) {
+                const mappedData: TimelineItem[] = response.data.data.map((item) => ({
+                    id: item.id || item.taskId || "",
+                    userName: item.userName || "Unknown",
+                    avatarUrl: item.avatarUrl,
+                    dateTime: item.dateTime,
+                    description: item.description,
+                    taskLink: item.taskLink,
+                    fromLabel: item.fromLabel,
+                    toLabel: item.toLabel,
+                }));
+
+                setTimeline(mappedData);
+            } else {
+                message.warning("No timeline data found.");
+                setTimeline([]);
+            }
+        } catch (err) {
+            message.error("Error fetching timeline.");
+            console.error("Error fetching timeline:", err);
+            setTimeline([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Load projects first
     useEffect(() => {
         fetchProjects();
-        fetchTimeline();
-    },[]);
-    if (!projectId) return null;
+    }, []);
+
+    // Fetch timeline when selected project changes
+    useEffect(() => {
+        if (selectedProject) {
+            fetchTimeline(selectedProject);
+        }
+    }, [selectedProject]);
 
     return (
         <Card
@@ -128,6 +132,22 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
             style={{ width: 745, borderRadius: 8 }}
             bodyStyle={{ maxHeight: 900, overflowY: "auto", padding: 12 }}
         >
+            {/* Project Select */}
+            <Select
+                value={selectedProject || undefined}
+                onChange={(value) => setSelectedProject(value)}
+                style={{ width: "100%", marginBottom: "15px" }}
+                placeholder="Select Project"
+                loading={loading && projects.length === 0}
+            >
+                {projects.map((p) => (
+                    <Option key={p.projectId} value={p.projectId}>
+                        {p.projectTitle}
+                    </Option>
+                ))}
+            </Select>
+
+            {/* Skeleton while loading */}
             {loading ? (
                 <List
                     dataSource={[1, 2, 3]}
@@ -140,19 +160,7 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
             ) : timeline.length === 0 ? (
                 <Empty description="No timeline data available." />
             ) : (
-                        <>
-                            <Select
-                                value={selectedProject || undefined}
-                                onChange={(value) => setSelectedProject(value)}
-                                style={{ width: "100%", marginBottom: "15px" }}
-                                placeholder="Select Project"
-                            >
-                                {projects.map((p) => (
-                                    <Option key={p.projectId} value={p.projectId}>
-                                        {p.projectTitle}
-                                    </Option>
-                                ))}
-                            </Select>
+                <>
                     <List
                         itemLayout="vertical"
                         dataSource={timeline}
@@ -228,17 +236,3 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
 };
 
 export default ActivityLog;
-/*<Col span={12}>
-                        <Select
-                            value={selectedProject || undefined}
-                            onChange={(value) => setSelectedProject(value)}
-                            style={{ width: "100%", marginBottom: "15px" }}
-                            placeholder="Select Project"
-                        >
-                            {projects.map((p) => (
-                                <Option key={p.projectId} value={p.projectId}>
-                                    {p.projectTitle}
-                                </Option>
-                            ))}
-                        </Select>
- */

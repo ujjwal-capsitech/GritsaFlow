@@ -6,26 +6,6 @@ import type { TaskReport, Project, ProjectReport, ApiResponse } from "../Compone
 const { Title } = Typography;
 const { Option } = Select;
 
-//interface TaskReport {
-//    name: string;
-//    value: number;
-//}
-
-//interface Project {
-//    projectId: string;
-//    projectTitle: string;
-//}
-
-//interface ProjectReport {
-//    statusReport: TaskReport[];
-//    priorityReport: TaskReport[];
-//}
-
-//interface ApiResponse<T> {
-//    data: T;
-//    status: boolean;
-//    message?: string;
-//}
 interface ProjectSelectedProps {
     onProjectSelect: (ProjectId: string) => void;
 
@@ -56,7 +36,7 @@ const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => 
                 message.error(response.data.message || "Failed to load projects");
             }
         } catch {
-            message.error("Error fetching project list");
+            message.error("Error fetching project list for Task Card ");
 
         } finally {
             setLoading(false);

@@ -5,8 +5,8 @@ import Login from "./Pages/Login";
 import PageRoute from "./Components/PageRouting";
 import Home from "./Pages/Home/Home";
 import Unauthorized from "./Pages/Unauthorized";
-import EmployeeDashboard from "./Pages/Employee/EmployeeDashboard";
-import TeamLeadDashboard from "./Pages/Teamlead/TeamLeadDashboard";
+import HomeEmp from "./Pages/Employee/Home";
+import HomeTeamLead from "./Pages/Teamlead/Home.tsx";
 import PageNotFound from './Pages/PageNotFound.1';
 import { RoleEnum } from "./api/Role";
 import SessionTimeout from "./Components/SessionTimeOut";
@@ -29,37 +29,31 @@ const App: React.FC = () => {
                         <Home />
                     </PageRoute>
                 }>
-                    {/* Add nested route for tasks */}
                     <Route path="tasks/:taskId" element={<Task />} />
                 </Route>
 
                 <Route path="/Employee" element={
                     <PageRoute allowedRoles={[RoleEnum.Employee]}>
-                        <EmployeeDashboard />
+                        <HomeEmp />
                     </PageRoute>
                 } />
                 <Route path="/AdminDashboard" element={
-
                     <PageRoute allowedRoles={[RoleEnum.Admin]}>
-                        <AdminDashboard/>
+                        <AdminDashboard />
                     </PageRoute>
                 } />
                 <Route path="/Projects" element={
-                     
-                    <PageRoute allowedRoles={[RoleEnum.Admin]}>
-                        <Project />
-                    </PageRoute>
+                    <Project />
                 } />
-                
-
                 <Route path="/TeamLead" element={
                     <PageRoute allowedRoles={[RoleEnum.TeamLead]}>
-                        <TeamLeadDashboard />
+                        <HomeTeamLead />
                     </PageRoute>
                 } />
                 <Route path="/ProjectCard" element={
-                    <ProjectCard/>
-                }/>
+                    <ProjectCard />
+                } />
+
             </Routes>
         </Router>
     );

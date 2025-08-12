@@ -30,10 +30,12 @@ import AdminDashboard from "../../Pages/Home/Pages/Dashboard";
 import Project from "../../Pages/Home/Pages/Project";
 import LoginIcon from "../../Assets/LoginIcon.svg";
 import { logout } from "../../redux/slice/LoginSlice";
-import { useNavigate, Outlet } from "react-router-dom"; 
+import { useNavigate, Outlet } from "react-router-dom";
 import { RoleEnum } from '../../api/Role';
 import api from "../../api/api";
 import UserRegistrationForm from "../../Components/UserRegistrationForm";
+import EmpDashboard from "./EmpDashboard";
+
 
 const { Title } = Typography;
 
@@ -62,7 +64,7 @@ const HomeEmp: React.FC = () => {
                 setLoading(true);
                 const response = await api.get<User>("User/current");
                 setUser(response.data);
-            } catch  {
+            } catch {
                 setError("Error loading user data");
                 message.error("Error loading user data");
                 //console.log("Error loading user data", err);
@@ -97,13 +99,13 @@ const HomeEmp: React.FC = () => {
                 key="profile"
                 icon={<UserOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
             >
-               
+
                 <Row>
                     <Row style={{ fontWeight: 'bold' }}>{user?.name}</Row>
                     <Row>{user?.email}</Row>
                 </Row>
             </Menu.Item>
-            
+
             <Menu.Item
                 key="createUser"
                 icon={<UserAddOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
@@ -124,7 +126,7 @@ const HomeEmp: React.FC = () => {
 
     const renderContent = () => {
         switch (selectedKey) {
-            case '1': return <AdminDashboard />;
+            case '1': return <EmpDashboard />;
             case '2': return <Project />;
             default: return "Select an option";
         }
@@ -151,7 +153,7 @@ const HomeEmp: React.FC = () => {
                         <img
                             src={LoginIcon}
                             alt="login-Illustration"
-                            onClick={()=> navigate("/Home") }
+                            onClick={() => navigate("/Home")}
                             style={{ width: "80%", maxWidth: "50px", marginBottom: 8 }}
                         />
                     </Row>
@@ -164,7 +166,7 @@ const HomeEmp: React.FC = () => {
                         onClick={handleMenuClick}
                         style={{ background: "#c3cfe2" }}
                     >
-                        <Menu.Item  key="1" icon={<DashboardOutlined /> }>
+                        <Menu.Item key="1" icon={<DashboardOutlined />}>
                             Dashboard
                         </Menu.Item>
                         <Menu.Item key="2" icon={<ProjectOutlined />}>
@@ -182,12 +184,12 @@ const HomeEmp: React.FC = () => {
                         padding: "0 24px",
                     }}>
                         <Title level={4} style={{ margin: 0 }}>
-                            Welcome, {user?.name} <ArrowRightOutlined /> {<span style={{ fontWeight: "normal", color: "#444" }}> {user?.role} </span>}  
+                            Welcome, {user?.name} <ArrowRightOutlined /> {<span style={{ fontWeight: "normal", color: "#444" }}> {user?.role} </span>}
                         </Title>
 
                         <Dropdown overlay={profileMenu} trigger={["click"]}>
                             <Space style={{ cursor: "pointer" }}>
-                                <Avatar 
+                                <Avatar
                                     src={user?.avatarUrl}
                                     icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
                                     style={{ backgroundColor: user?.avatarUrl ? 'transparent' : '#1890ff' }}
@@ -207,9 +209,9 @@ const HomeEmp: React.FC = () => {
                         {/* Add Outlet for nested routes */}
 
                         <Outlet />
-                         {/*Render regular content only if no nested route is active */}
+                        {/*Render regular content only if no nested route is active */}
                         {!window.location.pathname.includes('/Home/tasks/') && renderContent()}
-                        
+
                         {/*{!force && <Outlet />}*/}
                         {/*{(force || !window.location.pathname.includes('/Home/tasks/')) && renderContent()}*/}
                     </Content>
