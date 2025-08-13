@@ -1,23 +1,26 @@
 import * as React from "react";
 
-const SVGComponent = ({ fill = "currentColor", ...props }) => (
+const SVGComponent = ({
+    fill = "currentColor",
+    width = "1em",
+    height = "1em",
+    thickness = 8,
+    ...props
+}) => (
     <svg
-        id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="5em"
-        height="5em"
-        viewBox="0 0 100 100"
-        xmlSpace="preserve"
+        width={width}
+        height={height}
+
+        viewBox="0 0 100 100" //no Space
         fill={fill}
         {...props}
+        style={{ display: "block" ,}}
     >
-        <g>
-            <path
-                transform="rotate(90 50 50)"
-                d="M26,50.5c0,1.104,0.896,2,2,2h44c1.104,0,2-0.896,2-2s-0.896-2-2-2H28C26.896,48.5,26,49.396,26,50.5z"
-            />
-        </g>
+        
+        {/*<rect x="48" y="0" width="4" height="100" width={thickness} />*/}
+        <rect x={50 - thickness / 2} y="0" width={thickness} height="100" />
+        
     </svg>
 );
 

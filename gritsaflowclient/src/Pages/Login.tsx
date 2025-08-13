@@ -43,7 +43,7 @@ const Login: React.FC = () => {
             dispatch(setTokenExpiry(data.tokenExpiry));
 
             localStorage.setItem("isLogin", "true");
-            localStorage.setItem("Role", data.newUser.role as RoleEnum);
+            localStorage.setItem("Role", data.newUser.role);
             localStorage.setItem("tokenExpiry", data.tokenExpiry);
 
             const roles = localStorage.getItem("Role");

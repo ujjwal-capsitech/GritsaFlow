@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Card, Typography, Select, Row, Col, Progress, message } from "antd";
+import { Card, Typography, Select, Row, Col, Progress, message, List, Skeleton, Empty } from "antd";
 import ReactECharts from "echarts-for-react";
 import api from "../api/api";
 import type { TaskReport, Project, ProjectReport, ApiResponse } from "../Components/interface";
 const { Title } = Typography;
 const { Option } = Select;
 
-interface ProjectSelectedProps {
-    onProjectSelect: (ProjectId: string) => void;
-
-}
-const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => {
+const TaskReportCard: React.FC = () => {
     const [scale, setScale] = useState(1);
     const [statusReport, setStatusReport] = useState<TaskReport[]>([]);
     const [priorityReport, setPriorityReport] = useState<TaskReport[]>([]);
@@ -26,18 +22,15 @@ const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => 
             if (response.data.status) {
                 setProjects(response.data.data);
                 if (response.data.data.length > 0) {
-                    const defaultProjectId = response.data.data[0].projectId;
                     setSelectedProject(response.data.data[0].projectId);
-                    if (onProjectSelect) onProjectSelect(defaultProjectId);
                 } else {
-                    message.info("No projects found");
+                    message.warning("No projects found");
                 }
             } else {
                 message.error(response.data.message || "Failed to load projects");
             }
         } catch {
             message.error("Error fetching project list for Task Card ");
-
         } finally {
             setLoading(false);
         }
@@ -46,16 +39,13 @@ const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => 
     const fetchReport = async (projectId: string) => {
         try {
             setLoading(true);
-            const response = await api.get<ApiResponse<ProjectReport>>(
-                `/ProjectControllers/${projectId}/report`
-            );
+            const response = await api.get<ApiResponse<ProjectReport>>(`/ProjectControllers/${projectId}/report`);
 
             if (response.data.status) {
                 setStatusReport(response.data.data.statusReport || []);
                 setPriorityReport(response.data.data.priorityReport || []);
-
                 if ((response.data.data.statusReport || []).length === 0) {
-                    message.info("No report data available");
+                    message.warning("No report data available");
                 }
             } else {
                 message.error(response.data.message || "Failed to load report");
@@ -77,7 +67,6 @@ const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => 
         }
     }, [selectedProject]);
 
-    // scale card on resize
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
@@ -127,7 +116,7 @@ const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => 
     };
 
     return (
-        <div
+        <Col
             style={{
                 transform: `scale(${scale})`,
                 transformOrigin: "top left",
@@ -163,33 +152,50 @@ const TaskReportCard: React.FC<ProjectSelectedProps> = ({ onProjectSelect }) => 
                             ))}
                         </Select>
 
-                        {priorityReport.map((p, idx) => (
-                            <Row key={idx} align="middle" style={{ marginBottom: "12px" }}>
-                                <Col span={6}>{p.name}</Col>
-                                <Col span={12}>
-                                    <Progress
-                                        percent={Math.min((p.value / 10) * 100, 100)} 
-                                        showInfo={false}
-                                        strokeColor={
-                                            p.name.toLowerCase() === "high"
-                                                ? "#ef4444"
-                                                : p.name.toLowerCase() === "medium"
-                                                    ? "#3b82f6"
-                                                    : "#22c55e"
-                                        }
-                                        trailColor="#f3f4f6"
-                                        status="active"
-                                    />
-                                </Col>
-                                <Col span={6} style={{ textAlign: "right" }}>
-                                    {p.value}
-                                </Col>
-                            </Row>
-                        ))}
+                        {loading ? (
+                            <List
+                                dataSource={[1, 2, 3]}
+                                renderItem={(item) => (
+                                    <List.Item key={item}>
+                                        <Skeleton avatar paragraph={{ rows: 2 }} active />
+                                    </List.Item>
+                                )}
+                            />
+                        ) : statusReport.length === 0 ? (
+                            <Empty description="No report data available." />
+                        ) : (
+                            priorityReport.length === 0 ? (
+                                <Empty description="No priority data available." />
+                            ) : (
+                                priorityReport.map((p, idx) => (
+                                    <Row key={idx} align="middle" style={{ marginBottom: "12px" }}>
+                                        <Col span={6}>{p.name}</Col>
+                                        <Col span={12}>
+                                            <Progress
+                                                percent={Math.min((p.value / 10) * 100, 100)}
+                                                showInfo={false}
+                                                strokeColor={
+                                                    p.name.toLowerCase() === "high"
+                                                        ? "#ef4444"
+                                                        : p.name.toLowerCase() === "medium"
+                                                            ? "#3b82f6"
+                                                            : "#22c55e"
+                                                }
+                                                trailColor="#f3f4f6"
+                                                status="active"
+                                            />
+                                        </Col>
+                                        <Col span={6} style={{ textAlign: "right" }}>
+                                            {p.value}
+                                        </Col>
+                                    </Row>
+                                ))
+                            )
+                        )}
                     </Col>
                 </Row>
             </Card>
-        </div>
+        </Col>
     );
 };
 

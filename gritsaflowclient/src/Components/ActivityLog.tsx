@@ -1,5 +1,16 @@
 ﻿import React, { useEffect, useState } from "react";
-import { Card, Typography, List, Avatar, Row, Col, Skeleton, Empty, message, Select } from "antd";
+import {
+    Card,
+    Typography,
+    List,
+    Avatar,
+    Row,
+    Col,
+    Skeleton,
+    Empty,
+    message,
+    Select,
+} from "antd";
 import { ArrowRightOutlined, UserOutlined } from "@ant-design/icons";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
@@ -113,23 +124,26 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
         }
     };
 
-    // Load projects first
     useEffect(() => {
         fetchProjects();
     }, []);
 
-    // Fetch timeline when selected project changes
     useEffect(() => {
         if (selectedProject) {
             fetchTimeline(selectedProject);
         }
     }, [selectedProject]);
-
+    
     return (
         <Card
             title="Project Timeline"
             size="small"
-            style={{ width: 745, borderRadius: 8 }}
+            style={{
+                maxWidth: 745,
+                width: "100%",
+                borderRadius: 8,
+                margin: "0 auto",
+            }}
             bodyStyle={{ maxHeight: 900, overflowY: "auto", padding: 12 }}
         >
             {/* Project Select */}
@@ -139,6 +153,13 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
                 style={{ width: "100%", marginBottom: "15px" }}
                 placeholder="Select Project"
                 loading={loading && projects.length === 0}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                    (option?.children as unknown as string)
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                }
             >
                 {projects.map((p) => (
                     <Option key={p.projectId} value={p.projectId}>
@@ -147,7 +168,6 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
                 ))}
             </Select>
 
-            {/* Skeleton while loading */}
             {loading ? (
                 <List
                     dataSource={[1, 2, 3]}
@@ -167,32 +187,47 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
                         renderItem={(item) => (
                             <List.Item
                                 key={item.id + item.dateTime}
-                                style={{ padding: "8px 0", borderBottom: "1px solid #f0f0f0" }}
+                                style={{
+                                    padding: "8px 0",
+                                    borderBottom: "1px solid #f0f0f0",
+                                }}
                             >
                                 <List.Item.Meta
                                     avatar={
                                         item.avatarUrl ? (
-                                            <Avatar src={item.avatarUrl} />
+                                            <Avatar src={item.avatarUrl} size={40} />
                                         ) : (
                                             <Avatar size={40} icon={<UserOutlined />} />
                                         )
                                     }
                                     title={
-                                        <Row justify="space-between" align="middle">
-                                            <Col>
-                                                <Text strong>{item.userName}</Text>
+                                        <Row
+                                            justify="space-between"
+                                            align="middle"
+                                            gutter={[8, 8]}
+                                            style={{ flexWrap: "wrap" }}
+                                        >
+                                            <Col
+                                                xs={24}
+                                                sm={16}
+                                                style={{ minWidth: 0, wordBreak: "break-word" }}
+                                            >
+                                                <Text strong style={{ fontSize: "1rem" }}>
+                                                    {item.userName}
+                                                </Text>
                                                 <br />
                                                 <Text type="secondary" style={{ fontSize: 12 }}>
                                                     {new Date(item.dateTime).toLocaleString()}
                                                 </Text>
                                             </Col>
-                                            <Col>
+                                            <Col xs={24} sm={8} style={{ textAlign: "right" }}>
                                                 <span
                                                     onClick={() => navigate(`/Home/tasks/${item.id}`)}
                                                     style={{
                                                         fontSize: 14,
                                                         color: "#1890ff",
                                                         cursor: "pointer",
+                                                        wordBreak: "break-word",
                                                     }}
                                                 >
                                                     {item.id}
@@ -209,22 +244,28 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
                                 {item.fromLabel && item.toLabel && (
                                     <Row
                                         align="middle"
+                                        justify="center"
                                         style={{
                                             marginTop: 6,
                                             gap: 8,
-                                            justifyContent: "center",
                                             fontSize: 12,
+                                            flexWrap: "wrap",
                                         }}
                                     >
                                         <span style={labelStyleFrom}>{item.fromLabel}</span>
-                                        <ArrowRightOutlined style={{ fontSize: 18, color: "#999" }} />
+                                        <ArrowRightOutlined
+                                            style={{ fontSize: 18, color: "#999" }}
+                                        />
                                         <span style={labelStyleTo}>{item.toLabel}</span>
                                     </Row>
                                 )}
                             </List.Item>
                         )}
                     />
-                    <Row justify="space-between" style={{ marginTop: 8, fontSize: 12 }}>
+                    <Row
+                        justify="space-between"
+                        style={{ marginTop: 8, fontSize: 12, flexWrap: "wrap" }}
+                    >
                         <Col style={{ color: "#999" }}>
                             Items: {timeline.length} of {timeline.length}
                         </Col>
