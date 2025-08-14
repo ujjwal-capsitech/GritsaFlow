@@ -29,7 +29,7 @@ namespace GritsaFlow.Services
             // Count tasks for this project
             long count = await _tasks.CountDocumentsAsync(t => t.Project.ProjectId == newTask.Project.ProjectId);
 
-            // Generate TaskId based on ProjectId
+            
             newTask.TaskId = $"{newTask.Project.ProjectId}-{(count + 1).ToString().PadLeft(3, '0')}";
 
             newTask.Creator = new Creator { Id = userId, Name = userName, CreatedAt = DateTime.UtcNow };
@@ -38,12 +38,12 @@ namespace GritsaFlow.Services
             await _tasks.InsertOneAsync(newTask);
             var user = await _user.GetByidAsync(userId);
 
-            // Log activity
+            
             await _timelineService.LogActivityAsync(new ProjectTimeLine
             {
                 ProjectID = newTask.Project.ProjectId,
                 TaskID = newTask.TaskId,
-                UserName = userName,
+                UserName = user?.Name??userName,
                 ActivityDescription = $"Task '{newTask.Title}' created",
                 avatarurl = user?.AvatarUrl ?? string.Empty,     
                 statefrom = "None",
@@ -54,15 +54,15 @@ namespace GritsaFlow.Services
         }
 
 
-        // Get All Tasks (excluding deleted)
+        
         public async Task<List<Tasks>> GetAllAsync() =>
             await _tasks.Find(t => !t.IsDeleted).ToListAsync();
 
-        // Get By TaskId
+        
         public async Task<Tasks?> GetByIdAsync(string taskId) =>
             await _tasks.Find(t => t.TaskId == taskId && !t.IsDeleted).FirstOrDefaultAsync();
 
-        // Update Task
+        
         public async Task<Tasks?> EditByIdAsync(string taskId, Tasks updatedTask, string userId, string userName)
         {
             var existingTask = await GetByIdAsync(taskId);
@@ -73,14 +73,14 @@ namespace GritsaFlow.Services
             updatedTask.Project.ProjectId = existingTask.Project.ProjectId;
             updatedTask.Creator = existingTask.Creator;
             updatedTask.Updator = new Updator { Id = userId, Name = userName, UpdatedAt = DateTime.UtcNow };
-
+            var user = await _user.GetByidAsync(userId);
             await _tasks.ReplaceOneAsync(t => t.TaskId == taskId, updatedTask);
 
             await _timelineService.LogActivityAsync(new ProjectTimeLine
             {
                 ProjectID = updatedTask.Project.ProjectId,
                 TaskID = updatedTask.TaskId,
-                UserName = userName,
+                UserName = user?.Name??userName,
                 ActivityDescription = $"Task '{updatedTask.Title}' updated",
                 statefrom = existingTask.TaskStatus.ToString(),
                 stateTo = updatedTask.TaskStatus.ToString(),
@@ -91,7 +91,7 @@ namespace GritsaFlow.Services
             return updatedTask;
         }
 
-        // Update Description
+        
         public async Task<bool> UpdateDescriptionAsync(string taskId, string newDescription, string userId, string userName)
         {
             var update = Builders<Tasks>.Update
@@ -99,14 +99,14 @@ namespace GritsaFlow.Services
                 .Set(t => t.Updator, new Updator { Id = userId, Name = userName, UpdatedAt = DateTime.UtcNow });
 
             var result = await _tasks.UpdateOneAsync(t => t.TaskId == taskId && !t.IsDeleted, update);
-
+            var user = await _user.GetByidAsync(userId);
             if (result.ModifiedCount > 0)
             {
                 await _timelineService.LogActivityAsync(new ProjectTimeLine
                 {
                     ProjectID = taskId,
                     TaskID = taskId,
-                    UserName = userName,
+                    UserName = user?.Name ?? userName,
                     ActivityDescription = "Task description updated",
                     updator = new Updator { Id = userId, Name = userName, UpdatedAt = DateTime.UtcNow },
                     updatedAt = DateTime.UtcNow
@@ -117,7 +117,7 @@ namespace GritsaFlow.Services
             return false;
         }
 
-        // Soft Delete
+        
         public async Task<bool> DeleteByIdAsync(string taskId, string userId, string userName)
         {
             var update = Builders<Tasks>.Update
@@ -125,14 +125,14 @@ namespace GritsaFlow.Services
                 .Set(t => t.Updator, new Updator { Id = userId, Name = userName, UpdatedAt = DateTime.UtcNow });
 
             var result = await _tasks.UpdateOneAsync(t => t.TaskId == taskId, update);
-
+            var user = await _user.GetByidAsync(userId);
             if (result.ModifiedCount > 0)
             {
                 await _timelineService.LogActivityAsync(new ProjectTimeLine
                 {
                     ProjectID = taskId,
                     TaskID = taskId,
-                    UserName = userName,
+                    UserName = user?.Name ?? userName,
                     ActivityDescription = "Task deleted",
                     updator = new Updator { Id = userId, Name = userName, UpdatedAt = DateTime.UtcNow },
                     updatedAt = DateTime.UtcNow

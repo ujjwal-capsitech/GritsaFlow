@@ -25,7 +25,7 @@ namespace GritsaFlow.Models
 
         [EnumDataType(typeof(TaskPriority))]
         public TaskPriority Priority { get; set; }   
-
+        
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime DueDate { get; set; }
 
@@ -66,8 +66,8 @@ namespace GritsaFlow.Models
     public enum TaskPriority
     {
         high,
-        Medium ,
+        Medium,
         Low,
-    }
+    }   
 }
 

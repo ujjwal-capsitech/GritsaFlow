@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import "./App.css";
+import './App.css';
 import App from "./App";
 
 import {
@@ -12,6 +12,7 @@ import "@ant-design/v5-patch-for-react-19";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { CookiesProvider } from 'react-cookie';
+
 
 const queryClient = new QueryClient({
     queryCache: new QueryCache({

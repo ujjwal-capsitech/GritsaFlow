@@ -50,7 +50,7 @@ namespace GritsaFlow.Controllers
         }
 
         [HttpPut("{taskId}")]
-        [Authorize(Roles = Roles.Admin + "," + Roles.TeamLead)]
+        //[Authorize(Roles = Roles.Admin + "," + Roles.TeamLead)]
         public async Task<IActionResult> Put(string taskId, Tasks updatedTask)
         {
             var (id, name) = GetUserContext();
@@ -62,18 +62,18 @@ namespace GritsaFlow.Controllers
             return Ok(ApiResponse<Tasks>.Ok(existing));
         }
 
-        [HttpPatch("{taskId}/description")]
-        [Authorize(Roles = Roles.Admin + "," + Roles.TeamLead)]
-        public async Task<IActionResult> UpdateDescription(string taskId, [FromBody] string newDescription)
-        {
-            var (id, name) = GetUserContext();
-            var success = await _tasksservices.UpdateDescriptionAsync(taskId, newDescription, id, name);
+        //[HttpPatch("{taskId}/description")]
+        //[Authorize(Roles = Roles.Admin + "," + Roles.TeamLead)]
+        //public async Task<IActionResult> UpdateDescription(string taskId, [FromBody] string newDescription)
+        //{
+        //    var (id, name) = GetUserContext();
+        //    var success = await _tasksservices.UpdateDescriptionAsync(taskId, newDescription, id, name);
 
-            if (!success)
-                return NotFound(ApiResponse.Error("Task not found."));
+        //    if (!success)
+        //        return NotFound(ApiResponse.Error("Task not found."));
 
-            return Ok(ApiResponse.Ok("Description updated successfully"));
-        }
+        //    return Ok(ApiResponse.Ok("Description updated successfully"));
+        //}
 
         [HttpDelete("{taskId}")]
         [Authorize(Roles = Roles.Admin)]

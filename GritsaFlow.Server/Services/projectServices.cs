@@ -35,7 +35,7 @@ namespace GritsaFlow.Services
             //{
             //    foreach (var employee in newProject.Employees)
             //    {
-            //        var filter = Builders<User>.Filter.Eq(u => u.UserId, employee.EmpId);
+            //        var filter = Builders<User>.Filter.Eq(u => u.UserId, employee.EmpId); //trying to update Object in an List 
 
             //        var update = Builders<User>.Update.Set(u => u.Project, new projects
             //        {
@@ -135,34 +135,20 @@ namespace GritsaFlow.Services
             return updatedProject;
         }
 
+
         public async Task<List<Project>> GetAllAsync() =>
 
             await _projects.Find(p => !p.IsDeleted).ToListAsync();
+        public async Task<List<EmployeeRef>> GetAllProjectEmpAsync()
+        {
+            var employeeLists = await _projects
+                .Find(p => !p.IsDeleted)
+                .Project(p => p.Employees)
+                .ToListAsync();
 
-        //public async Task<List<TaskReportDto>> GetProjectReportAsync(string projectId)
-        //{
-
-        //    var project = await _projects
-        //        .Find(p => p.ProjectId == projectId && !p.IsDeleted)
-        //        .FirstOrDefaultAsync();
-
-        //    if (project == null) return new List<TaskReportDto>();
-
-
-        //    var tasks = await _tasks.Find(t => t.Project.ProjectId == projectId).ToListAsync();
-
-
-        //    var report = tasks
-        //        .GroupBy(t => t.TaskStatus.ToString())
-        //        .Select(g => new TaskReportDto
-        //        {
-        //            Name = g.Key,
-        //            Value = g.Count()
-        //        })
-        //        .ToList();
-
-        //    return report;
-        //}
+            
+            return employeeLists.SelectMany(e => e).ToList();
+        }
 
 
         public async Task<bool> DeleteProjectAsync(string ProjectId, string updatorId, string updatorName)
@@ -183,5 +169,13 @@ namespace GritsaFlow.Services
 
             return result.ModifiedCount > 0;
         }
+        public async Task<List<EmployeeRef>?> GetProjectEmployeesAsync(string projectId)
+        {
+            return await _projects
+                .Find(p => p.ProjectId == projectId && !p.IsDeleted)
+                .Project(p => p.Employees)
+                .FirstOrDefaultAsync();
+        }
+
     }
 }

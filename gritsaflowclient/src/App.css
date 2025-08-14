@@ -1,5 +1,31 @@
-@media (max-width: 600px) {
-    .echarts {
-        display: none;
-    }
+/* Thin scrollbars for all browsers */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+}
+
+/* Card-specific scrollbar styling */
+.ant-card-body {
+    scrollbar-width: thin !important;
+    scrollbar-color: #888 transparent !important;
+}
+
+    .ant-card-body::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    .ant-card-body::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 5px;
+    }

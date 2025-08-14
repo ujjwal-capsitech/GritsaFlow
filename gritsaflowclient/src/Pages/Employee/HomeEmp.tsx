@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch} from "react-redux";
 import type { AppDispatch} from "../../redux/store";
 
-import Project from "../../Pages/Home/Pages/Project";
+//import Project from "../../Pages/Home/Pages/Project";
 import LoginIcon from "../../Assets/LoginIcon.svg";
 import { logout } from "../../redux/slice/LoginSlice";
 import { useNavigate, Outlet } from "react-router-dom";
@@ -33,6 +33,7 @@ import { RoleEnum } from '../../api/Role';
 import api from "../../api/api";
 import UserRegistrationForm from "../../Components/UserRegistrationForm";
 import EmpDashboard from "./EmpDashboard";
+import BoardCardEmployee from "./BoardCardEmployee";
 
 
 const { Title } = Typography;
@@ -132,7 +133,7 @@ const HomeEmp: React.FC = () => {
     const renderContent = () => {
         switch (selectedKey) {
             case '1': return <EmpDashboard />;
-            case '2': return <Project />;
+            case '2': return <BoardCardEmployee />;
             default: return "Select an option";
         }
     };
@@ -174,7 +175,7 @@ const HomeEmp: React.FC = () => {
                             Dashboard
                         </Menu.Item>
                         <Menu.Item key="2" icon={<ProjectOutlined />}>
-                            Project
+                            Board
                         </Menu.Item>
                     </Menu>
                 </Sider>

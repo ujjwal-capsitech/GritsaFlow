@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Diagnostics.Contracts;
 
 
+
 namespace GritsaFlow.Models
 
 {
@@ -50,12 +51,6 @@ namespace GritsaFlow.Models
         public DateTime? UpdatedAt { get; set; }
 
         public string AvatarUrl { get; set; }
-    }
-    public class TaskDetails
-    {
-        public string TaskId { get; set; }
-        public string Title { get; set; }
-
     }
 
 }

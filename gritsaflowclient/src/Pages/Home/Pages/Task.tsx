@@ -13,17 +13,20 @@ import {
     Avatar,
     message,
     Spin,
+    Typography
 } from "antd";
+import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { useLocation, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import api from "../../../api/api";
 
 const { Option } = Select;
+const { Text } = Typography;
 
 const priorityMap: Record<number, string> = {
-    1: "High",
-    2: "Medium",
-    3: "Low",
+    0: "high",
+    1: "Medium",
+    2: "Low",
 };
 
 const statusMap: Record<number, string> = {
@@ -38,9 +41,9 @@ const statusMap: Record<number, string> = {
 };
 
 const reversePriorityMap: Record<string, number> = {
-    High: 1,
-    Medium: 2,
-    Low: 3,
+    high: 0,
+    Medium: 1,
+    Low: 2,
 };
 
 const reverseStatusMap: Record<string, number> = {
@@ -106,12 +109,24 @@ const Task: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("description");
     const [comments, setComments] = useState<Comment[]>([]);
-    const [comment, setComment] = useState("");
     const [projectEmployees, setProjectEmployees] = useState<Employee[]>([]);
     const [loadingEmployees, setLoadingEmployees] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [form] = Form.useForm();
 
-    const [mainForm] = Form.useForm();
-    const [detailsForm] = Form.useForm();
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await api.get("User/current");
+                setCurrentUser(response.data);
+            } catch (err) {
+                console.error("Failed to fetch current user", err);
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
 
     const fetchTask = async () => {
         try {
@@ -120,7 +135,6 @@ const Task: React.FC = () => {
             setTaskData(data);
             setComments(data?.comments || []);
 
-            // Fetch project employees after task data is loaded
             if (data?.project?.projectId) {
                 fetchProjectEmployees(data.project.projectId);
             }
@@ -151,8 +165,6 @@ const Task: React.FC = () => {
         } else if (taskData) {
             setComments(taskData?.comments || []);
             setLoading(false);
-
-            // Fetch project employees if taskData is available via state
             if (taskData?.project?.projectId) {
                 fetchProjectEmployees(taskData.project.projectId);
             }
@@ -162,71 +174,78 @@ const Task: React.FC = () => {
     useEffect(() => {
         if (!taskData) return;
 
-        // Set values for left-side form
-        mainForm.setFieldsValue({
+        form.setFieldsValue({
             projectId: taskData.project?.projectId || "",
             taskId: taskData.taskId || "",
             title: taskData.title || "",
             description: taskData.description || "",
-        });
-
-        // Set values for right-side form
-        detailsForm.setFieldsValue({
             priority: priorityMap[taskData.priority] || "Low",
             dueDate: taskData.dueDate ? dayjs(taskData.dueDate) : null,
             assignee: taskData.assignedToId || "",
             reporter: taskData.reportToId || "",
             status: statusMap[taskData.taskStatus] || "Backlog",
+            newComment: "" // Initialize comment field
         });
-    }, [taskData]);
-
-    const handleComment = async () => {
-        if (comment.trim() && taskData) {
-            const newComment = {
-                name: "Ujjwal Raj",
-                comment,
-                createdAt: new Date().toISOString(),
-            };
-
-            try {
-                await api.patch(`/tasks/${taskData.taskId}/comment`, {
-                    comment: newComment.comment,
-                });
-
-                setComments((prev) => [newComment, ...prev]);
-                setComment("");
-                message.success("Comment added");
-            } catch (err) {
-                message.error("Failed to add comment");
-                console.error(err);
-            }
-        }
-    };
+    }, [taskData, form]);
 
     const handleSubmit = async () => {
-        if (!taskData) return;
+        if (!taskData || !currentUser) return;
 
         try {
-            const main = mainForm.getFieldsValue();
-            const details = detailsForm.getFieldsValue();
+            const values = form.getFieldsValue();
+            const newComment = values.newComment;
 
+            // Prepare updated comments array
+            const updatedComments = [...comments];
+            if (newComment && newComment.trim()) {
+                updatedComments.push({
+                    name: currentUser.name, // Use current user's name
+                    comment: newComment,
+                    createdAt: new Date().toISOString()
+                });
+            }
+
+            // Prepare updated task object
             const updatedTask = {
                 ...taskData,
-                title: main.title,
-                description: main.description,
-                dueDate: details.dueDate ? details.dueDate.toISOString() : null,
-                assignedToId: details.assignee,
-                reportToId: details.reporter,
-                priority: reversePriorityMap[details.priority as string],
-                taskStatus: reverseStatusMap[details.status as string],
+                title: values.title,
+                description: values.description,
+                dueDate: values.dueDate ? values.dueDate.toISOString() : null,
+                assignedToId: values.assignee,
+                reportToId: values.reporter,
+                priority: reversePriorityMap[values.priority as string],
+                taskStatus: reverseStatusMap[values.status as string],
+                comments: updatedComments,
+
+                updator: {
+                    id: currentUser.userId,
+                    name: currentUser.name,
+                }
             };
 
+            
             await api.put(`/tasks/${taskData.taskId}`, updatedTask);
+
+            // Update local state
+            setTaskData(updatedTask);
+            setComments(updatedComments);
+            form.setFieldsValue({ newComment: "" }); // Clear comment field
+
             message.success("Task saved successfully");
+            setIsEditMode(false);
         } catch (err) {
             message.error("Failed to save task");
             console.error(err);
         }
+    };
+
+    const shouldShowEditButton = () => {
+        if (!currentUser || !taskData) return false;
+
+        
+        if (currentUser.role !== "employee") return true;
+
+        return taskData.assignedToId === currentUser.Id;
     };
 
     if (loading) return <Spin tip="Loading Task..." />;
@@ -235,8 +254,20 @@ const Task: React.FC = () => {
     return (
         <Row gutter={24} style={{ padding: 24 }}>
             <Col xs={24} md={16}>
-                <Card bordered={false}>
-                    <Form form={mainForm} layout="vertical">
+                <Card
+                    bordered={false}
+                    extra={
+                        <Button
+                            type="text"
+                            icon={isEditMode ? <EyeOutlined /> : <EditOutlined />}
+                            onClick={() => setIsEditMode(!isEditMode)}
+                            style={{ display: shouldShowEditButton() ? "inline-block" : "none" }}
+                        >
+                            {isEditMode ? "View" : "Edit"}
+                        </Button>
+                    }
+                >
+                    <Form form={form} layout="vertical">
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item label="Project ID" name="projectId">
@@ -250,8 +281,12 @@ const Task: React.FC = () => {
                             </Col>
                         </Row>
 
-                        <Form.Item label="Title" name="title" rules={[{ required: true }]}>
-                            <Input />
+                        <Form.Item
+                            label="Title"
+                            name="title"
+                            rules={[{ required: true }]}
+                        >
+                            <Input disabled={!isEditMode} />
                         </Form.Item>
 
                         <Tabs activeKey={activeTab} onChange={setActiveTab}>
@@ -261,22 +296,26 @@ const Task: React.FC = () => {
 
                         <div style={{ padding: 16 }}>
                             {activeTab === "description" ? (
-                                <Form.Item name="description" rules={[{ required: true }]}>
-                                    <Input.TextArea rows={4} placeholder="Write description..." />
+                                <Form.Item
+                                    name="description"
+                                    rules={[{ required: true }]}
+                                >
+                                    <Input.TextArea
+                                        rows={4}
+                                        placeholder="Write description..."
+                                        disabled={!isEditMode}
+                                    />
                                 </Form.Item>
                             ) : (
                                 <>
-                                    <Form.Item label="Create Comment">
-                                        <Input.TextArea
-                                            rows={2}
-                                            value={comment}
-                                            onChange={(e) => setComment(e.target.value)}
-                                            placeholder="Write your comment here..."
-                                        />
-                                    </Form.Item>
-                                    <Button type="primary" onClick={handleComment}>
-                                        Submit Comment
-                                    </Button>
+                                    {isEditMode && (
+                                        <Form.Item name="newComment" label="Create Comment">
+                                            <Input.TextArea
+                                                rows={2}
+                                                placeholder="Write your comment here..."
+                                            />
+                                        </Form.Item>
+                                    )}
 
                                     <Card style={{ marginTop: 24 }}>
                                         <List
@@ -289,9 +328,9 @@ const Task: React.FC = () => {
                                                         title={
                                                             <span>
                                                                 {item.name}{" "}
-                                                                <span style={{ fontSize: 12 }}>
+                                                                <Text type="secondary" style={{ fontSize: 12 }}>
                                                                     {dayjs(item.createdAt).format("MMM D, YYYY h:mm A")}
-                                                                </span>
+                                                                </Text>
                                                             </span>
                                                         }
                                                         description={<span>{item.comment}</span>}
@@ -314,16 +353,19 @@ const Task: React.FC = () => {
                     headStyle={{ background: "#f7f7c2" }}
                     style={{ border: "1px solid #f0f0f0" }}
                 >
-                    <Form form={detailsForm} layout="vertical">
+                    <Form form={form} layout="vertical">
                         <Form.Item label="Priority" name="priority">
-                            <Select>
-                                <Option value="High">High</Option>
+                            <Select disabled={!isEditMode}>
+                                <Option value="high">High</Option>
                                 <Option value="Medium">Medium</Option>
                                 <Option value="Low">Low</Option>
                             </Select>
                         </Form.Item>
                         <Form.Item label="Due Date" name="dueDate">
-                            <DatePicker style={{ width: "100%" }} />
+                            <DatePicker
+                                style={{ width: "100%" }}
+                                disabled={!isEditMode}
+                            />
                         </Form.Item>
 
                         <Form.Item label="Assigned To" name="assignee">
@@ -334,6 +376,7 @@ const Task: React.FC = () => {
                                 filterOption={(input, option) =>
                                     (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
                                 }
+                                disabled={!isEditMode}
                             >
                                 {projectEmployees.map(emp => (
                                     <Option key={emp.empId} value={emp.empId}>
@@ -351,6 +394,7 @@ const Task: React.FC = () => {
                                 filterOption={(input, option) =>
                                     (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
                                 }
+                                disabled={!isEditMode}
                             >
                                 {projectEmployees.map(emp => (
                                     <Option key={emp.empId} value={emp.empId}>
@@ -361,7 +405,7 @@ const Task: React.FC = () => {
                         </Form.Item>
 
                         <Form.Item label="Status" name="status">
-                            <Select>
+                            <Select disabled={!isEditMode}>
                                 <Option value="Backlog">Backlog</Option>
                                 <Option value="NeedToDiscuss">Need To Discuss</Option>
                                 <Option value="Todo">Todo</Option>
@@ -375,11 +419,13 @@ const Task: React.FC = () => {
                     </Form>
                 </Card>
 
-                <div style={{ textAlign: "right", marginTop: 16 }}>
-                    <Button type="primary" onClick={handleSubmit}>
-                        Save Task
-                    </Button>
-                </div>
+                {isEditMode && (
+                    <div style={{ textAlign: "right", marginTop: 16 }}>
+                        <Button type="primary" onClick={handleSubmit}>
+                            Save Task
+                        </Button>
+                    </div>
+                )}
             </Col>
         </Row>
     );

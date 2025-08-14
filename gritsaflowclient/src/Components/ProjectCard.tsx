@@ -104,12 +104,13 @@ const ProjectCard: React.FC = () => {
             title: "Projects",
             dataIndex: "projectTitles",
             key: "projectTitles",
-            render: (text: string) => text ||"No projects",
+            render: (text: string) => text || "No projects",
+            
         },
     ];
 
     return (
-        <Card style={{ borderRadius: "14px", padding: "10px", overflow: "auto", height: "382px" }}>
+        <Card style={{ borderRadius: "14px", padding: "10px", overflow: "auto", }}>
             <Row justify="space-between" align="middle" style={{ marginBottom: "10px" }}>
                 <Title level={5} style={{ margin: 0 }}>
                     Employees

@@ -7,7 +7,6 @@ import {
     Menu,
     Row,
     Space,
-    Spin,
     Typography,
     message
 } from "antd";
@@ -23,17 +22,18 @@ import {
 } from '@ant-design/icons';
 import { Content, Header } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { setSelectedKey } from "../../redux/slice/HomeSlice";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../redux/store";
-import AdminDashboard from "../../Pages/Home/Pages/Dashboard";
-import Project from "../../Pages/Home/Pages/Project";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store";
+//import Project from "../../Pages/Home/Pages/Project";
 import LoginIcon from "../../Assets/LoginIcon.svg";
 import { logout } from "../../redux/slice/LoginSlice";
-import { useNavigate, Outlet } from "react-router-dom"; 
+import { useNavigate, Outlet } from "react-router-dom";
 import { RoleEnum } from '../../api/Role';
 import api from "../../api/api";
 import UserRegistrationForm from "../../Components/UserRegistrationForm";
+import EmpDashboard from "../Employee/EmpDashboard";
+import BoardCardEmployee from "../Employee/BoardCardEmployee";
+
 
 const { Title } = Typography;
 
@@ -44,7 +44,7 @@ interface User {
     avatarUrl?: string;
 }
 
-const HomeEmp: React.FC = () => {
+const HomeTeamLead: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const [selectedKey, setSelectedKey] = useState(() => {
@@ -52,6 +52,8 @@ const HomeEmp: React.FC = () => {
         if (savedKey) return savedKey;
         return "1";
     });
+
+
 
     // Local state for user
     const [user, setUser] = useState<User | null>(null);
@@ -66,7 +68,7 @@ const HomeEmp: React.FC = () => {
                 setLoading(true);
                 const response = await api.get<User>("User/current");
                 setUser(response.data);
-            } catch  {
+            } catch {
                 setError("Error loading user data");
                 message.error("Error loading user data");
                 //console.log("Error loading user data", err);
@@ -82,7 +84,6 @@ const HomeEmp: React.FC = () => {
         setSelectedKey(e.key);
         localStorage.setItem("selectedKey", e.key);
     };
-
 
     const handleLogout = () => {
         dispatch(logout());
@@ -102,13 +103,13 @@ const HomeEmp: React.FC = () => {
                 key="profile"
                 icon={<UserOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
             >
-               
+
                 <Row>
                     <Row style={{ fontWeight: 'bold' }}>{user?.name}</Row>
                     <Row>{user?.email}</Row>
                 </Row>
             </Menu.Item>
-            
+
             <Menu.Item
                 key="createUser"
                 icon={<UserAddOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
@@ -129,8 +130,8 @@ const HomeEmp: React.FC = () => {
 
     const renderContent = () => {
         switch (selectedKey) {
-            case '1': return <AdminDashboard />;
-            case '2': return <Project />;
+            case '1': return <EmpDashboard />;
+            case '2': return <BoardCardEmployee />;
             default: return "Select an option";
         }
     };
@@ -156,7 +157,7 @@ const HomeEmp: React.FC = () => {
                         <img
                             src={LoginIcon}
                             alt="login-Illustration"
-                            onClick={()=> navigate("/Home") }
+                            onClick={() => navigate("/Employee")}
                             style={{ width: "80%", maxWidth: "50px", marginBottom: 8 }}
                         />
                     </Row>
@@ -164,16 +165,15 @@ const HomeEmp: React.FC = () => {
                     <Menu
                         theme="light"
                         mode="inline"
-                        defaultSelectedKeys={["1"]}
                         selectedKeys={[selectedKey]}
                         onClick={handleMenuClick}
                         style={{ background: "#c3cfe2" }}
                     >
-                        <Menu.Item  key="1" icon={<DashboardOutlined /> }>
+                        <Menu.Item key="1" icon={<DashboardOutlined />}>
                             Dashboard
                         </Menu.Item>
                         <Menu.Item key="2" icon={<ProjectOutlined />}>
-                            Project
+                            Board
                         </Menu.Item>
                     </Menu>
                 </Sider>
@@ -187,12 +187,12 @@ const HomeEmp: React.FC = () => {
                         padding: "0 24px",
                     }}>
                         <Title level={4} style={{ margin: 0 }}>
-                            Welcome, {user?.name} <ArrowRightOutlined /> {<span style={{ fontWeight: "normal", color: "#444" }}> {user?.role} </span>}  
+                            Welcome, {user?.name} <ArrowRightOutlined /> {<span style={{ fontWeight: "normal", color: "#444" }}> {user?.role} </span>}
                         </Title>
 
                         <Dropdown overlay={profileMenu} trigger={["click"]}>
                             <Space style={{ cursor: "pointer" }}>
-                                <Avatar 
+                                <Avatar
                                     src={user?.avatarUrl}
                                     icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
                                     style={{ backgroundColor: user?.avatarUrl ? 'transparent' : '#1890ff' }}
@@ -212,9 +212,9 @@ const HomeEmp: React.FC = () => {
                         {/* Add Outlet for nested routes */}
 
                         <Outlet />
-                         {/*Render regular content only if no nested route is active */}
+                        {/*Render regular content only if no nested route is active */}
                         {!window.location.pathname.includes('/Home/tasks/') && renderContent()}
-                        
+
                         {/*{!force && <Outlet />}*/}
                         {/*{(force || !window.location.pathname.includes('/Home/tasks/')) && renderContent()}*/}
                     </Content>
@@ -228,4 +228,4 @@ const HomeEmp: React.FC = () => {
     );
 };
 
-export default HomeEmp;
+export default HomeTeamLead;

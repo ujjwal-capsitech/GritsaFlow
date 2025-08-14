@@ -118,5 +118,27 @@ namespace GritsaFlow.Controllers
 
             return Ok(ApiResponse.Ok("Project deleted successfully"));
         }
+        [HttpGet("{ProjectId}/employees")]
+        public async Task<ActionResult<ApiResponse<List<EmployeeRef>>>> GetEmployeesByProject(string ProjectId)
+        {
+            var employees = await _projectservices.GetProjectEmployeesAsync(ProjectId);
+
+            if (employees is null)
+                return NotFound(ApiResponse<List<EmployeeRef>>.Error("Project not found or has no employees."));
+
+            return Ok(ApiResponse<List<EmployeeRef>>.Ok(employees));
+        }
+        [HttpGet("/employees/all")]
+        public async Task<ActionResult<ApiResponse<List<EmployeeRef>>>> GetProjectEmployeesAsync()
+        {
+            var employees = await _projectservices.GetAllProjectEmpAsync();
+
+            if (employees is null)
+                return NotFound(ApiResponse<List<EmployeeRef>>.Error());
+
+            return Ok(ApiResponse<List<EmployeeRef>>.Ok(employees));
+        }
+
+
     }
 }

@@ -46,7 +46,7 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
     const validateName = (_: any, value: any) => {
         return value && value.trim() !== ""
             ? Promise.resolve() :
-            Promise.reject("This Field  cannot contain empty spaces")
+            Promise.reject()
     }
 
   return (
@@ -96,14 +96,14 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
                   rules={[{ required: true, message: "Please select a role" }, { validator: validateName }]}
         >
           <Select placeholder="Select a role">
-            <Option value="Admin">admin</Option>
-            <Option value="Employee">teamlead</Option>
-            <Option value="Employee">employee</Option>
+            <Option value="admin">Admin</Option>
+            <Option value="teamlead">Teamlead</Option>
+            <Option value="employee">Employee</Option>
           </Select>
         </Form.Item>
 
               <Form.Item label="Avatar URL" name="avatarUrl" rules={[{ validator: validateName }] }>
-          <Input placeholder="(Optional)" />
+          <Input />
         </Form.Item>
 
         <Form.Item>

@@ -70,7 +70,7 @@ const onFinish = (values:
 const validateName = (_: any, value: any) => {
     return value && value.trim() !== ""
         ? Promise.resolve() :
-        Promise.reject("This Field  cannot contain empty spaces")
+        Promise.reject()
 }
 
 return (
