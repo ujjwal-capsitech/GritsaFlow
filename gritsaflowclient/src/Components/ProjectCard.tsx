@@ -118,11 +118,11 @@ const ProjectCard: React.FC = () => {
                 key: emp.empId,
                 userId: emp.empId,
                 name: emp.empName,
-                userName: "", // Not available in filtered endpoint
+                userEmail: "", 
                 projectTitles: projects.find(p => p.projectId === selectedProject)?.projectTitle || "N/A"
             }));
         }
-        
+
         return users.map(user => ({
             ...user,
             key: user.userId,
@@ -130,7 +130,7 @@ const ProjectCard: React.FC = () => {
                 .filter(p => p.employees?.some(e => e.empId === user.userId))
                 .map(p => p.projectTitle)
                 .join(", ")
-        }));
+        }));// not to use as   backend response is good 
     };
 
     const columns = [
@@ -168,7 +168,7 @@ const ProjectCard: React.FC = () => {
                         Employees
                     </Title>
                 </Col>
-                
+
                 <Col>
                     <Row gutter={8}>
                         <Col>
@@ -213,6 +213,7 @@ const ProjectCard: React.FC = () => {
                     ),
                 }}
             />
+            {/* use antd Table Filtaration on Projects Row and omit the User Name Row*/}
 
             {!selectedProject && (
                 <AppPagination

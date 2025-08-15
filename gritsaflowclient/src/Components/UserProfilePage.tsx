@@ -1,13 +1,28 @@
+// UserProfilePage.tsx
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { fetchUserProfile, updateUserProfile } from "../redux/slice/UserProfileSlice";
+import type { AppDispatch } from "../redux/store";
+import {
+    fetchUserProfile,
+    updateUserProfile
+} from "../redux/slice/UserProfileSlice";
 import {
     selectUserProfile,
     selectUserProfileLoading,
     selectUserProfileError
 } from "../redux/slice/UserProfileSlice";
-import { Button, Form, Input, Row, Col, Avatar, Typography, Skeleton, message, Upload } from "antd";
+import {
+    Button,
+    Form,
+    Input,
+    Row,
+    Col,
+    Avatar,
+    Typography,
+    Skeleton,
+    message,
+    Upload
+} from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import type { RcFile } from 'antd/es/upload/interface';
 
@@ -20,6 +35,7 @@ const UserProfilePage: React.FC = () => {
     const error = useSelector(selectUserProfileError);
     const [avatarData, setAvatarData] = useState<string | null>(null);
     const [form] = Form.useForm();
+    const [isUpdating, setIsUpdating] = useState(false);
 
     // Initialize form with user data
     useEffect(() => {
@@ -46,6 +62,12 @@ const UserProfilePage: React.FC = () => {
             return false;
         }
 
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+            return false;
+        }
+
         const reader = new FileReader();
         reader.onload = (e) => {
             if (e.target?.result) {
@@ -57,10 +79,16 @@ const UserProfilePage: React.FC = () => {
     };
 
     const onFinish = (values: any) => {
+        setIsUpdating(true);
         const updatedData = {
             ...values,
-            avatarUrl: avatarData || undefined,
+            avatarUrl: avatarData || user?.avatarUrl,
         };
+
+        // Remove empty password field
+        if (!updatedData.password) {
+            delete updatedData.password;
+        }
 
         dispatch(updateUserProfile(updatedData))
             .unwrap()
@@ -69,6 +97,9 @@ const UserProfilePage: React.FC = () => {
             })
             .catch((err) => {
                 message.error(err || 'Failed to update profile');
+            })
+            .finally(() => {
+                setIsUpdating(false);
             });
     };
 
@@ -87,6 +118,9 @@ const UserProfilePage: React.FC = () => {
             <Row justify="center" style={{ padding: 24 }}>
                 <Col span={24}>
                     <div style={{ color: 'red' }}>{error}</div>
+                    <Button onClick={() => dispatch(fetchUserProfile())}>
+                        Retry
+                    </Button>
                 </Col>
             </Row>
         );
@@ -99,8 +133,8 @@ const UserProfilePage: React.FC = () => {
 
                 <Row justify="center" style={{ marginBottom: 24 }}>
                     <Avatar
-                        src={avatarData}
-                        icon={!avatarData && <UserOutlined />}
+                        src={avatarData || user?.avatarUrl}
+                        icon={!avatarData && !user?.avatarUrl && <UserOutlined />}
                         size={128}
                     />
                 </Row>
@@ -109,6 +143,11 @@ const UserProfilePage: React.FC = () => {
                     form={form}
                     layout="vertical"
                     onFinish={onFinish}
+                    initialValues={{
+                        name: user?.name || '',
+                        email: user?.email || '',
+                        role: user?.role || '',
+                    }}
                 >
                     <Row gutter={16}>
                         <Col span={24}>
@@ -182,7 +221,7 @@ const UserProfilePage: React.FC = () => {
                                 <Button
                                     type="primary"
                                     htmlType="submit"
-                                    loading={loading}
+                                    loading={loading || isUpdating}
                                     block
                                 >
                                     Update Profile

@@ -21,7 +21,7 @@ interface FormValues {
 
 const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, onClose }) => {
     const [loading, setLoading] = useState(false);
-    const [avatarData, setAvatarData] = useState<string | null>(null); // Stores base64 encoded image
+    const [avatarData, setAvatarData] = useState<string | null>(null); 
 
     // Reset form and avatar data when modal closes
     useEffect(() => {
@@ -58,11 +58,11 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
         }
     };
 
-    // Validation function to ensure fields aren't just whitespace
+    
     const validateName = (_: any, value: string) => {
         return value && value.trim() !== ""
             ? Promise.resolve()
-            : Promise.reject(new Error("Field cannot be empty"));
+            : Promise.reject();
     };
 
     // Handle image upload and convert to base64
@@ -78,10 +78,10 @@ const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ visible, on
 
         const reader = new FileReader();
 
-        // On file load complete
+        
         reader.onload = (event) => {
             if (event.target?.result) {
-                // Format: data:image/jpeg;base64,<actual-base64-data>
+                
                 const base64Data = `data:${file.type};base64,${btoa(
                     new Uint8Array(event.target.result as ArrayBuffer)
                         .reduce((data, byte) => data + String.fromCharCode(byte), '')

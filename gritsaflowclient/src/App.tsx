@@ -14,8 +14,8 @@ import Task from "./Pages/Home/Pages/Task";
 import AdminDashboard from "./Pages/Home/Pages/Dashboard";
 import Project from "./Pages/Home/Pages/Project";
 import ProjectCard from "./Components/ProjectCard";
-import "../src/App.css";
-import UserProfilePage from "../src/Components/UserProfilePage.tsx"
+import  "../src/App.css";
+import UserProfilePage from "./Components/ UserProfilePage.tsx";
 
 const App: React.FC = () => {
     return (
@@ -57,11 +57,10 @@ const App: React.FC = () => {
                 <Route path="/ProjectCard" element={
                     <ProjectCard />
                 } />
-                // Add this route with others
                 <Route path="/profile" element={
-                    <PageRoute allowedRoles={[RoleEnum.Admin, RoleEnum.TeamLead, RoleEnum.Employee]}>
+          
                         <UserProfilePage />
-                    </PageRoute>
+                    
                 } />
 
             </Routes>

@@ -71,7 +71,7 @@ public class UserController : ControllerBase
             Email = user.Email,
             UserName = user.UserName,
             AvatarUrl = user.AvatarUrl,
-        };  
+        };
 
         var response = new
         {
@@ -123,7 +123,7 @@ public class UserController : ControllerBase
     [HttpGet("basic")]
     public async Task<ActionResult<ApiResponse<PagedResult<UserBasicDto>>>> GetAllBasic(int pageNumber = 1, int pageSize = 10)
     {
-        var users = await _service.GetAllBasicAsync(pageNumber,pageSize);
+        var users = await _service.GetAllBasicAsync(pageNumber, pageSize);
         return Ok(ApiResponse<PagedResult<UserBasicDto>>.Ok(users));
     }
 

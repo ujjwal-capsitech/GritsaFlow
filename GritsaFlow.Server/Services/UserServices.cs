@@ -12,7 +12,7 @@ namespace GritsaFlow.Services
     {
         private readonly IMongoCollection<User> _users;
         private readonly IConfiguration _config;
-        
+
 
         public UserServices(IMongoDatabase db, IConfiguration config)
         {
@@ -44,9 +44,9 @@ namespace GritsaFlow.Services
                 AvatarUrl = user.AvatarUrl
             };
         }
-        public async Task<User?> GetByidAsync(string UserId)=>
+        public async Task<User?> GetByidAsync(string UserId) =>
             await _users.Find(u => u.UserId == UserId).FirstOrDefaultAsync();
-        
+
 
 
         public async Task<UserDTO> RegisterAsync(RegisterDTO dto)
@@ -75,7 +75,7 @@ namespace GritsaFlow.Services
                 AvatarUrl = dto.AvatarUrl,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
-                
+
             };
             await _users.InsertOneAsync(user);
 
@@ -104,7 +104,7 @@ namespace GritsaFlow.Services
                     UserName = u.UserName,
                     Name = u.Name
                 })
-                .Skip((pageNumber - 1)*pageSize)
+                .Skip((pageNumber - 1) * pageSize)
                 .Limit(pageSize)
                 .ToListAsync();
             return new PagedResult<UserBasicDto>
@@ -115,7 +115,7 @@ namespace GritsaFlow.Services
                 PageSize = pageSize
             };
         }
-        
+
 
 
         public async Task<bool> IsDeletedAsync(string UserId)
@@ -204,7 +204,7 @@ namespace GritsaFlow.Services
                 Role = user.Role,
                 Email = user.Email,
                 AvatarUrl = user.AvatarUrl,
-                Password = "" // Empty for security
+                Password = "" 
             };
         }
 

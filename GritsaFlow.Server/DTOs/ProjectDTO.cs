@@ -15,12 +15,12 @@ namespace GritsaFlow.Server.DTOs
         public Updator Updator { get; set; }
         public bool IsDeleted { get; set; }
     }
-
     public class ProjectEmployeeDto
     {
         public string ProjectId { get; set; }
         public string ProjectTitle { get; set; }
         public List<EmployeeRef> Employees { get; set; }
     }
+
 
 }

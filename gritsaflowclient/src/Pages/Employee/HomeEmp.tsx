@@ -22,9 +22,8 @@ import {
 } from '@ant-design/icons';
 import { Content, Header } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { useDispatch} from "react-redux";
-import type { AppDispatch} from "../../redux/store";
-
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store";
 //import Project from "../../Pages/Home/Pages/Project";
 import LoginIcon from "../../Assets/LoginIcon.svg";
 import { logout } from "../../redux/slice/LoginSlice";
@@ -48,8 +47,7 @@ interface User {
 const HomeEmp: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const [selectedKey, setSelectedKey] = useState(() =>
-    {
+    const [selectedKey, setSelectedKey] = useState(() => {
         const savedKey = localStorage.getItem("selectedKey");
         if (savedKey) return savedKey;
         return "1";
@@ -84,7 +82,7 @@ const HomeEmp: React.FC = () => {
 
     const handleMenuClick = (e: { key: string }) => {
         setSelectedKey(e.key);
-        localStorage.setItem("selectedKey", e.key); 
+        localStorage.setItem("selectedKey", e.key);
     };
 
     const handleLogout = () => {
@@ -101,8 +99,7 @@ const HomeEmp: React.FC = () => {
     // Profile menu
     const profileMenu = (
         <Menu style={{ width: 220 }}>
-            // Inside profileMenu
-            // Inside profileMenu
+   
             <Menu.Item
                 key="profile"
                 icon={<UserOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
@@ -111,13 +108,6 @@ const HomeEmp: React.FC = () => {
                 Profile
             </Menu.Item>
 
-            <Menu.Item
-                key="createUser"
-                icon={<UserAddOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
-                onClick={() => setIsModalVisible(true)}
-            >
-                Create User
-            </Menu.Item>
             <Menu.Item
                 key="logout"
                 danger

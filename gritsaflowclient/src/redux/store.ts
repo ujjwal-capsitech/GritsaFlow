@@ -1,17 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slice/LoginSlice";
+import authReducer from "./slice/LoginSlice"
 import homeReducer from "./slice/HomeSlice";
-import userProfileReducer from "./slice/UserProfileSlice"; // Add this
+import UserProfileSlice from "./slice/UserProfileSlice";
 
-const rootReducer = {
-    auth: authReducer,
-    home: homeReducer,
-    userProfile: userProfileReducer, // Add this
-};
+
 
 export const store = configureStore({
-    reducer: rootReducer,
+  reducer: {
+        auth: authReducer,
+        home: homeReducer,
+        userProfile: UserProfileSlice,
+  },
 });
+export type RootState = ReturnType<typeof store.getState>; //store.getstate returns the current state
+export type AppDispatch = typeof store.dispatch; //sends action to redux store
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+

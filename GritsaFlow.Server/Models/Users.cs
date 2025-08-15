@@ -1,5 +1,4 @@
-﻿//Models/Users.cs
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -45,7 +44,7 @@ namespace GritsaFlow.Models
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime? UpdatedAt { get; set; }
 
-        public string AvatarUrl { get; set; }
+        public string? AvatarUrl { get; set; }
     }
 
 }

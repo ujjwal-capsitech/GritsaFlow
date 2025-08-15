@@ -40,7 +40,7 @@ namespace GritsaFlow.Controllers
                 ProjectTitle = p.ProjectTitle,
                 ProjectDescription = p.ProjectDescription,
                 Employees = p.Employees,
-                ProjectStatus = p.ProjectStatus.ToString(), 
+                ProjectStatus = p.ProjectStatus.ToString(),
                 DueDate = p.DueDate,
                 Creator = p.Creator,
                 Updator = p.Updator,
@@ -128,7 +128,7 @@ namespace GritsaFlow.Controllers
 
             return Ok(ApiResponse<List<EmployeeRef>>.Ok(employees));
         }
-      
+
         [HttpGet("/employees/all")]
         public async Task<ActionResult<ApiResponse<List<ProjectEmployeeDto>>>> GetProjectEmployeesAsync()
         {

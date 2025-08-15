@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GritsaFlow.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7d27c08d791a4edc7fde71dfed3c4a0e628fc41")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3c206fb169e42d30e481c58c236a88c322d42a4")]
 [assembly: System.Reflection.AssemblyProductAttribute("GritsaFlow.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GritsaFlow.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
