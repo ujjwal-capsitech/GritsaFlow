@@ -101,15 +101,14 @@ const HomeEmp: React.FC = () => {
     // Profile menu
     const profileMenu = (
         <Menu style={{ width: 220 }}>
+            // Inside profileMenu
+            // Inside profileMenu
             <Menu.Item
                 key="profile"
                 icon={<UserOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
+                onClick={() => navigate("/profile")}
             >
-
-                <Row>
-                    <Row style={{ fontWeight: 'bold' }}>{user?.name}</Row>
-                    <Row>{user?.email}</Row>
-                </Row>
+                Profile
             </Menu.Item>
 
             <Menu.Item

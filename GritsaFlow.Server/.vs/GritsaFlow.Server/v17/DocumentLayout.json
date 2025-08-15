@@ -1,0 +1,181 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\controllers\\usercontrollers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:controllers\\usercontrollers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\controllers\\projectcontrollers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:controllers\\projectcontrollers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\services\\projectservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:services\\projectservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\dtos\\projectdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:dtos\\projectdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\roles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:roles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\services\\userservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:services\\userservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|d:\\web\\new\\gritsaflow\\gritsaflow.server\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C367ADE5-BAEC-B6CF-9FAB-28F5653D151A}|GritsaFlow.Server.csproj|solutionrelative:models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProjectDTO.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\DTOs\\ProjectDTO.cs",
+              "RelativeDocumentMoniker": "DTOs\\ProjectDTO.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\DTOs\\ProjectDTO.cs",
+              "RelativeToolTip": "DTOs\\ProjectDTO.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAywBEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T01:24:26.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Project.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Models\\Project.cs",
+              "RelativeDocumentMoniker": "Models\\Project.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Models\\Project.cs",
+              "RelativeToolTip": "Models\\Project.cs",
+              "ViewState": "AgIAAC4AAAAAAAAAAAAwwDoAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T01:23:31.568Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProjectControllers.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Controllers\\ProjectControllers.cs",
+              "RelativeDocumentMoniker": "Controllers\\ProjectControllers.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Controllers\\ProjectControllers.cs",
+              "RelativeToolTip": "Controllers\\ProjectControllers.cs",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAmwIIAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T01:22:41.828Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Roles.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Roles.cs",
+              "RelativeDocumentMoniker": "Roles.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Roles.cs",
+              "RelativeToolTip": "Roles.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T01:06:29.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserDTO.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\DTOs\\UserDTO.cs",
+              "RelativeDocumentMoniker": "DTOs\\UserDTO.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\DTOs\\UserDTO.cs",
+              "RelativeToolTip": "DTOs\\UserDTO.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAywCgAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T00:54:29.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserServices.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Services\\UserServices.cs",
+              "RelativeDocumentMoniker": "Services\\UserServices.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Services\\UserServices.cs",
+              "RelativeToolTip": "Services\\UserServices.cs",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAqwK0AAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T00:39:11.7Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "projectServices.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Services\\projectServices.cs",
+              "RelativeDocumentMoniker": "Services\\projectServices.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Services\\projectServices.cs",
+              "RelativeToolTip": "Services\\projectServices.cs",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAqwJwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T00:39:08.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Users.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Models\\Users.cs",
+              "RelativeDocumentMoniker": "Models\\Users.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Models\\Users.cs",
+              "RelativeToolTip": "Models\\Users.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAywCgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T00:31:43.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserControllers.cs",
+              "DocumentMoniker": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Controllers\\UserControllers.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserControllers.cs",
+              "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\Controllers\\UserControllers.cs",
+              "RelativeToolTip": "Controllers\\UserControllers.cs",
+              "ViewState": "AgIAAMoAAAAAAAAAAAAWwM4AAABXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-15T00:27:05.811Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

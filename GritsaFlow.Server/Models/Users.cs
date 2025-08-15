@@ -37,11 +37,6 @@ namespace GritsaFlow.Models
         [EmailAddress(ErrorMessage = "Write a Valid EmailId")]
         [StringLength(150)]
         public string Email { get; set; } = null!;
-        public List<string>? ProjectId { get; set; }// Later Set to empty array 
-        public List<string>? TaskId { get; set; }// Later Set to empty array 
-        public string? TeamId { get; set; }
-        public bool? IsActive { get; set; } = true;
-        public string? Remarks { get; set; }
         public bool? IsDeleted { get; set; } = false;
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]

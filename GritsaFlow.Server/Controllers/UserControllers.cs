@@ -6,6 +6,7 @@ using GritsaFlow.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -26,12 +27,29 @@ public class UserController : ControllerBase
 
     }
 
+    //[HttpPost("register")]
+    ////[Authorize(Roles = Roles.Admin)]
+    //public async Task<IActionResult> Register(RegisterDTO dto)
+    //{
+    //    var result = await _service.RegisterAsync(dto);
+    //    return Ok(ApiResponse<UserDTO>.Ok(result));
+    //}
     [HttpPost("register")]
-    [Authorize(Roles = Roles.Admin)]
-    public async Task<IActionResult> Register(RegisterDTO dto )
+    public async Task<IActionResult> Register(RegisterDTO dto)
     {
-        var result = await _service.RegisterAsync(dto);
-        return Ok(ApiResponse<UserDTO>.Ok(result));
+        try
+        {
+            var result = await _service.RegisterAsync(dto);
+            return Ok(result);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message); // 409 Conflict for duplicate username
+        }
+        catch (MongoWriteException ex) when (ex.WriteError.Code == 11000)
+        {
+            return Conflict("Username already exists");
+        }
     }
 
     [HttpPost("login")]
@@ -182,5 +200,24 @@ public class UserController : ControllerBase
             Email = user.Email,
             AvatarUrl = user.AvatarUrl,
         });
+
+    }
+    [HttpPut("{userId}")]
+    [Authorize]
+    public async Task<IActionResult> UpdateUser(string userId, [FromBody] UpdateUserDTO dto)
+    {
+        // Authorization check
+        var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var isAdmin = User.IsInRole(Roles.Admin);
+
+        if (currentUserId != userId && !isAdmin)
+            return Forbid();
+
+        var result = await _service.UpdateUserAsync(userId, dto);
+
+        if (result == null)
+            return NotFound(ApiResponse<UserDTO>.Error("User not found"));
+
+        return Ok(ApiResponse<UserDTO>.Ok(result));
     }
 }

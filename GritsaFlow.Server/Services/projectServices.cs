@@ -1,5 +1,6 @@
 ﻿using GritsaFlow.DTOs;
 using GritsaFlow.Models;
+using GritsaFlow.Server.DTOs;
 using GritsaFlow.Server.Services;
 using MongoDB.Driver;
 
@@ -139,15 +140,20 @@ namespace GritsaFlow.Services
         public async Task<List<Project>> GetAllAsync() =>
 
             await _projects.Find(p => !p.IsDeleted).ToListAsync();
-        public async Task<List<EmployeeRef>> GetAllProjectEmpAsync()
+        // In projectServices.cs
+        public async Task<List<ProjectEmployeeDto>> GetAllProjectEmpAsync()
         {
-            var employeeLists = await _projects
+            var projects = await _projects
                 .Find(p => !p.IsDeleted)
-                .Project(p => p.Employees)
+                .Project(p => new ProjectEmployeeDto
+                {
+                    ProjectId = p.ProjectId,
+                    ProjectTitle = p.ProjectTitle,
+                    Employees = p.Employees ?? new List<EmployeeRef>()
+                })
                 .ToListAsync();
 
-            
-            return employeeLists.SelectMany(e => e).ToList();
+            return projects;
         }
 
 

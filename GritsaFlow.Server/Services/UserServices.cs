@@ -52,7 +52,11 @@ namespace GritsaFlow.Services
         public async Task<UserDTO> RegisterAsync(RegisterDTO dto)
         {
             var userId = dto.UserId;
-
+            bool usernameExists = await _users.Find(u => u.UserName == dto.UserName).AnyAsync();
+            if (usernameExists)
+            {
+                throw new InvalidOperationException("Username already exists");
+            }
             if (string.IsNullOrEmpty(userId))
             {
 
@@ -167,7 +171,43 @@ namespace GritsaFlow.Services
         {
             await _refreshTokens.DeleteManyAsync(r => r.UserId == userId);
         }
+        public async Task<UserDTO?> UpdateUserAsync(string userId, UpdateUserDTO dto)
+        {
+            var user = await _users.Find(u => u.UserId == userId).FirstOrDefaultAsync();
+            if (user == null) return null;
 
-        
+            // Update only allowed fields
+            if (!string.IsNullOrWhiteSpace(dto.Name))
+                user.Name = dto.Name;
+
+            if (!string.IsNullOrWhiteSpace(dto.Password))
+                user.Password = Bc.EnhancedHashPassword(dto.Password);
+
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+                user.Email = dto.Email;
+
+            if (!string.IsNullOrWhiteSpace(dto.Role))
+                user.Role = dto.Role;
+
+            if (dto.AvatarUrl != null)
+                user.AvatarUrl = dto.AvatarUrl;
+
+            user.UpdatedAt = DateTime.Now;
+
+            await _users.ReplaceOneAsync(u => u.UserId == userId, user);
+
+            return new UserDTO
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                UserName = user.UserName,
+                Role = user.Role,
+                Email = user.Email,
+                AvatarUrl = user.AvatarUrl,
+                Password = "" // Empty for security
+            };
+        }
+
+
     }
 }

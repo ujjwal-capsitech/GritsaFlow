@@ -128,15 +128,16 @@ namespace GritsaFlow.Controllers
 
             return Ok(ApiResponse<List<EmployeeRef>>.Ok(employees));
         }
+      
         [HttpGet("/employees/all")]
-        public async Task<ActionResult<ApiResponse<List<EmployeeRef>>>> GetProjectEmployeesAsync()
+        public async Task<ActionResult<ApiResponse<List<ProjectEmployeeDto>>>> GetProjectEmployeesAsync()
         {
-            var employees = await _projectservices.GetAllProjectEmpAsync();
+            var result = await _projectservices.GetAllProjectEmpAsync();
 
-            if (employees is null)
-                return NotFound(ApiResponse<List<EmployeeRef>>.Error());
+            if (result == null || result.Count == 0)
+                return NotFound(ApiResponse<List<ProjectEmployeeDto>>.Error("No projects found"));
 
-            return Ok(ApiResponse<List<EmployeeRef>>.Ok(employees));
+            return Ok(ApiResponse<List<ProjectEmployeeDto>>.Ok(result));
         }
 
 
