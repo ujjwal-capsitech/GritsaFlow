@@ -11,11 +11,10 @@ import PageNotFound from './Pages/pageNotFound.tsx';
 import { RoleEnum } from "./api/Role";
 import SessionTimeout from "./Components/SessionTimeOut";
 import Task from "./Pages/Home/Pages/Task";
-import AdminDashboard from "./Pages/Home/Pages/Dashboard";
-import Project from "./Pages/Home/Pages/Project";
 import ProjectCard from "./Components/ProjectCard";
-import  "../src/App.css";
-import UserProfilePage from "./Components/UserProfilePage.tsx";
+import "../src/App.css";
+
+
 
 const App: React.FC = () => {
     return (
@@ -36,31 +35,23 @@ const App: React.FC = () => {
 
                 <Route path="/Employee" element={
                     <PageRoute allowedRoles={[RoleEnum.Employee]}>
-                        <HomeEmp />
+                        < HomeEmp/>
                     </PageRoute>
-                } ><Route path="tasks/:taskId" element={<Task />} /></Route>
-                <Route path="/AdminDashboard" element={
-                    <PageRoute allowedRoles={[RoleEnum.Admin]}>
-                        <AdminDashboard />
-                    </PageRoute>
-                } />
-                <Route path="/Projects" element={
-                    <Project />
-                } />
-                <Route path="/TeamLead" element={
+                }>
+                    <Route path="tasks/:taskId" element={<Task />} />
+                </Route>
+
+
+
+                <Route path="/Teamlead" element={
                     <PageRoute allowedRoles={[RoleEnum.TeamLead]}>
                         <HomeTeamLead />
                     </PageRoute>
-                } >
+                }>
                     <Route path="tasks/:taskId" element={<Task />} />
                 </Route>
                 <Route path="/ProjectCard" element={
                     <ProjectCard />
-                } />
-                <Route path="/profile" element={
-          
-                        <UserProfilePage />
-                    
                 } />
 
             </Routes>

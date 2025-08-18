@@ -43,6 +43,7 @@ namespace GritsaFlow.Models
         public string ProjectId { get; set; }
         public string projectTitle { get; set; }
     }
+
     public class Comments
     {
         public string Name { get; set; }

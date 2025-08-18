@@ -15,6 +15,8 @@ import { ArrowRightOutlined, UserOutlined } from "@ant-design/icons";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import type { Project } from "./interface";
+import axios from "axios";
+import { RoleEnum } from "../api/Role";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -34,6 +36,15 @@ interface ApiResponse<T> {
     status: boolean;
     message: string;
     data: T;
+}
+
+interface ProjectResponse {
+    projectId: string;
+    projectTitle: string;
+    employees: {
+        empId: string;
+        empName: string;
+    }[];
 }
 
 const labelStyleFrom = {
@@ -65,30 +76,93 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [projects, setProjects] = useState<Project[]>([]);
     const [selectedProject, setSelectedProject] = useState<string | null>(null);
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    // Fetch current user
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await api.get("User/current");
+                setCurrentUserId(response.data.userId);
+                setCurrentUserRole(response.data.role);
+            } catch (error) {
+                console.error("Error fetching current user:", error);
+                message.error("Failed to load user data");
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
 
     const fetchProjects = async () => {
         try {
             setLoading(true);
-            const response = await api.get<ApiResponse<Project[]>>("/ProjectControllers");
 
-            if (response.data.status) {
-                setProjects(response.data.data);
-                if (response.data.data.length > 0) {
-                    const defaultProjectId = projectId || response.data.data[0].projectId;
-                    setSelectedProject(defaultProjectId);
+            // Admin users see all projects
+            if (currentUserRole === "admin") {
+                const response = await api.get<ApiResponse<Project[]>>(
+                    "/ProjectControllers"
+                );
+                if (response.data.status) {
+                    setProjects(response.data.data);
+                    if (response.data.data.length > 0) {
+                        const defaultProjectId =
+                            projectId || response.data.data[0].projectId;
+                        setSelectedProject(defaultProjectId);
+                    }
                 } else {
-                    message.info("No projects found for Activity Log");
+                    message.error(response.data.message || "Failed to load projects");
                 }
-            } else {
-                message.error(response.data.message || "Failed to load projects");
             }
-        } catch {
-            message.error("Error fetching project list for Activity Log");
+            // other than admin 
+            else if (currentUserId) {
+                const response = await axios.get<ApiResponse<ProjectResponse[]>>(
+                    "https://localhost:7219/employees/all",
+                    { withCredentials: true }
+                );
+
+                if (response.data.status && response.data.data) {
+                    // Filter projects where current user is a member
+                    const userProjects = response.data.data
+                        .filter((project) =>
+                            project.employees.some((emp) => emp.empId === currentUserId)
+                        )
+                        .map((project) => ({
+                            projectId: project.projectId,
+                            projectTitle: project.projectTitle,
+                        }));
+
+                    setProjects(userProjects);
+
+                    if (userProjects.length > 0) {
+                        // Use provided projectId if available and valid
+                        const validProject = userProjects.find(
+                            (p) => p.projectId === projectId
+                        );
+                        setSelectedProject(
+                            validProject ? projectId : userProjects[0].projectId
+                        );
+                    }
+                } else {
+                    message.error(response.data.message || "No projects found for user");
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching projects:", error);
+            message.error("Failed to load project data");
         } finally {
             setLoading(false);
         }
     };
+
+    // Fetch projects when user data changes
+    useEffect(() => {
+        if (currentUserId !== null && currentUserRole !== null) {
+            fetchProjects();
+        }
+    }, [currentUserId, currentUserRole]);
 
     const fetchTimeline = async (projId: string) => {
         if (!projId) return;
@@ -125,15 +199,11 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
     };
 
     useEffect(() => {
-        fetchProjects();
-    }, []);
-
-    useEffect(() => {
         if (selectedProject) {
             fetchTimeline(selectedProject);
         }
     }, [selectedProject]);
-    
+
     return (
         <Card
             title="Project Timeline"
@@ -152,7 +222,7 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
                 onChange={(value) => setSelectedProject(value)}
                 style={{ width: "100%", marginBottom: "15px" }}
                 placeholder="Select Project"
-                loading={loading && projects.length === 0}
+                loading={loading}
                 showSearch
                 optionFilterProp="children"
                 filterOption={(input, option) =>
@@ -220,9 +290,24 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
                                                     {new Date(item.dateTime).toLocaleString()}
                                                 </Text>
                                             </Col>
+
                                             <Col xs={24} sm={8} style={{ textAlign: "right" }}>
                                                 <span
-                                                    onClick={() => navigate(`/Home/tasks/${item.id}`)}
+                                                    onClick={() => {
+                                                        const role = localStorage.getItem("Role")
+
+                                                        let path = `/tasks/${item.id}`; // fallback
+
+                                                        if (role === RoleEnum.Admin) {
+                                                            path = `/Home/tasks/${item.id}`;
+                                                        } else if (role === RoleEnum.TeamLead) {
+                                                            path = `/Teamlead/tasks/${item.id}`;
+                                                        } else if (role === RoleEnum.Employee) {
+                                                            path = `/Employee/tasks/${item.id}`;
+                                                        }
+
+                                                        navigate(path);
+                                                    }}
                                                     style={{
                                                         fontSize: 14,
                                                         color: "#1890ff",

@@ -6,10 +6,11 @@ import {
     CheckCircleOutlined, SyncOutlined, CodeOutlined, ExperimentOutlined,
     BugOutlined, CheckOutlined, QuestionOutlined, UnorderedListOutlined
 } from '@ant-design/icons';
-import { TaskStatus } from "../../api/Role";
 import ActivityLog from '../../Components/ActivityLog';
 import api from '../../api/api';
 import axios from 'axios';
+import type { ApiResponse } from '../../Components/interface';
+
 
 const { Text, Title } = Typography;
 
@@ -28,7 +29,7 @@ interface Task {
     taskId: string;
     title: string;
     project: Project;
-    taskStatus: TaskStatus;
+    taskStatus: string; 
     priority: string;
     dueDate?: string;
     assignedToId?: string;
@@ -112,21 +113,23 @@ const BoardCardEmployee: React.FC = () => {
         fetchUsers();
     }, []);
 
-    // 3. Fetch projects from /employees/all
+    // 3. Fetch projects for current user
     useEffect(() => {
         const fetchUserProjects = async () => {
             if (!currentUserId) return;
             try {
-                const response = await axios.get<EmployeeAllResponse>(
+                const response = await axios.get<ApiResponse>(
                     "https://localhost:7219/employees/all",
                     { withCredentials: true }
                 );
                 if (response.data.status && Array.isArray(response.data.data)) {
+                    // Find projects where current user is an employee
                     const userProjectIds = response.data.data
                         .filter(project =>
                             project.employees.some(emp => emp.empId === currentUserId)
                         )
                         .map(project => project.projectId);
+
                     setUserProjects(userProjectIds);
                 } else {
                     message.error("Failed to load user projects");
@@ -142,15 +145,16 @@ const BoardCardEmployee: React.FC = () => {
     // 4. Fetch tasks for user's projects
     useEffect(() => {
         const fetchTasks = async () => {
-            if (!currentUserId || userProjects.length === 0) return;
+            if (!currentUserId) return;
             setLoading(true);
             try {
                 const response = await api.get<TasksResponse>("Tasks");
                 if (response.data.status && response.data.data) {
-                    const projectTasks = response.data.data.filter(task =>
+                    // Filter tasks by user's projects
+                    const filteredTasks = response.data.data.filter(task =>
                         userProjects.includes(task.project.projectId)
                     );
-                    setTasks(projectTasks);
+                    setTasks(filteredTasks);
                 } else {
                     message.error(response.data.message || "Failed to load tasks");
                 }
@@ -161,26 +165,37 @@ const BoardCardEmployee: React.FC = () => {
                 setLoading(false);
             }
         };
-        fetchTasks();
+
+        // Only fetch tasks if user has projects
+        if (userProjects.length > 0) {
+            fetchTasks();
+        } else {
+            setLoading(false);
+        }
     }, [currentUserId, userProjects]);
 
+    // Status configuration with string values matching backend
     const statusConfig = [
-        { status: TaskStatus.Backlog, title: 'Backlog', icon: <UnorderedListOutlined />, color: '#8D8D8D' },
-        { status: TaskStatus.NeedToDiscuss, title: 'Need to Discuss', icon: <QuestionOutlined />, color: '#FFA940' },
-        { status: TaskStatus.Todo, title: 'Todo', icon: <CheckCircleOutlined />, color: '#1890FF' },
-        { status: TaskStatus.InProgress, title: 'In Progress', icon: <SyncOutlined spin />, color: '#722ED1' },
-        { status: TaskStatus.Developed, title: 'Developed', icon: <CodeOutlined />, color: '#13C2C2' },
-        { status: TaskStatus.UAT, title: 'UAT', icon: <ExperimentOutlined />, color: '#F759AB' },
-        { status: TaskStatus.Testing, title: 'Testing', icon: <BugOutlined />, color: '#FAAD14' },
-        { status: TaskStatus.Done, title: 'Done', icon: <CheckOutlined />, color: '#52C41A' }
+        { status: 'Backlog', title: 'Backlog', icon: <UnorderedListOutlined />, color: '#8D8D8D' },
+        { status: 'NeedToDiscuss', title: 'Need to Discuss', icon: <QuestionOutlined />, color: '#FFA940' },
+        { status: 'Todo', title: 'Todo', icon: <CheckCircleOutlined />, color: '#1890FF' },
+        { status: 'InProgress', title: 'In Progress', icon: <SyncOutlined spin />, color: '#722ED1' },
+        { status: 'Developed', title: 'Developed', icon: <CodeOutlined />, color: '#13C2C2' },
+        { status: 'UAT', title: 'UAT', icon: <ExperimentOutlined />, color: '#F759AB' },
+        { status: 'Testing', title: 'Testing', icon: <BugOutlined />, color: '#FAAD14' },
+        { status: 'Done', title: 'Done', icon: <CheckOutlined />, color: '#52C41A' }
     ];
 
-    const priorityColors = { high: 'red', medium: 'orange', low: 'green' };
+    const priorityColors: Record<string, string> = {
+        high: 'red',
+        Medium: 'orange',
+        Low: 'green'
+    };
 
-    const getTasksByStatus = (status: TaskStatus) =>
+    const getTasksByStatus = (status: string) =>
         tasks.filter(task => task.taskStatus === status);
 
-    if (loading || !currentUserId || userProjects.length === 0) {
+    if (loading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}>
                 <Spin size="large" />
@@ -199,11 +214,11 @@ const BoardCardEmployee: React.FC = () => {
                             <Col key={config.status} flex="300px" style={{ height: '100%' }}>
                                 <Card
                                     title={
-                                        <Col style={{ display: 'flex', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <span style={{ color: config.color, marginRight: 8 }}>{config.icon}</span>
                                             <Text strong>{config.title}</Text>
                                             <Tag style={{ marginLeft: 8 }}>{statusTasks.length}</Tag>
-                                        </Col>
+                                        </div>
                                     }
                                     size="small"
                                     headStyle={{
@@ -228,15 +243,21 @@ const BoardCardEmployee: React.FC = () => {
                                                 <Card
                                                     size="small"
                                                     title={
-                                                        <Col style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                             <Text strong style={{ fontSize: 13 }}>{task.taskId}</Text>
-                                                            <Tag color={priorityColors[task.priority.toLowerCase() as keyof typeof priorityColors]}>
+                                                            <Tag color={priorityColors[task.priority]}>
                                                                 {task.priority}
                                                             </Tag>
-                                                        </Col>
+                                                        </div>
                                                     }
                                                     extra={task.assignedToId && (
-                                                        <Avatar size="small" style={{ backgroundColor: '#1890ff', fontSize: 10 }}>
+                                                        <Avatar
+                                                            size="small"
+                                                            style={{
+                                                                backgroundColor: '#1890ff',
+                                                                fontSize: 10
+                                                            }}
+                                                        >
                                                             {users[task.assignedToId]?.charAt(0) || 'U'}
                                                         </Avatar>
                                                     )}
@@ -244,25 +265,25 @@ const BoardCardEmployee: React.FC = () => {
                                                 >
                                                     <Text style={{ fontSize: 13 }}>{task.title}</Text>
                                                     {task.assignedToId && users[task.assignedToId] && (
-                                                        <Col style={{ marginTop: 8 }}>
+                                                        <div style={{ marginTop: 8 }}>
                                                             <Text type="secondary" style={{ fontSize: 11 }}>
                                                                 {users[task.assignedToId]}
                                                             </Text>
-                                                        </Col>
+                                                        </div>
                                                     )}
                                                     {task.project?.projectTitle && (
-                                                        <Col style={{ marginTop: 4 }}>
+                                                        <div style={{ marginTop: 4 }}>
                                                             <Text type="secondary" style={{ fontSize: 11 }}>
                                                                 Project: {task.project.projectTitle}
                                                             </Text>
-                                                        </Col>
+                                                        </div>
                                                     )}
                                                     {task.dueDate && (
-                                                        <Col style={{ marginTop: 4 }}>
+                                                        <div style={{ marginTop: 4 }}>
                                                             <Text type="secondary" style={{ fontSize: 11 }}>
                                                                 Due: {new Date(task.dueDate).toLocaleDateString()}
                                                             </Text>
-                                                        </Col>
+                                                        </div>
                                                     )}
                                                 </Card>
                                             </List.Item>

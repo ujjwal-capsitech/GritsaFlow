@@ -16,7 +16,7 @@ import {
     Typography
 } from "antd";
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import api from "../../../api/api";
 
@@ -104,8 +104,9 @@ interface TaskData {
 
 const Task: React.FC = () => {
     const location = useLocation();
-    const { taskId } = useParams<{ taskId: string }>();
-    const [taskData, setTaskData] = useState<TaskData | null>(location.state?.task || null);
+    const { taskId: urlTaskId } = useParams<{ taskId: string }>();
+    const navigate = useNavigate();
+    const [taskData, setTaskData] = useState<TaskData | null>(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("description");
     const [comments, setComments] = useState<Comment[]>([]);
@@ -128,21 +129,38 @@ const Task: React.FC = () => {
         fetchCurrentUser();
     }, []);
 
-    const fetchTask = async () => {
+    const fetchTask = async (identifier: string) => {
         try {
-            const response = await api.get(`/tasks/${taskId}`);
-            const data: TaskData = response.data?.data;
-            setTaskData(data);
-            setComments(data?.comments || []);
-
-            if (data?.project?.projectId) {
-                fetchProjectEmployees(data.project.projectId);
+            // First try to fetch by internal ID
+            try {
+                const response = await api.get(`/tasks/${identifier}`);
+                if (response.data?.data) {
+                    setTaskData(response.data.data);
+                    return response.data.data;
+                }
+            } catch (internalIdError) {
+                console.log("Falling back to taskId search");
             }
+
+            // If internal ID fails, fetch by taskId
+            const allTasksResponse = await api.get("/tasks");
+            if (allTasksResponse.data?.status && allTasksResponse.data.data) {
+                const task = allTasksResponse.data.data.find(
+                    (t: TaskData) => t.taskId === identifier
+                );
+
+                if (task) {
+                    setTaskData(task);
+                    return task;
+                }
+            }
+
+            throw new Error("Task not found");
         } catch (err) {
             message.error("Failed to load task data");
             console.error(err);
-        } finally {
-            setLoading(false);
+            navigate("/not-found");
+            return null;
         }
     };
 
@@ -160,16 +178,40 @@ const Task: React.FC = () => {
     };
 
     useEffect(() => {
-        if (!taskData && taskId) {
-            fetchTask();
-        } else if (taskData) {
-            setComments(taskData?.comments || []);
-            setLoading(false);
-            if (taskData?.project?.projectId) {
-                fetchProjectEmployees(taskData.project.projectId);
+        const loadTask = async () => {
+            setLoading(true);
+            try {
+                // Use task from location state if available
+                if (location.state?.task) {
+                    const task = location.state.task;
+                    setTaskData(task);
+                    setComments(task?.comments || []);
+                    if (task?.project?.projectId) {
+                        await fetchProjectEmployees(task.project.projectId);
+                    }
+                }
+                // Otherwise fetch from API
+                else if (urlTaskId) {
+                    const task = await fetchTask(urlTaskId);
+                    if (task) {
+                        setComments(task?.comments || []);
+                        if (task?.project?.projectId) {
+                            await fetchProjectEmployees(task.project.projectId);
+                        }
+                    }
+                }
+                else {
+                    throw new Error("No task identifier provided");
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
             }
-        }
-    }, [taskId]);
+        };
+
+        loadTask();
+    }, [urlTaskId, location.state]);
 
     useEffect(() => {
         if (!taskData) return;
@@ -184,7 +226,7 @@ const Task: React.FC = () => {
             assignee: taskData.assignedToId || "",
             reporter: taskData.reportToId || "",
             status: statusMap[taskData.taskStatus] || "Backlog",
-            newComment: "" // Initialize comment field
+            newComment: ""
         });
     }, [taskData, form]);
 
@@ -199,7 +241,7 @@ const Task: React.FC = () => {
             const updatedComments = [...comments];
             if (newComment && newComment.trim()) {
                 updatedComments.push({
-                    name: currentUser.name, // Use current user's name
+                    name: currentUser.name,
                     comment: newComment,
                     createdAt: new Date().toISOString()
                 });
@@ -216,20 +258,18 @@ const Task: React.FC = () => {
                 priority: reversePriorityMap[values.priority as string],
                 taskStatus: reverseStatusMap[values.status as string],
                 comments: updatedComments,
-
                 updator: {
                     id: currentUser.userId,
                     name: currentUser.name,
                 }
             };
 
-            
-            await api.put(`/tasks/${taskData.taskId}`, updatedTask);
+            await api.put(`/tasks/${taskData.id}`, updatedTask);
 
             // Update local state
             setTaskData(updatedTask);
             setComments(updatedComments);
-            form.setFieldsValue({ newComment: "" }); // Clear comment field
+            form.setFieldsValue({ newComment: "" });
 
             message.success("Task saved successfully");
             setIsEditMode(false);
@@ -242,10 +282,9 @@ const Task: React.FC = () => {
     const shouldShowEditButton = () => {
         if (!currentUser || !taskData) return false;
 
-        
         if (currentUser.role !== "employee") return true;
 
-        return taskData.assignedToId === currentUser.Id;
+        return taskData.assignedToId === currentUser.userId;
     };
 
     if (loading) return <Spin tip="Loading Task..." />;

@@ -5,7 +5,7 @@ import type { RootState } from "../store";
 
 interface UserProfileState {
     user: {
-        userId: string;  // Changed from 'id' to 'userId'
+        userId: string;  
         name: string;
         email: string;
         role: string;

@@ -1973,23 +1973,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ur429\\.nuget\\packages\\": {},
+    "C:\\Users\\CT_USER\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\GritsaFlow.Server.csproj",
+      "projectUniqueName": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlow\\GritsaFlow.Server\\GritsaFlow.Server.csproj",
       "projectName": "GritsaFlow.Server",
-      "projectPath": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\GritsaFlow.Server.csproj",
-      "packagesPath": "C:\\Users\\ur429\\.nuget\\packages\\",
-      "outputPath": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\obj\\",
+      "projectPath": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlow\\GritsaFlow.Server\\GritsaFlow.Server.csproj",
+      "packagesPath": "C:\\Users\\CT_USER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlow\\GritsaFlow.Server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ur429\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\CT_USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2086,7 +2086,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

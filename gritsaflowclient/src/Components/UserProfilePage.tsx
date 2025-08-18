@@ -26,8 +26,6 @@ import {
 import { UserOutlined } from '@ant-design/icons';
 import type { RcFile } from 'antd/es/upload/interface';
 
-const { Title } = Typography;
-
 interface UserProfileModalProps {
     visible: boolean;
     onClose: () => void;
