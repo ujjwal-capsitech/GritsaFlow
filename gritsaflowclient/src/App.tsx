@@ -15,7 +15,7 @@ import AdminDashboard from "./Pages/Home/Pages/Dashboard";
 import Project from "./Pages/Home/Pages/Project";
 import ProjectCard from "./Components/ProjectCard";
 import  "../src/App.css";
-import UserProfilePage from "./Components/ UserProfilePage.tsx";
+import UserProfilePage from "./Components/UserProfilePage.tsx";
 
 const App: React.FC = () => {
     return (

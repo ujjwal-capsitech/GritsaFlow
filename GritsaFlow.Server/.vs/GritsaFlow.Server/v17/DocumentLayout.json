@@ -66,8 +66,7 @@
               "RelativeToolTip": "DTOs\\ProjectDTO.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAywBEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T01:24:26.89Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T01:24:26.89Z"
             },
             {
               "$type": "Document",
@@ -79,8 +78,7 @@
               "RelativeToolTip": "Models\\Project.cs",
               "ViewState": "AgIAAC4AAAAAAAAAAAAwwDoAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T01:23:31.568Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T01:23:31.568Z"
             },
             {
               "$type": "Document",
@@ -92,8 +90,7 @@
               "RelativeToolTip": "Controllers\\ProjectControllers.cs",
               "ViewState": "AgIAAHYAAAAAAAAAAAAmwIIAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T01:22:41.828Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T01:22:41.828Z"
             },
             {
               "$type": "Document",
@@ -105,8 +102,7 @@
               "RelativeToolTip": "Roles.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T01:06:29.104Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T01:06:29.104Z"
             },
             {
               "$type": "Document",
@@ -116,7 +112,7 @@
               "RelativeDocumentMoniker": "DTOs\\UserDTO.cs",
               "ToolTip": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\DTOs\\UserDTO.cs",
               "RelativeToolTip": "DTOs\\UserDTO.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAywCgAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAABwAAAAAAAAAAADwvygAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-15T00:54:29.053Z",
               "EditorCaption": ""
@@ -131,8 +127,7 @@
               "RelativeToolTip": "Services\\UserServices.cs",
               "ViewState": "AgIAAKwAAAAAAAAAAAAqwK0AAABVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T00:39:11.7Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T00:39:11.7Z"
             },
             {
               "$type": "Document",
@@ -144,8 +139,7 @@
               "RelativeToolTip": "Services\\projectServices.cs",
               "ViewState": "AgIAAI0AAAAAAAAAAAAqwJwAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T00:39:08.128Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T00:39:08.128Z"
             },
             {
               "$type": "Document",
@@ -157,8 +151,7 @@
               "RelativeToolTip": "Models\\Users.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAAAywCgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T00:31:43.152Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T00:31:43.152Z"
             },
             {
               "$type": "Document",
@@ -170,8 +163,7 @@
               "RelativeToolTip": "Controllers\\UserControllers.cs",
               "ViewState": "AgIAAMoAAAAAAAAAAAAWwM4AAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T00:27:05.811Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-15T00:27:05.811Z"
             }
           ]
         }

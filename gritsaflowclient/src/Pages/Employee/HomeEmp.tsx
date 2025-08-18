@@ -1,4 +1,3 @@
-
 import {
     Avatar,
     Card,
@@ -17,23 +16,21 @@ import {
     UserOutlined,
     LogoutOutlined,
     DownOutlined,
-    UserAddOutlined,
     ArrowRightOutlined
 } from '@ant-design/icons';
 import { Content, Header } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
-//import Project from "../../Pages/Home/Pages/Project";
 import LoginIcon from "../../Assets/LoginIcon.svg";
 import { logout } from "../../redux/slice/LoginSlice";
 import { useNavigate, Outlet } from "react-router-dom";
 import { RoleEnum } from '../../api/Role';
 import api from "../../api/api";
-import UserRegistrationForm from "../../Components/UserRegistrationForm";
+//import UserRegistrationForm from "../../Components/UserRegistrationForm";
 import EmpDashboard from "./EmpDashboard";
 import BoardCardEmployee from "./BoardCardEmployee";
-
+import UserProfilePage from "../../Components/UserProfilePage"; // Import the profile page
 
 const { Title } = Typography;
 
@@ -53,15 +50,12 @@ const HomeEmp: React.FC = () => {
         return "1";
     });
 
-
-
-    // Local state for user
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    //const [force, setForce] = useState(false);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    // Fetch user from backend using axios
+    //const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isProfileModalVisible, setIsProfileModalVisible] = useState(false); // New state for profile modal
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -71,7 +65,6 @@ const HomeEmp: React.FC = () => {
             } catch {
                 setError("Error loading user data");
                 message.error("Error loading user data");
-                //console.log("Error loading user data", err);
             } finally {
                 setLoading(false);
             }
@@ -89,21 +82,15 @@ const HomeEmp: React.FC = () => {
         dispatch(logout());
         navigate("/");
     };
-    //useEffect(() => {
-    //    setForce(false);
-    //}, [window.location.pathname]);
 
-    //if (loading) return <Spin fullscreen />;
     if (error) return <Card>{error}</Card>;
 
-    // Profile menu
     const profileMenu = (
         <Menu style={{ width: 220 }}>
-   
             <Menu.Item
                 key="profile"
                 icon={<UserOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
-                onClick={() => navigate("/profile")}
+                onClick={() => setIsProfileModalVisible(true)}
             >
                 Profile
             </Menu.Item>
@@ -200,21 +187,19 @@ const HomeEmp: React.FC = () => {
                         height: "calc(100vh - 64px)",
                         background: "#EDF6FF",
                     }}>
-                        {/* Add Outlet for nested routes */}
-
-                        <Outlet />
-                        {/*Render regular content only if no nested route is active */}
                         {!window.location.pathname.includes('/Home/tasks/') && renderContent()}
-
-                        {/*{!force && <Outlet />}*/}
-                        {/*{(force || !window.location.pathname.includes('/Home/tasks/')) && renderContent()}*/}
                     </Content>
                 </Layout>
             </Layout>
-            <UserRegistrationForm
-                visible={isModalVisible}
-                onClose={() => setIsModalVisible(false)}
+
+
+
+
+            <UserProfilePage
+                visible={isProfileModalVisible}
+                onClose={() => setIsProfileModalVisible(false)}
             />
+            )
         </Row>
     );
 };

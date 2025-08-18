@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:61724",
 "RedirectUrl": "",
 "LaunchCommand": "npm run dev",
-"WorkingDirectory": "C:\\Users\\CT_USER\\source\\repos\\GritsaFlow\\GritsaFlow.Server\\..\\gritsaflow.client",
+"WorkingDirectory": "D:\\Web\\new\\GritsaFlow\\GritsaFlow.Server\\..\\gritsaflow.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }

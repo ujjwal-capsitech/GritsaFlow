@@ -6,6 +6,7 @@ import {
     Layout,
     Menu,
     Row,
+    Skeleton,
     Space,
     Spin,
     Typography,
@@ -23,9 +24,9 @@ import {
 } from '@ant-design/icons';
 import { Content, Header } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { setSelectedKey } from "../../redux/slice/HomeSlice";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../redux/store";
+//import { setSelectedKey } from "../../redux/slice/HomeSlice";
+import { useDispatch} from "react-redux";
+import type { AppDispatch} from "../../redux/store";
 import AdminDashboard from "../../Pages/Home/Pages/Dashboard";
 import Project from "../../Pages/Home/Pages/Project";
 import LoginIcon from "../../Assets/LoginIcon.svg";
@@ -44,7 +45,7 @@ interface User {
     avatarUrl?: string;
 }
 
-const HomeEmp: React.FC = () => {
+const Home: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const [selectedKey, setSelectedKey] = useState(() => {
@@ -100,6 +101,7 @@ const HomeEmp: React.FC = () => {
         <Menu style={{ width: 220 }}>
             <Menu.Item
                 key="profile"
+                onClick={() => navigate("/profile") }
                 icon={<UserOutlined style={{ paddingTop: 2, paddingRight: 5, fontSize: "20px", fontWeight: "bold" }} />}
             >
                
@@ -209,14 +211,12 @@ const HomeEmp: React.FC = () => {
                         height: "calc(100vh - 64px)",
                         background: "#EDF6FF",
                     }}>
-                        {/* Add Outlet for nested routes */}
+                        
 
                         <Outlet />
-                         {/*Render regular content only if no nested route is active */}
+                        
                         {!window.location.pathname.includes('/Home/tasks/') && renderContent()}
                         
-                        {/*{!force && <Outlet />}*/}
-                        {/*{(force || !window.location.pathname.includes('/Home/tasks/')) && renderContent()}*/}
                     </Content>
                 </Layout>
             </Layout>
@@ -228,4 +228,4 @@ const HomeEmp: React.FC = () => {
     );
 };
 
-export default HomeEmp;
+export default Home;
