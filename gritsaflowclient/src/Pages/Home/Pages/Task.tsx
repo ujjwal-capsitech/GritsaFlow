@@ -247,7 +247,7 @@ const Task: React.FC = () => {
                 });
             }
 
-            // Prepare updated task object
+            
             const updatedTask = {
                 ...taskData,
                 title: values.title,
@@ -286,6 +286,7 @@ const Task: React.FC = () => {
 
         return taskData.assignedToId === currentUser.userId;
     };
+    
 
     if (loading) return <Spin tip="Loading Task..." />;
     if (!taskData) return <div>No task found.</div>;

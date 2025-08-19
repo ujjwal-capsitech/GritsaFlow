@@ -1,10 +1,13 @@
 
 import {
     Avatar,
+    Button,
     Card,
+    Col,
     Dropdown,
     Layout,
     Menu,
+    Modal,
     Row,
     Space,
     Spin,
@@ -34,6 +37,8 @@ import { RoleEnum } from '../../api/Role';
 import api from "../../api/api";
 import UserRegistrationForm from "../../Components/UserRegistrationForm";
 import UserProfilePage from "../../Components/ UserProfilePage";
+//import CreateTask from "../../Components/CreateTask";
+import Task from "../Task";
 import CreateTask from "../../Components/CreateTask";
 
 const { Title } = Typography;
@@ -45,7 +50,7 @@ interface User {
     avatarUrl?: string;
 }
 
-const HomeEmp: React.FC = () => {
+const Home: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const [selectedKey, setSelectedKey] = useState(() => {
@@ -56,17 +61,19 @@ const HomeEmp: React.FC = () => {
 
     // Local state for user
     const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     //const [force, setForce] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
+    const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+
 
     // Fetch user from backend using axios
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                setLoading(true);
+                // setLoading(true);
                 const response = await api.get<User>("User/current");
                 setUser(response.data);
             } catch {
@@ -74,7 +81,7 @@ const HomeEmp: React.FC = () => {
                 message.error("Error loading user data");
                 //console.log("Error loading user data", err);
             } finally {
-                setLoading(false);
+                // setLoading(false);
             }
         };
 
@@ -134,7 +141,7 @@ const HomeEmp: React.FC = () => {
         switch (selectedKey) {
             case '1': return <AdminDashboard />;
             case '2': return <Project />;
-            case '3': return <CreateTask />;
+            case '3': return <Task />;
             default: return "Select an option";
         }
     };
@@ -182,7 +189,7 @@ const HomeEmp: React.FC = () => {
                             Project
                         </Menu.Item>
                         <Menu.Item key="3" icon={<ProjectOutlined />}>
-                            Create Tasks
+                            Tasks
                         </Menu.Item>
                         
                     </Menu>
@@ -207,6 +214,16 @@ const HomeEmp: React.FC = () => {
                                 </span>
                             }
                         </Title>
+                        <Col>
+                            <Button
+                                type="primary"
+                                onClick={() => setIsCreateModalVisible(true)}
+                                style={{ marginBottom: 16 ,}}
+                            >
+                                Create Task
+                            </Button>
+
+                        </Col>
 
                         <Dropdown overlay={profileMenu} trigger={["click"]}>
                             <Space style={{ cursor: "pointer" }}>
@@ -244,6 +261,19 @@ const HomeEmp: React.FC = () => {
                     </Content>
                 </Layout>
             </Layout>
+            <Modal
+                title="Create New Task"
+                open={isCreateModalVisible}
+                onCancel={() => setIsCreateModalVisible(false)}
+                footer={null}
+                destroyOnClose
+                width={600}
+            >
+                <CreateTask
+                    visible={isCreateModalVisible}
+                    onClose={() => setIsCreateModalVisible(false)}
+                />
+            </Modal>
             <UserRegistrationForm
                 visible={isModalVisible}
                 onClose={() => setIsModalVisible(false)}
@@ -256,4 +286,4 @@ const HomeEmp: React.FC = () => {
     );
 };
 
-export default HomeEmp;
+export default Home;

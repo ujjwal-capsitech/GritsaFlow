@@ -133,8 +133,7 @@ const AssignedProjectCard: React.FC = () => {
                     >
                         <Card
                             title={<Title level={4} style={{ margin: 0 }}>{project.projectTitle}</Title>}
-                            headStyle={{ padding: "0 16px", borderBottom: "1px solid #f0f0f0" }}
-                            bodyStyle={{ padding: "16px" }}
+                            
                             hoverable
                         >
                             <Dropdown overlay={menu} trigger={["click"]}>

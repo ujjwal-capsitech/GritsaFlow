@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login";
 import PageRoute from "./Components/PageRouting";
-import Home from "./Pages/Home/Home";
+import Home from "./Pages/Home/Home.tsx";
 import Unauthorized from "./Pages/Unauthorized";
 import HomeEmp from "./Pages/Employee/HomeEmp.tsx";
 import HomeTeamLead from "./Pages/Teamlead/HomeTeamLead.tsx";

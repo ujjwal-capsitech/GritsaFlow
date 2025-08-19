@@ -17,7 +17,6 @@ import {
     Row,
     Col,
     Avatar,
-    Typography,
     Skeleton,
     message,
     Upload,

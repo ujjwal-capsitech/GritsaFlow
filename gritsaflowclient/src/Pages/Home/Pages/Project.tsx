@@ -13,6 +13,7 @@ import {
   Tag,
   message,
   Space,
+  Popconfirm,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
@@ -27,7 +28,7 @@ interface EmployeeRef {
 }
 
 interface UserBasicDto {
-  userId: string;
+  userId: string;   
   name: string;
   userName: string;
 }
@@ -302,13 +303,18 @@ const Project: React.FC = () => {
           <Button type="link" onClick={() => handleEdit(record)}>
             Edit
           </Button>
-          <Button
-            type="link"
-            danger
-            onClick={() => handleDelete(record.projectId)}
+          <Popconfirm
+            title="Delete Project"
+            description="Are you sure you want to delete this project?"
+            onConfirm={() => handleDelete(record.projectId)}
+            okText="Yes"
+            cancelText="No"
+            okButtonProps={{ danger: true }}
           >
-            Delete
-          </Button>
+            <Button type="link" danger>
+              Delete
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
