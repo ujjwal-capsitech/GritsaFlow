@@ -9,7 +9,7 @@ import {
 import ActivityLog from '../../Components/ActivityLog';
 import api from '../../api/api';
 import axios from 'axios';
-import type { ApiResponse } from '../../Components/interface';
+//import type { ApiResponse } from '../../Components/interface';
 
 
 const { Text, Title } = Typography;
@@ -63,6 +63,7 @@ interface CurrentUserResponse {
 
 interface EmployeeAllResponse {
     status: boolean;
+    message: string;
     data: {
         projectId: string;
         projectTitle: string;
@@ -118,7 +119,7 @@ const BoardCardEmployee: React.FC = () => {
         const fetchUserProjects = async () => {
             if (!currentUserId) return;
             try {
-                const response = await axios.get<ApiResponse>(
+                const response = await axios.get<EmployeeAllResponse>(
                     "https://localhost:7219/employees/all",
                     { withCredentials: true }
                 );

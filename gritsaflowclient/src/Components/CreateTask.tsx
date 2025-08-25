@@ -1,410 +1,424 @@
 import {
-    Button,
-    Col,
-    DatePicker,
-    Form,
-    Input,
-    Row,
-    Select,
-    message
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Row,
+  Select,
+  message,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import api from "../api/api";
 import axios from "axios";
 
-// const { Title, Text } = Typography;
 const { Option } = Select;
 
+interface ProjectEmployee {
+  empId: string;
+  empName: string;
+}
+
 interface Project {
-    projectId: string;
-    projectTitle: string;
-    employees: Array<{
-        empId: string;
-        name: string;
-    }>;
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  projectDescription: string;
+  employees: ProjectEmployee[];
+  projectStatus: string;
+  dueDate: string;
+  creator: {
+    id: string;
+    name: string;
+    createdAt: string;
+  };
+  updator: {
+    id: string;
+    name: string;
+    updatedAt: string;
+  };
+  isDeleted: boolean;
 }
 
 interface Employee {
-    userId: string;
-    name: string;
-    userName: string;
+  userId: string;
+  name: string;
+  userName: string;
 }
 
 interface CurrentUser {
-    userId: string;
-    name: string;
-    role: string;
+  userId: string;
+  name: string;
+  role: string;
 }
 
 interface TaskFormValues {
-    taskId: string;
-    title: string;
-    projectId: string;
-    taskStatus: string;
-    priority: string;
-    dueDate: dayjs.Dayjs;
-    assignedToId: string;
-    reportToId: string;
-    description: string;
+  taskId: string;
+  title: string;
+  projectId: string;
+  taskStatus: string;
+  priority: string;
+  dueDate: dayjs.Dayjs;
+  assignedToId: string;
+  reportToId: string;
+  description: string;
 }
 
 interface TaskPayload {
-    taskId: string;
-    title: string;
-    project: {
-        projectId: string;
-        projectTitle: string;
-    };
-    taskStatus: string;
-    priority: string;
-    dueDate: string;
-    assignedToId: string;
-    reportToId: string;
-    description: string;
-    creator?: {
-        id: string;
-        name: string;
-        createdAt: string;
-    };
-    updator?: {
-        id: string;
-        name: string;
-        updatedAt: string;
-    };
+  taskId: string;
+  title: string;
+  project: {
+    projectId: string;
+    projectTitle: string;
+  };
+  taskStatus: string;
+  priority: string;
+  dueDate: string;
+  assignedToId: string;
+  reportToId: string;
+  description: string;
+  creator?: {
+    id: string;
+    name: string;
+    createdAt: string;
+  };
+  updator?: {
+    id: string;
+    name: string;
+    updatedAt: string;
+  };
 }
 
 const statusOptions = [
-    "Backlog",
-    "NeedToDiscuss",
-    "Todo",
-    "InProgress",
-    "Developed",
-    "UAT",
-    "Testing",
-    "Done",
+  "Backlog",
+  "NeedToDiscuss",
+  "Todo",
+  "InProgress",
+  "Developed",
+  "UAT",
+  "Testing",
+  "Done",
 ];
 
-const priorityOptions = ["high", "Medium", "Low"];
+const priorityOptions = ["High", "Medium", "Low"];
 
 const CreateTask: React.FC<{ visible: boolean; onClose: () => void }> = ({
-    visible,
-    onClose,
+  visible,
+  onClose,
 }) => {
-    const [form] = Form.useForm();
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [employees, setEmployees] = useState<Employee[]>([]);
-    const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
-    const [projectLoading, setProjectLoading] = useState(false);
-    const [employeeLoading, setEmployeeLoading] = useState(false);
+  const [form] = Form.useForm();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [projectLoading, setProjectLoading] = useState(false);
+  const [employeeLoading, setEmployeeLoading] = useState(false);
 
-    useEffect(() => {
-        if (!visible) return;
+  useEffect(() => {
+    if (!visible) return;
 
-        const fetchData = async () => {
-            try {
-                // Fetch current user
-                const userRes = await api.get<CurrentUser>("User/current");
-                setCurrentUser(userRes.data);
+    const fetchData = async () => {
+      try {
+        // Fetch current user
+        const userRes = await api.get<CurrentUser>("User/current");
+        setCurrentUser(userRes.data);
 
-                // Fetch projects
-                setProjectLoading(true);
-                const projRes = await api.get<{ data: Project[] }>("/ProjectControllers");
-                let allProjects = projRes.data.data || [];
+        // Fetch projects
+        setProjectLoading(true);
+        const projectsRes = await axios.get<{
+          data: Project[];
+          status: boolean;
+          message: string;
+        }>("https://localhost:7219/employees/all", { withCredentials: true });
 
-                // If user is not admin, filter projects to only those the user is part of
-                if (userRes.data.role !== "Admin") {
-                    try {
-                        // Get all projects with employees to check which ones the user belongs to
-                        const projectsWithEmployeesRes = await axios.get<{ data: Project[] }>(
-                            "https://localhost:7219/employees/all",
-                            {
-                                withCredentials: true,
-                            }
-                        );
+        let allProjects = projectsRes.data.data || [];
 
-                        const projectsWithEmployees = projectsWithEmployeesRes.data.data || [];
-                        const userProjects = projectsWithEmployees.filter(project =>
-                            project.employees.some(emp => emp.empId === userRes.data.userId)
-                        );
-
-                        // Filter available projects to only those the user belongs to
-                        allProjects = allProjects.filter(project =>
-                            userProjects.some(userProject => userProject.projectId === project.projectId)
-                        );
-                    } catch (error) {
-                        console.error("Error fetching user projects:", error);
-                        message.error("Failed to load user projects");
-                    }
-                }
-
-                setProjects(allProjects);
-
-                // Fetch all employees initially
-                setEmployeeLoading(true);
-                const empRes = await api.get<{ data: { items: Employee[] } }>("/User/basic");
-                setEmployees(empRes.data.data.items || []);
-            } catch (error) {
-                message.error("Failed to load data");
-            } finally {
-                setProjectLoading(false);
-                setEmployeeLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [visible]);
-
-    // Handle project selection change to filter employees
-    const handleProjectChange = (projectId: string) => {
-        if (!projectId) {
-            setFilteredEmployees(employees);
-            return;
+        // If user is not admin, filter projects to only those the user belongs to
+        if (userRes.data.role !== "admin") {
+          allProjects = allProjects.filter((project) =>
+            project.employees.some((emp) => emp.empId === userRes.data.userId)
+          );
         }
 
-        const selectedProject = projects.find(p => p.projectId === projectId);
-        if (selectedProject && selectedProject.employees) {
-            // Filter employees to only those in the selected project
-            const projectEmployeeIds = selectedProject.employees.map(emp => emp.empId);
-            const filtered = employees.filter(emp =>
-                projectEmployeeIds.includes(emp.userId)
-            );
-            setFilteredEmployees(filtered);
-        } else {
-            setFilteredEmployees(employees);
-        }
+        setProjects(allProjects);
+
+        // Fetch all employees
+        setEmployeeLoading(true);
+        const empRes = await api.get<{ data: { items: Employee[] } }>(
+          "/User/basic"
+        );
+        setEmployees(empRes.data.data.items || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        message.error("Failed to load data");
+      } finally {
+        setProjectLoading(false);
+        setEmployeeLoading(false);
+      }
     };
 
-    const handleSubmit = async (values: TaskFormValues) => {
-        if (!currentUser) {
-            message.error("User information not available");
-            return;
-        }
+    fetchData();
+  }, [visible]);
 
-        setLoading(true);
+  // Handle project selection change to filter employees
+  const handleProjectChange = (projectId: string) => {
+    if (!projectId) {
+      setFilteredEmployees(employees);
+      return;
+    }
 
-        try {
-            const selectedProject = projects.find(p => p.projectId === values.projectId);
+    const selectedProject = projects.find((p) => p.projectId === projectId);
+    if (selectedProject && selectedProject.employees) {
+      // Filter employees to only those in the selected project
+      const projectEmployeeIds = selectedProject.employees.map(
+        (emp) => emp.empId
+      );
+      const filtered = employees.filter((emp) =>
+        projectEmployeeIds.includes(emp.userId)
+      );
+      setFilteredEmployees(filtered);
+    } else {
+      setFilteredEmployees([]);
+    }
+  };
 
-            if (!selectedProject) {
-                message.error("Selected project not found");
-                return;
-            }
+  const handleSubmit = async (values: TaskFormValues) => {
+    if (!currentUser) {
+      message.error("User information not available");
+      return;
+    }
 
-            const payload: TaskPayload = {
-                taskId: values.taskId,
-                title: values.title,
-                project: {
-                    projectId: selectedProject.projectId,
-                    projectTitle: selectedProject.projectTitle,
-                },
-                taskStatus: values.taskStatus,
-                priority: values.priority,
-                dueDate: values.dueDate.toISOString(),
-                assignedToId: values.assignedToId,
-                reportToId: values.reportToId,
-                description: values.description,
-                creator: {
-                    id: currentUser.userId,
-                    name: currentUser.name,
-                    createdAt: new Date().toISOString(),
-                },
-                updator:
-                {
-                    id: currentUser.userId,
-                    name: currentUser.name,
-                    updatedAt: new Date().toISOString(),
+    setLoading(true);
 
-                }
+    try {
+      const selectedProject = projects.find(
+        (p) => p.projectId === values.projectId
+      );
 
-            };
+      if (!selectedProject) {
+        message.error("Selected project not found");
+        return;
+      }
 
-            await api.post("/Tasks", payload);
-            message.success("Task created successfully!");
-            form.resetFields();
-            onClose();
-        } catch (error) {
-            console.error("Task creation error:", error);
-            message.error("Error creating task");
-        } finally {
-            setLoading(false);
-        }
-    };
+      const payload: TaskPayload = {
+        taskId: values.taskId,
+        title: values.title,
+        project: {
+          projectId: selectedProject.projectId,
+          projectTitle: selectedProject.projectTitle,
+        },
+        taskStatus: values.taskStatus,
+        priority: values.priority,
+        dueDate: values.dueDate.toISOString(),
+        assignedToId: values.assignedToId,
+        reportToId: values.reportToId,
+        description: values.description,
+        creator: {
+          id: currentUser.userId,
+          name: currentUser.name,
+          createdAt: new Date().toISOString(),
+        },
+        updator: {
+          id: currentUser.userId,
+          name: currentUser.name,
+          updatedAt: new Date().toISOString(),
+        },
+      };
 
-    return (
-        <Row justify="center" align="middle" style={{ display: "flex", padding: "20px" }}>
-            <Col xs={24} md={16} >
+      await api.post("/Tasks", payload);
+      message.success("Task created successfully!");
+      form.resetFields();
+      onClose();
+    } catch (error) {
+      console.error("Task creation error:", error);
+      message.error("Error creating task");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                <Form
-                    form={form}
-                    layout="vertical"
-                    onFinish={handleSubmit}
-                    requiredMark={false}
-                    disabled={loading}
+  return (
+    <Row
+      justify="center"
+      align="middle"
+      style={{ display: "flex", padding: "20px" }}
+    >
+      <Col xs={24} md={16}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          requiredMark={false}
+          disabled={loading}
+        >
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                label="Project"
+                name="projectId"
+                rules={[{ required: true, message: "Please select project!" }]}
+              >
+                <Select
+                  placeholder="Select Project"
+                  loading={projectLoading}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.children ?? "")
+                      .toString()
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  onChange={handleProjectChange}
                 >
-                    <Row gutter={16}>
-                        <Col span={24}>
-                            <Form.Item
-                                label="Project"
-                                name="projectId"
-                                rules={[{ required: true, message: "Please select project!" }]}
-                            >
-                                <Select
-                                    placeholder="Select Project"
-                                    loading={projectLoading}
-                                    showSearch
-                                    optionFilterProp="children"
-                                    filterOption={(input, option) =>
-                                        (option?.children ?? '')
-                                            .toString()
-                                            .toLowerCase()
-                                            .includes(input.toLowerCase())
-                                    }
-                                    onChange={handleProjectChange}
-                                >
-                                    {projects.map(project => (
-                                        <Option key={project.projectId} value={project.projectId}>
-                                            {project.projectTitle} ({project.projectId})
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Form.Item
-                        label="Title"
-                        name="title"
-                        rules={[{ required: true, message: "Please input title!" }]}
-                    >
-                        <Input placeholder="Enter task title" />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Description"
-                        name="description"
-                        rules={[{ required: true, message: "Please input description!" }]}
-                    >
-                        <Input.TextArea rows={3} placeholder="Task description" />
-                    </Form.Item>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item
-                                label="Status"
-                                name="taskStatus"
-                                rules={[{ required: true, message: "Please select status!" }]}
-                            >
-                                <Select placeholder="Select status">
-                                    {statusOptions.map(status => (
-                                        <Option key={status} value={status}>
-                                            {status}
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                label="Priority"
-                                name="priority"
-                                rules={[{ required: true, message: "Please select priority!" }]}
-                            >
-                                <Select placeholder="Select priority">
-                                    {priorityOptions.map(priority => (
-                                        <Option key={priority} value={priority}>
-                                            {priority}
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Form.Item
-                        label="Due Date"
-                        name="dueDate"
-                        rules={[{ required: true, message: "Please select due date!" }]}
-                    >
-                        <DatePicker
-                            showTime
-                            format="YYYY-MM-DD HH:mm"
-                            style={{ width: "100%" }}
-                        />
-                    </Form.Item>
-
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item
-                                label="Assigned To"
-                                name="assignedToId"
-                                rules={[{ required: true, message: "Please select assignee!" }]}
-                            >
-                                <Select
-                                    placeholder="Select assignee"
-                                    loading={employeeLoading}
-                                    showSearch
-                                    optionFilterProp="children"
-                                    filterOption={(input, option) =>
-                                        (option?.children ?? '')
-                                            .toString()
-                                            .toLowerCase()
-                                            .includes(input.toLowerCase())
-                                    }
-                                >
-                                    {(filteredEmployees.length > 0 ? filteredEmployees : employees).map(employee => (
-                                        <Option key={employee.userId} value={employee.userId}>
-                                            {employee.name} ({employee.userName})
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                label="Report To"
-                                name="reportToId"
-                                rules={[{ required: true, message: "Please select reporter!" }]}
-                            >
-                                <Select
-                                    placeholder="Select reporter"
-                                    loading={employeeLoading}
-                                    showSearch
-                                    optionFilterProp="children"
-                                    filterOption={(input, option) =>
-                                        (option?.children ?? '')
-                                            .toString()
-                                            .toLowerCase()
-                                            .includes(input.toLowerCase())
-                                    }
-                                >
-                                    {(filteredEmployees.length > 0 ? filteredEmployees : employees).map(employee => (
-                                        <Option key={employee.userId} value={employee.userId}>
-                                            {employee.name} ({employee.userName})
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            loading={loading}
-                            style={{ width: "100%" }}
-                        >
-                            Create Task
-                        </Button>
-                    </Form.Item>
-                </Form>
+                  {projects.map((project) => (
+                    <Option key={project.projectId} value={project.projectId}>
+                      {project.projectTitle} ({project.projectId})
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
             </Col>
+          </Row>
 
-        </Row>
-    );
+          <Form.Item
+            label="Title"
+            name="title"
+            rules={[{ required: true, message: "Please input title!" }]}
+          >
+            <Input placeholder="Enter task title" />
+          </Form.Item>
+
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[{ required: true, message: "Please input description!" }]}
+          >
+            <Input.TextArea rows={3} placeholder="Task description" />
+          </Form.Item>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label="Status"
+                name="taskStatus"
+                rules={[{ required: true, message: "Please select status!" }]}
+              >
+                <Select placeholder="Select status">
+                  {statusOptions.map((status) => (
+                    <Option key={status} value={status}>
+                      {status}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Priority"
+                name="priority"
+                rules={[{ required: true, message: "Please select priority!" }]}
+              >
+                <Select placeholder="Select priority">
+                  {priorityOptions.map((priority) => (
+                    <Option key={priority} value={priority}>
+                      {priority}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item
+            label="Due Date"
+            name="dueDate"
+            rules={[{ required: true, message: "Please select due date!" }]}
+          >
+            <DatePicker
+              showTime
+              format="YYYY-MM-DD HH:mm"
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label="Assigned To"
+                name="assignedToId"
+                rules={[{ required: true, message: "Please select assignee!" }]}
+              >
+                <Select
+                  placeholder="Select assignee"
+                  loading={employeeLoading}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.children ?? "")
+                      .toString()
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                >
+                  {(filteredEmployees.length > 0
+                    ? filteredEmployees
+                    : employees
+                  ).map((employee) => (
+                    <Option key={employee.userId} value={employee.userId}>
+                      {employee.name} ({employee.userName})
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Report To"
+                name="reportToId"
+                rules={[{ required: true, message: "Please select reporter!" }]}
+              >
+                <Select
+                  placeholder="Select reporter"
+                  loading={employeeLoading}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.children ?? "")
+                      .toString()
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                >
+                  {(filteredEmployees.length > 0
+                    ? filteredEmployees
+                    : employees
+                  ).map((employee) => (
+                    <Option key={employee.userId} value={employee.userId}>
+                      {employee.name} ({employee.userName})
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              style={{ width: "100%" }}
+            >
+              Create Task
+            </Button>
+          </Form.Item>
+        </Form>
+      </Col>
+    </Row>
+  );
 };
 
 export default CreateTask;

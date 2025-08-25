@@ -159,7 +159,7 @@ const Task: React.FC = () => {
         } catch (err) {
             message.error("Failed to load task data");
             console.error(err);
-            navigate("/not-found");
+            
             return null;
         }
     };
@@ -264,7 +264,7 @@ const Task: React.FC = () => {
                 }
             };
 
-            await api.put(`/tasks/${taskData.id}`, updatedTask);
+            await api.put(`/tasks/${taskData.taskId}`, updatedTask);
 
             // Update local state
             setTaskData(updatedTask);

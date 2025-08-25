@@ -13,6 +13,8 @@ import SessionTimeout from "./Components/SessionTimeOut";
 import Task from "./Pages/Home/Pages/Task";
 import ProjectCard from "./Components/ProjectCard";
 import "../src/App.css";
+import Dashboard from "./Pages/Dashboard.tsx";
+import TaskTable from "./Components/TaskTable.tsx";
 
 
 
@@ -53,6 +55,10 @@ const App: React.FC = () => {
                 <Route path="/ProjectCard" element={
                     <ProjectCard />
                 } />
+                
+                <Route path="/Dashboard" element={<Dashboard />} />
+
+                <Route path="/Task" element={<TaskTable/> }/>
 
             </Routes>
         </Router>

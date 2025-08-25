@@ -296,7 +296,7 @@ const ActivityLog: React.FC<{ projectId?: string }> = ({ projectId }) => {
                                                     onClick={() => {
                                                         const role = localStorage.getItem("Role")
 
-                                                        let path = `/tasks/${item.id}`; // fallback
+                                                        let path = `/tasks/${item.id}`; 
 
                                                         if (role === RoleEnum.Admin) {
                                                             path = `/Home/tasks/${item.id}`;

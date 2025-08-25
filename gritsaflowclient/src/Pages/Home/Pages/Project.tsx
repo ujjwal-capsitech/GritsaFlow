@@ -243,7 +243,11 @@ const Project: React.FC = () => {
     {
       title: "Project ID",
       dataIndex: "projectId",
-      key: "projectId",
+          key: "projectId",
+          render: (_, record) => (
+              <Button type="link" onClick={() => handleView(record)}>
+                  {record.projectId}
+              </Button>)
     },
     {
       title: "Project Title",
@@ -297,9 +301,9 @@ const Project: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <Space>
-          <Button type="link" onClick={() => handleView(record)}>
-            View
-          </Button>
+          {/*<Button type="link" onClick={() => handleView(record)}>*/}
+          {/*  View*/}
+          {/*</Button>*/}
           <Button type="link" onClick={() => handleEdit(record)}>
             Edit
           </Button>

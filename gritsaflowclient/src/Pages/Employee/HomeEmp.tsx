@@ -37,6 +37,8 @@ import UserProfilePage from "../../Components/ UserProfilePage";
 // import CreateTask from "../../Components/CreateTask";
 import Task from "../Task";
 import CreateTask from "../../Components/CreateTask";
+import AdminDashboard from "../Dashboard";
+import Dashboard from "../Dashboard";
 
 const { Title } = Typography;
 
@@ -62,6 +64,7 @@ const HomeEmp: React.FC = () => {
     //const [isModalVisible, setIsModalVisible] = useState(false);
     const [isProfileModalVisible, setIsProfileModalVisible] = useState(false); // New state for profile modal
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -88,7 +91,7 @@ const HomeEmp: React.FC = () => {
         dispatch(logout());
         navigate("/");
     };
-
+    
     if (error) return <Card>{error}</Card>;
 
     const profileMenu = (
@@ -124,7 +127,7 @@ const HomeEmp: React.FC = () => {
     const renderContent = () => {
         switch (selectedKey) {
             case "1":
-                return <EmpDashboard />;
+                return <Dashboard />;
             case "2":
                 return <BoardCardEmployee />;
             case "3":
@@ -136,138 +139,137 @@ const HomeEmp: React.FC = () => {
     };
 
     return (
-        <Row style={{ background: "#EDF6FF", minHeight: "100vh" }}>
-            <Layout style={{ minHeight: "100vh" }}>
-                <Sider
-                    breakpoint="lg"
-                    collapsedWidth="0"
-                    style={{ background: "#c3cfe2" }}
-                >
-                    <Row
-                        style={{
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            textAlign: "center",
-                            padding: "16px 0",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                            margin: 0,
-                        }}
-                    >
-                        <img
-                            src={LoginIcon}
-                            alt="login-Illustration"
-                            onClick={() => navigate("/Employee")}
-                            style={{ width: "80%", maxWidth: "50px", marginBottom: 8 }}
-                        />
-                    </Row>
-
-                    <Menu
-                        theme="light"
-                        mode="inline"
-                        selectedKeys={[selectedKey]}
-                        onClick={handleMenuClick}
-                        style={{ background: "#c3cfe2" }}
-                    >
-                        <Menu.Item key="1" icon={<DashboardOutlined />}>
-                            Dashboard
-                        </Menu.Item>
-                        <Menu.Item key="2" icon={<ProjectOutlined />}>
-                            Board
-                        </Menu.Item>
-                        <Menu.Item key="3" icon={<ProjectOutlined />}>
-                            CreateTasks
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
-
-                <Layout>
-                    <Header
-                        style={{
-                            background: "#c3cfe2",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            padding: "0 24px",
-                        }}
-                    >
-                        <Title level={4} style={{ margin: 0 }}>
-                            Welcome, {user?.name} <ArrowRightOutlined />{" "}
-                            {
-                                <span style={{ fontWeight: "normal", color: "#444" }}>
-                                    {" "}
-                                    {user?.role}{" "}
-                                </span>
-                            }
-                        </Title>
-                        <Space>
-                            <Button
-                                color="blue"
-                                variant="link"
-
-                                onClick={() => setIsCreateModalVisible(true)}
-                                style={{ marginBottom: 16 }}
-                            >
-                                Create Task
-                            </Button>
-
-
-                            <Dropdown overlay={profileMenu} trigger={["click"]}>
-                                <Space style={{ cursor: "pointer" }}>
-                                    <Avatar
-                                        src={user?.avatarUrl}
-                                        icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
-                                        style={{
-                                            backgroundColor: user?.avatarUrl
-                                                ? "transparent"
-                                                : "#1890ff",
-                                        }}
-                                    />
-                                    <DownOutlined />
-                                </Space>
-                            </Dropdown>
-                        </Space>
-                    </Header>
-
-                    <Content
-                        style={{
-                            padding: "20px",
-                            margin: 0,
-                            overflowY: "auto",
-                            height: "calc(100vh - 64px)",
-                            background: "#EDF6FF",
-                        }}
-                    >
-                        {/* Add Outlet for nested routes */}
-
-                        <Outlet />
-
-                        {!window.location.pathname.includes("/Home/tasks/") &&
-                            renderContent()}
-                    </Content>
-                </Layout>
-            </Layout>
-            <Modal
-                title="Create New Task"
-                open={isCreateModalVisible}
-                onCancel={() => setIsCreateModalVisible(false)}
-                footer={null}
-                destroyOnClose
-                width={600}
+      <Row style={{ background: "#EDF6FF", minHeight: "100vh" }}>
+        <Layout style={{ minHeight: "100vh" }}>
+          <Sider
+            breakpoint="lg"
+            collapsedWidth="0"
+            style={{ background: "#c3cfe2" }}
+          >
+            <Row
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                padding: "16px 0",
+                fontSize: 20,
+                fontWeight: "bold",
+                margin: 0,
+              }}
             >
-                <CreateTask
-                    visible={isCreateModalVisible}
-                    onClose={() => setIsCreateModalVisible(false)}
-                />
-            </Modal>
+              <img
+                src={LoginIcon}
+                alt="login-Illustration"
+                onClick={() => navigate("/Employee")}
+                style={{ width: "80%", maxWidth: "50px", marginBottom: 8 }}
+              />
+            </Row>
 
-            <UserProfilePage
-                visible={isProfileModalVisible}
-                onClose={() => setIsProfileModalVisible(false)}
-            />
-        </Row>
+            <Menu
+              theme="light"
+              mode="inline"
+              selectedKeys={[selectedKey]}
+              onClick={handleMenuClick}
+              style={{ background: "#c3cfe2" }}
+            >
+                        <Menu.Item key="1"  icon={<DashboardOutlined />}>
+                Dashboard
+              </Menu.Item>
+              <Menu.Item key="2" icon={<ProjectOutlined />}>
+                Board
+              </Menu.Item>
+              <Menu.Item key="3" icon={<ProjectOutlined />}>
+                Tasks
+              </Menu.Item>
+            </Menu>
+          </Sider>
+
+          <Layout>
+            <Header
+              style={{
+                background: "#c3cfe2",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "0 24px",
+              }}
+            >
+              <Title level={4} style={{ margin: 0 }}>
+                Welcome, {user?.name} <ArrowRightOutlined />{" "}
+                {
+                  <span style={{ fontWeight: "normal", color: "#444" }}>
+                    {" "}
+                    {user?.role}{" "}
+                  </span>
+                }
+              </Title>
+              <Space>
+                <Button
+                  color="blue"
+                  variant="link"
+                  onClick={() => setIsCreateModalVisible(true)}
+                  style={{ marginBottom: 16 }}
+                >
+                  Create Task
+                </Button>
+
+                <Dropdown overlay={profileMenu} trigger={["click"]}>
+                  <Space style={{ cursor: "pointer" }}>
+                    <Avatar
+                      src={user?.avatarUrl}
+                      icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
+                      style={{
+                        backgroundColor: user?.avatarUrl
+                          ? "transparent"
+                          : "#1890ff",
+                      }}
+                    />
+                    <DownOutlined />
+                  </Space>
+                </Dropdown>
+              </Space>
+            </Header>
+
+            <Content
+              style={{
+                padding: "20px",
+                margin: 0,
+                overflowY: "auto",
+                height: "calc(100vh - 64px)",
+                background: "#EDF6FF",
+              }}
+            >
+              {/* Add Outlet for nested routes */}
+
+              <Outlet />
+
+              {!window.location.pathname.includes("/Employee/tasks/") &&
+                renderContent()}
+            </Content>
+          </Layout>
+        </Layout>
+        <Modal
+          title="Create New Task"
+          open={isCreateModalVisible}
+          onCancel={() => setIsCreateModalVisible(false)}
+          footer={null}
+          destroyOnClose
+          width={600}
+        >
+          <CreateTask
+            visible={isCreateModalVisible}
+            onClose={() => setIsCreateModalVisible(false)}
+          />
+        </Modal>
+        <UserProfilePage
+          visible={isProfileModalVisible}
+          onClose={() => setIsProfileModalVisible(false)}
+        />
+      
+      </Row>
     );
 };
+
 
 export default HomeEmp;

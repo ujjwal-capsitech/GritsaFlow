@@ -8,14 +8,7 @@ const TasksPage: React.FC = () => {
 
     return (
         <Col>
-            <Button
-                type="primary"
-                onClick={() => setIsModalVisible(true)}
-                style={{ marginBottom: 16 }}
-            >
-                Create Task
-            </Button>
-
+           
             <TaskTable />
 
             <Modal

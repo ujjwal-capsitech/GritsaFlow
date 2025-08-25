@@ -117,7 +117,7 @@ const HomeTeamlead: React.FC = () => {
             case '1': return <EmpDashboard />;
             case '2': return <BoardCardEmployee />;
             case '3': return <Task />;
-            
+
             default: return "Select an option";
         }
     };
@@ -145,7 +145,7 @@ const HomeTeamlead: React.FC = () => {
               <img
                 src={LoginIcon}
                 alt="login-Illustration"
-                onClick={() => navigate("/Employee")}
+                onClick={() => navigate("/Teamlead")}
                 style={{ width: "80%", maxWidth: "50px", marginBottom: 8 }}
               />
             </Row>
@@ -188,30 +188,31 @@ const HomeTeamlead: React.FC = () => {
                   </span>
                 }
               </Title>
-              <Col>
+              <Space>
                 <Button
-                  type="primary"
+                  type="link"
+                  color="blue"
                   onClick={() => setIsCreateModalVisible(true)}
                   style={{ marginBottom: 16 }}
                 >
                   Create Task
                 </Button>
-              </Col>
 
-              <Dropdown overlay={profileMenu} trigger={["click"]}>
-                <Space style={{ cursor: "pointer" }}>
-                  <Avatar
-                    src={user?.avatarUrl}
-                    icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
-                    style={{
-                      backgroundColor: user?.avatarUrl
-                        ? "transparent"
-                        : "#1890ff",
-                    }}
-                  />
-                  <DownOutlined />
-                </Space>
-              </Dropdown>
+                <Dropdown overlay={profileMenu} trigger={["click"]}>
+                  <Space style={{ cursor: "pointer" }}>
+                    <Avatar
+                      src={user?.avatarUrl}
+                      icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
+                      style={{
+                        backgroundColor: user?.avatarUrl
+                          ? "transparent"
+                          : "#1890ff",
+                      }}
+                    />
+                    <DownOutlined />
+                  </Space>
+                </Dropdown>
+              </Space>
             </Header>
 
             <Content
@@ -224,7 +225,7 @@ const HomeTeamlead: React.FC = () => {
               }}
             >
               <Outlet />
-              {!window.location.pathname.includes("/Home/tasks/") &&
+              {!window.location.pathname.includes("/Teamlead/tasks/") &&
                 renderContent()}
             </Content>
           </Layout>

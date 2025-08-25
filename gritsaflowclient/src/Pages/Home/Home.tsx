@@ -26,9 +26,9 @@ import {
 } from '@ant-design/icons';
 import { Content, Header } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../redux/store";
-import AdminDashboard from "../../Pages/Home/Pages/Dashboard";
+import { useDispatch} from "react-redux";
+import type { AppDispatch} from "../../redux/store";
+import AdminDashboard from "../Dashboard";
 import Project from "../../Pages/Home/Pages/Project";
 import LoginIcon from "../../Assets/LoginIcon.svg";
 import { logout } from "../../redux/slice/LoginSlice";
@@ -40,6 +40,7 @@ import UserProfilePage from "../../Components/ UserProfilePage";
 //import CreateTask from "../../Components/CreateTask";
 import Task from "../Task";
 import CreateTask from "../../Components/CreateTask";
+import Dashboard from "../Dashboard";
 
 const { Title } = Typography;
 
@@ -139,7 +140,7 @@ const Home: React.FC = () => {
 
     const renderContent = () => {
         switch (selectedKey) {
-            case '1': return <AdminDashboard />;
+            case '1': return <Dashboard />;
             case '2': return <Project />;
             case '3': return <Task />;
             default: return "Select an option";
@@ -170,7 +171,7 @@ const Home: React.FC = () => {
                             src={LoginIcon}
                             alt="login-Illustration"
                             onClick={() => navigate("/Home")}
-                            style={{ width: "80%", maxWidth: "50px", marginBottom: 8 }}
+                            style={{ width: "80%", maxWidth: "50px", marginBottom: 8,cursor:"pointer"}}
                         />
                     </Row>
 
@@ -214,16 +215,17 @@ const Home: React.FC = () => {
                                 </span>
                             }
                         </Title>
-                        <Col>
+                        <Space>
                             <Button
-                                type="primary"
+                                type="link"
+                                color="blue"
                                 onClick={() => setIsCreateModalVisible(true)}
                                 style={{ marginBottom: 16 ,}}
                             >
                                 Create Task
                             </Button>
 
-                        </Col>
+                        
 
                         <Dropdown overlay={profileMenu} trigger={["click"]}>
                             <Space style={{ cursor: "pointer" }}>
@@ -238,7 +240,8 @@ const Home: React.FC = () => {
                                 />
                                 <DownOutlined />
                             </Space>
-                        </Dropdown>
+                            </Dropdown>
+                        </Space>
                     </Header>
 
                     <Content

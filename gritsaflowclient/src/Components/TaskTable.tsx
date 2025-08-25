@@ -26,8 +26,8 @@ interface Task {
     description: string;
 }
 interface Employee {
-    empId: string;
-    name: string;
+  empId: string;
+  empName: string; 
 }
 
 interface CurrentUser {
@@ -41,6 +41,7 @@ interface Project {
     projectId: string;
     projectTitle: string;
     employees: Array<{
+        empName: string;
         empId: string;
         name: string;
     }>;
@@ -83,35 +84,44 @@ const TaskTable: React.FC = () => {
 
                 // Fetch projects and employees
                 try {
-                    const projectsRes = await axios.get<{ data: Project[] }>(
-                        "https://localhost:7219/employees/all",
-                        { withCredentials: true }
+                  const projectsRes = await axios.get<{ data: Project[] }>(
+                    "https://localhost:7219/employees/all",
+                    { withCredentials: true }
+                  );
+
+                  const allProjects = projectsRes.data.data || [];
+                  let relevantProjects = allProjects;
+
+                  // For non-admins, filter projects to those the user is part of
+                  if (userRes.data.role !== RoleEnum.Admin) {
+                    relevantProjects = allProjects.filter((project) =>
+                      project.employees.some(
+                        (emp) => emp.empId === userRes.data.userId
+                      )
                     );
+                    userProjectIds = relevantProjects.map(
+                      (project) => project.projectId
+                    );
+                  }
 
-                    const allProjects = projectsRes.data.data || [];
-                    let relevantProjects = allProjects;
+                  setUserProjects(relevantProjects);
 
-                    // For non-admins, filter projects to those the user is part of
-                    if (userRes.data.role !== RoleEnum.Admin) {
-                        relevantProjects = allProjects.filter((project) =>
-                            project.employees.some((emp) => emp.empId === userRes.data.userId)
-                        );
-                        userProjectIds = relevantProjects.map((project) => project.projectId);
-                    }
-
-                    setUserProjects(relevantProjects);
-
-                    // Extract unique employees from relevant projects
-                    const employeeMap = new Map<string, Employee>();
-                    relevantProjects.forEach((project) => {
-                        project.employees.forEach((emp) => {
-                            if (!employeeMap.has(emp.empId)) {
-                                employeeMap.set(emp.empId, emp);
-                            }
+                
+                
+                  // Extract unique employees from relevant projects
+                  const employeeMap = new Map<string, Employee>();
+                  relevantProjects.forEach((project) => {
+                    project.employees.forEach((emp) => {
+                      if (!employeeMap.has(emp.empId)) {
+                        employeeMap.set(emp.empId, {
+                          empId: emp.empId,
+                          empName: emp.empName, 
                         });
+                      }
                     });
-                    allEmployees = Array.from(employeeMap.values());
-                    setEmployees(allEmployees);
+                  });
+                  allEmployees = Array.from(employeeMap.values());
+                  setEmployees(allEmployees);
                 } catch (error) {
                     message.error("Failed to load project data");
                     console.error("Error fetching projects:", error);
@@ -128,6 +138,10 @@ const TaskTable: React.FC = () => {
                 }
 
                 setTasks(filteredTasks);
+                console.log("Employees:", allEmployees);
+                console.log("Tasks:", filteredTasks);
+
+                setTasks(filteredTasks);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
                 message.error("Failed to load tasks");
@@ -138,15 +152,22 @@ const TaskTable: React.FC = () => {
 
         fetchData();
     }, []);
+    
     const getEmployeeName = (employeeId: string) => {
-        const employee = employees.find((emp) => emp.empId === employeeId);
-        return employee ? employee.name : employeeId; 
+      if (!employeeId) return "Unassigned";
+
+      const employee = employees.find((emp) => emp.empId === employeeId);
+
+      // For debugging - you can remove this after testing
+      console.log("Looking for employee:", employeeId, "Found:", employee);
+
+      return employee ? employee.empName : `Unknown (${employeeId})`; 
     };
     const handleTaskClick = (taskId: string) => {
         if (!currentUser) return;
 
         const role = currentUser.role;
-        let path = `/tasks/${taskId}`; // fallback
+        let path = `/tasks/${taskId}`; 
 
         if (role === RoleEnum.Admin) {
             path = `/Home/tasks/${taskId}`;
